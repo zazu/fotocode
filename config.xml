@@ -7,6 +7,7 @@
     <author email="info@rblumenthal.de" href="http://rblumenthal.de">
         Ralf Blumenthal
     </author>
+    <gap:platform name="android" />
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
@@ -23,6 +24,7 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
+    
     <gap:plugin name="org.apache.cordova.battery-status" />
     <gap:plugin name="org.apache.cordova.camera" />
     <gap:plugin name="org.apache.cordova.media-capture" />
@@ -41,15 +43,30 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
+    
+    <gap:plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
+    
+    <!-- to enable individual permissions use the following examples -->
+    <feature name="http://api.phonegap.com/1.0/file"/>
+    <feature name="http://api.phonegap.com/1.0/media"/>
+    <feature name="http://api.phonegap.com/1.0/camera"/>
+    <feature name="http://api.phonegap.com/1.0/network"/>
+    <feature name="http://api.phonegap.com/1.0/notification"/>        
+    
     <icon src="icon.png" />
-    <icon gap:platform="android" gap:qualifier="ldpi" src="res/icon/android/icon-36-ldpi.png" />
-    <icon gap:platform="android" gap:qualifier="mdpi" src="res/icon/android/icon-48-mdpi.png" />
-    <icon gap:platform="android" gap:qualifier="hdpi" src="res/icon/android/icon-72-hdpi.png" />
-    <icon gap:platform="android" gap:qualifier="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="res/screen/android/screen-ldpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="res/screen/android/screen-mdpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
+    <!-- Define app icon for each platform. -->
+    <icon src="images/icon.png" />
+    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="ldpi" />
+    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="mdpi" />
+    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="hdpi" />
+    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="xhdpi" />
+
+    <!-- Define app splash screen for each platform. -->
+    <gap:splash src="images/screen-ldpi-landscape.png"  gap:platform="android" gap:density="ldpi" />
+    <gap:splash src="images/screen-mdpi-landscape.png"  gap:platform="android" gap:density="mdpi" />
+    <gap:splash src="images/screen-hdpi-landscape.png"  gap:platform="android" gap:density="hdpi" />
+    <gap:splash src="images/screen-xhdpi-landscape.png" gap:platform="android" gap:density="xhdpi" />
+    
     <access origin="*" />
     <plugin name="cordova-plugin-whitelist" version="1" />
     <allow-intent href="http://*/*" />
@@ -60,9 +77,5 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
     </platform>
 </widget>
