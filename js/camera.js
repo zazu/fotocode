@@ -38,7 +38,6 @@ fc.camera =  {
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
                     if ( ! result.cancelled && result.format.length && result.text.length) {
-                        me.barcode = result;
                         success( result );
                     }
                     else {

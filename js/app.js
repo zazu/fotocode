@@ -73,7 +73,6 @@ var vm = new Vue({
         var me = this;
         console.log('barcode');
         fc.camera.captureBarcode( function(result){
-            console.log(result);
             if ( ! result.cancelled ) {
                 me.set.code = result.text;
                 vm.foto();
@@ -85,9 +84,7 @@ var vm = new Vue({
       },
       foto: function() {
           var me = this;
-          console.log('foto');
           fc.camera.getPicture(function(result){
-            console.log(result);
             me.set.fotos.push(result);
             if ( navigator.camera || me.set.fotos.length < 2)
                 me.foto();
