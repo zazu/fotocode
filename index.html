@@ -35,7 +35,7 @@
                   <div class="item-title">Quickscan</div>
                 </div>
               </div></a></li>
-            <li><a href="#" class="item-link close-panel">
+            <li><a v-on:click="notyet" href="#" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner"> 
                   <div class="item-title">Senden</div>
@@ -78,11 +78,18 @@
                 <div class="content-block-innerx">
                   <ul>
                       <li>{{numsets}}
-                        <span v-if="numset==1">Vorgang</span>
-                        <span v-else>Vorgänge</span>
+                        <span v-if="numsets==1"> Vorgang</span>
+                        <span v-else> Vorgänge</span>
                       </li>
-                      <li>1 Barcode</li>
-                      <li>10 Fotos</li>
+                      <li>{{numcodes}}
+                        <span v-if="numcodes==1"> Barcode</span>
+                        <span v-else> Barcodes</span>
+
+                      </li>
+                      <li>{{numfotos}}
+                        <span v-if="numfotos==1"> Foto</span>
+                        <span v-else> Fotos</span>
+                          </li>
                     </ul>
                 </div>
               </div>
@@ -90,18 +97,25 @@
             <div  v-if="sets.length" class="content-block-title">Vorgänge</div>
             <div class="list-block media-list">
               <ul>
-                  <li v-for="ds in sets">
-                  <a href="#" class="item-link item-content">
-                    <div class="item-media">
-                        <img v-bind:src="ds.fotos[0].uri" width="80"></div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">{{ds.name}}</div>
-                        <div class="item-after">{{ds.fotos.length}}</div>
+                  <li class="swipeout" v-for="ds in sets">
+                    <div class="swipeout-content">
+                      <a v-on:click.stop.prevent="showFotos($index)" class="item-link item-content">
+                        <div class="item-media">
+                            <img v-bind:src="ds.fotos[0].uri" width="80"></div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">{{ds.name}}</div>
+                            <div class="item-after">
+                                <span class="badge bg-green">{{ds.fotos.length}}</span>
+                            </div>
+                          </div>
+                          <div class="item-subtitle">{{ds.code}}</div>
+                        </div>
+                      </a>
+                     <div class="swipeout-actions-right">
+                        <a v-on:click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >Löschen</a>
                       </div>
-                      <div class="item-subtitle">{{ds.code}}</div>
                     </div>
-                  </a>
                 </li>
 
               </ul>
@@ -183,6 +197,7 @@
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/lockr.min.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/camera.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
