@@ -9,43 +9,85 @@ var $$ = Dom7;
 
 // Add view
 var mainView = myApp.addView('.view-main', {
-    // Because we use fixed-through navbar we can enable dynamic navbar
-    dynamicNavbar: true
+    domCache: true
 });
 
 // Callbacks to run specific code for specific pages, for example for About page:
-myApp.onPageInit('about', function (page) {
-    // run createContentPage func after link was clicked
-    $$('.create-page').on('click', function () {
-        createContentPage();
-    });
+myApp.onPageInit('quickscan', function (page) {
+    vm.cleanset();
 });
 
-// Generate dynamic page
-var dynamicPageIndex = 0;
-function createContentPage() {
-	mainView.router.loadContent(
-        '<!-- Top Navbar-->' +
-        '<div class="navbar">' +
-        '  <div class="navbar-inner">' +
-        '    <div class="left"><a href="#" class="back link"><i class="icon icon-back"></i><span>Back</span></a></div>' +
-        '    <div class="center sliding">Dynamic Page ' + (++dynamicPageIndex) + '</div>' +
-        '  </div>' +
-        '</div>' +
-        '<div class="pages">' +
-        '  <!-- Page, data-page contains page name-->' +
-        '  <div data-page="dynamic-pages" class="page">' +
-        '    <!-- Scrollable page content-->' +
-        '    <div class="page-content">' +
-        '      <div class="content-block">' +
-        '        <div class="content-block-inner">' +
-        '          <p>Here is a dynamic page created on ' + new Date() + ' !</p>' +
-        '          <p>Go <a href="#" class="back">back</a> or go to <a href="services.html">Services</a>.</p>' +
-        '        </div>' +
-        '      </div>' +
-        '    </div>' +
-        '  </div>' +
-        '</div>'
-    );
-	return;
-}
+var vm = new Vue({
+  el: '#app',
+  data: {
+    sets:[],
+    set: {
+        name: '',
+        code: '',
+        usecamera:true,
+        fotos: []
+    }
+  },
+  computed: {
+    numsets: function () {
+        return this.sets.length;
+    },
+    emptycode: function () {
+        return this.sets.code.length==0;
+    }
+  },
+  methods: {
+      cleanset: function() {
+          this.set.fotos.length=0;
+          this.set.name="";
+          this.set.code="";
+      },
+      scanfoto: function(event) {
+          if (this.set.usecamera) {
+              vm.barcode();
+          }
+          else {
+              vm.foto();
+          }
+      },
+      barcode: function() {
+        var me = this;
+        console.log('barcode');
+        fc.camera.captureBarcode( function(result){
+            console.log(result);
+            if ( ! result.cancelled ) {
+                me.set.code = result.text;
+                vm.foto();
+            }
+        }, function(){
+          alert("error getting barcode");
+        });
+
+      },
+      foto: function() {
+          var me = this;
+          console.log('foto');
+          fc.camera.getPicture(function(result){
+            console.log(result);
+            me.set.fotos.push(result);
+            if ( navigator.camera || me.set.fotos.length < 2)
+                me.foto();
+            else
+                me.usefotos();
+          }, function(){
+              me.usefotos();
+          });
+      },
+      usefotos: function() {
+          var me=this;
+        if ( me.set.fotos.length ) {
+            var s = JSON.parse(JSON.stringify(me.set));
+            me.sets.push(s);
+        }
+        me.cleanset();
+        mainView.router.load({pageName: 'index'});
+      }
+  }
+})
+
+

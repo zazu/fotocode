@@ -4,7 +4,7 @@ var fc = fc || {};
 fc.camera =  {
 
     getPicture: function( success, fail ) {
-        console.log('getPicture2');
+        console.log('getPicture');
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -15,7 +15,7 @@ fc.camera =  {
                     success( { uri: imageUri, title: title }  );
                 },
                 function(error) {
-                    console.log('getPicture2 error');
+                    console.log('getPicture error');
                     console.log(error);
                     fail(error);
                 },

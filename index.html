@@ -12,7 +12,7 @@
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/my-app.css">
   </head>
-  <body class="theme-teal layout-white">
+  <body class="theme-teal layout-white" id="app">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -29,25 +29,20 @@
                   <div class="item-title">Login</div>
                 </div>
               </div></a></li>
-            <li><a href="quickscan.html" class="item-link close-panel">
+            <li><a href="#quickscan" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner"> 
                   <div class="item-title">Quickscan</div>
                 </div>
               </div></a></li>
-              
             <li><a href="#" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner"> 
                   <div class="item-title">Senden</div>
                 </div>
               </div></a></li>
-              
           </ul>
         </div>
-      
-          
-          
       </div>
     </div>
     <!-- Views-->
@@ -67,7 +62,7 @@
                 <div class="center">appgeordnet</div>
                 <div class="right">
                     <!-- Right link contains only icon - additional "icon-only" class-->
-                    <a href="quickscan.html" class="link icon-only"> 
+                    <a href="#quickscan" class="link icon-only">
                         <i class="icon icon-form-calendar"></i></a>
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                     
@@ -78,46 +73,103 @@
               
             <!-- Scrollable page content-->
             <div class="page-content">
-              <div class="content-block-title">Welcome To My Awesome App</div>
+              <div class="content-block-title">app-geordnet - Barcode und Foto App</div>
               <div class="content-block">
-                <div class="content-block-inner">
-                  <p>Couple of worlds here because my app is so awesome!</p>
-                  <p>Duis sed erat ac eros ultrices pharetra id ut tellus. Praesent rhoncus enim ornare ipsum aliquet ultricies. Pellentesque sodales erat quis elementum sagittis.</p>
+                <div class="content-block-innerx">
+                  <ul>
+                      <li>{{numsets}}
+                        <span v-if="numset==1">Vorgang</span>
+                        <span v-else>Vorgänge</span>
+                      </li>
+                      <li>1 Barcode</li>
+                      <li>10 Fotos</li>
+                    </ul>
                 </div>
               </div>
-              <div class="content-block-title">What about simple navigation?</div>
+
+            <div  v-if="sets.length" class="content-block-title">Vorgänge</div>
+            <div class="list-block media-list">
+              <ul>
+                  <li v-for="ds in sets">
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media">
+                        <img v-bind:src="ds.fotos[0].uri" width="80"></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">{{ds.name}}</div>
+                        <div class="item-after">{{ds.fotos.length}}</div>
+                      </div>
+                      <div class="item-subtitle">{{ds.code}}</div>
+                    </div>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+
+            </div>
+          </div>
+
+
+          <!-- Quickscan page -->
+          <div class="page cached" data-page="quickscan" >
+            <!-- Top Navbar-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
+                </div>
+                <div class="center">Quickscan</div>
+              </div>
+            </div>
+            <!-- Scrollable page content-->
+            <div class="page-content">
               <div class="list-block">
                 <ul>
-                    
-                  <li><a href="about.html" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner"> 
-                          <div class="item-title">About</div>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-inner">
+                        <div class="item-input">
+                          <input type="text" v-model="set.name" placeholder="Vorgansname"/>
                         </div>
-                      </div></a></li>
-                  <li><a href="services.html" class="item-link">
-                      <div class="item-content"> 
-                        <div class="item-inner">
-                          <div class="item-title">Services</div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-password"></i></div>
+                      <div class="item-inner">
+                        <div class="item-input">
+                          <input type="text" v-model="set.code" placeholder="Barcode (manuell oder Scanner)"/>
                         </div>
-                      </div></a></li>
-                  <li><a href="form.html" class="item-link">
-                      <div class="item-content"> 
-                        <div class="item-inner">
-                          <div class="item-title">Form</div>
-                        </div>
-                      </div></a></li>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <label class="label-checkbox item-content">
+                      <input v-model="set.usecamera" type="checkbox" name="bc-checkbox" />
+                      <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                      <div class="item-inner">
+                        <div class="item-title">Barcode per Kamera</div>
+                      </div>
+                    </label>
+                  </li>
                 </ul>
               </div>
-              <div class="content-block-title">Side panels</div>
               <div class="content-block">
                 <div class="row">
-                  <div class="col-50"><a href="#" data-panel="left" class="button open-panel">Left Panel</a></div>
-                  <div class="col-50"><a href="#" data-panel="right" class="button open-panel">Right Panel</a></div>
+                  <div class="col-25"></div>
+                  <div class="col-50">
+                    <input v-on:click.stop.prevent="scanfoto"
+                           type="submit" value="Weiter" class="button button-big button-fill color-green"/>
+                  </div>
+                  <div class="col-25"></div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
         <!-- Bottom Toolbar-->
         <!--                    
@@ -130,9 +182,9 @@
       </div>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
-    <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/framework7.min.js"></script>
-    <!-- Path to your app js-->
-    <script type="text/javascript" src="js/my-app.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/camera.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
   </body>
 </html>
