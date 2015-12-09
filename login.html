@@ -1,6 +1,6 @@
 
   <!-- Page, data-page contains page name-->
-  <div data-page="login" class="page">
+  <div data-page="login" class="page cached">
     <!-- Top Navbar-->
     <div class="navbar">
       <div class="navbar-inner">
@@ -20,7 +20,7 @@
               <div class="item-inner"> 
                 <div class="item-title label">Name</div>
                 <div class="item-input">
-                  <input type="text" placeholder="Loginname"/>
+                  <input type="text" v-model="user.login" placeholder="Loginname"/>
                 </div>
               </div>
             </div>
@@ -31,7 +31,7 @@
               <div class="item-inner"> 
                 <div class="item-title label">Passwort</div>
                 <div class="item-input">
-                  <input type="password" placeholder="Passwort"/>
+                  <input type="password" v-model="user.password" placeholder="Passwort"/>
                 </div>
               </div>
             </div>
@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col-25"></div>
           <div class="col-50">
-            <input type="submit" onclick="vm.notyet();return false;" value="Anmelden" class="button button-big button-fill color-green"/>
+            <input v-show="validlogin" type="submit" onclick="vm.login();return false;" value="Anmelden" class="button button-big button-fill color-green"/>
           </div>
           <div class="col-25"></div>
         </div>

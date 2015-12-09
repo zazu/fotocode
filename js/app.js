@@ -1,7 +1,10 @@
 // Initialize your app
 var myApp = new Framework7({
   swipePanel: 'left',
-  material: true //enable Material theme
+  template7Pages: false,
+  material: true, //enable Material theme
+  notificationCloseButtonText:'Schließen',
+  notificationHold: 2500
 });
 
 // Export selectors engine
@@ -11,6 +14,7 @@ var $$ = Dom7;
 var mainView = myApp.addView('.view-main', {
     domCache: true
 });
+
 
 // Callbacks to run specific code for specific pages, for example for About page:
 myApp.onPageInit('quickscan', function (page) {
@@ -28,6 +32,14 @@ var vm = new Vue({
         code: '',
         usecamera:true,
         fotos: []
+    },
+    login: {
+        login:'',
+        password:'',
+    },
+    user:{
+        name:'',
+        token:''
     }
   },
   computed: {
@@ -50,10 +62,17 @@ var vm = new Vue({
     },
     emptycode: function () {
         return this.sets.code.length==0;
+    },
+    validlogin:function() {
+        return this.login.login.length && this.login.password.length;
+    },
+    loggedin: function() {
+        return this.user.token && this.user.token.length > 0;
     }
   },
   created: function () {
     this.sets = Lockr.get('sets',[]);
+    this.user = Lockr.get('user',{});
   },
   methods: {
       cleanset: function() {
@@ -135,6 +154,7 @@ var vm = new Vue({
           photos = me.sets[idx].fotos.map(function(f){ return f.uri;});
           this.myPhotoBrowser = myApp.photoBrowser({
                 photos : photos,
+                ofText : 'von',
                 toolbarTemplate: '\
                 <div class="toolbar tabbar"> \
                     <div class="toolbar-inner">\
@@ -151,6 +171,43 @@ var vm = new Vue({
                 </div>'
           });
           this.myPhotoBrowser.open(0);
+      },
+      baseuri: function() {
+          var url = window.location.href;
+          if ( url.indexOf('www') > 0 )
+            return 'http://www.app-geordnet.de/';
+          else
+            return 'http://localhost/app-geordnet/';
+      },
+      submitlogin: function() {
+         var $$ = Dom7;
+          var me = this;
+          var params = {
+                version: '2.0.0',
+                name:'',
+                platform:'',
+                uuid: '',
+                devversion:'',
+                login: me.login.login,
+                password: me.login.password,
+                remember:1
+            };
+        $$.post(me.baseuri()+'user/login', params, function (data) {
+            data = JSON.parse(data);
+            if ( !data.success )
+                myApp.addNotification( { 'title':data.msg } );
+            else {
+                me.login.password='';
+                me.user = data;
+                Lockr.set('user',me.user);
+                mainView.router.load({pageName: 'index'});
+            }
+        });
+      },
+      logout: function() {
+          var me = this;
+          me.user={};
+          Lockr.set('user',me.user);
       },
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
