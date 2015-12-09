@@ -26,13 +26,18 @@
             <li><a href="#quickscan" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner"> 
-                  <div class="item-title">Quickscan</div>
+                  <div class="item-title">
+                      <i class="icon icon-camera"></i>
+                      Quickscan</div>
                 </div>
               </div></a></li>
             <li><a v-on:click="notyet" href="#" class="item-link close-panel">
               <div class="item-content">
+
                 <div class="item-inner"> 
-                  <div class="item-title">Senden</div>
+                  <div class="item-title">
+                      <i class="icon icon-form-url"></i>
+                      Senden</div>
                 </div>
               </div></a></li>
 
@@ -40,13 +45,17 @@
             <li v-if="loggedin"><a v-on:click="logout" href="#" class="close-panel">
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Logout</div>
+                  <div class="item-title">
+                      <i class="icon icon-close"></i>
+                      Logout</div>
                 </div>
               </div></a></li>
             <li v-else ><a href="#login" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Login</div>
+                  <div class="item-title">
+                      <i class="icon icon-form-name"></i>
+                      Login</div>
                 </div>
               </div></a></li>
 
@@ -73,7 +82,7 @@
                 <div class="right">
                     <!-- Right link contains only icon - additional "icon-only" class-->
                     <a href="#quickscan" class="link icon-only">
-                        <i class="icon icon-form-calendar"></i></a>
+                        <i class="icon icon-camera-light"></i></a>
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                     
                 </div>
