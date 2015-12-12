@@ -81,43 +81,54 @@ fc.file =  {
         this.fotototal = 0;
     },
 
+    getguid: function() {
+    	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    	    return v.toString(16);
+    	});
+    },
+
     uploadGroup: function( group, success, fail ) {
         var me = this;
         var options = me.options;
-        me.group = group;
 		var groups = [];
 		var barcodes = [];
-        groups.push( {
-            gid: group.data.gid,
-            dateCreated: group.data.dateCreated,
-            title: group.data.title,
-            prefix: group.data.prefix,
-            formdata: group.data.formdata,
-            code: group.data.code,
-            format:group.data.format,
-            numf:group.data.numf
-        } );
-        barcodes.push( { code: group.data.code, format: group.data.format } );
-		Ext.Ajax.request( {
-		    url: options.serveruri + 'app/uploaddata',
-		    params: {
-                authautologin: options.authautologin,
-                groups: Ext.encode(groups),
-                barcodes: Ext.encode(barcodes)
-            },
-		    success: function(response, opts ) {
-		        var result = Ext.decode(response.responseText);
-		        if ( result.message.length ) {
-		        	Ext.Msg.alert('', result.message );
-		        }
-		        if ( result.success ) {
-                    me.uploadFotos( group.fotos(), success, fail );
-		        }
-		    },
-		    failure: function(){
-                fail();
+
+        var d = new Date();
+
+        var grp = {
+            idx:group.idx,
+            gid: this.getguid(),
+            dateCreated: group.dateCreated,
+            title: group.name,
+            prefix: '',
+            formdata: '',
+            code: group.code,
+            format:group.format,
+            numf:group.fotos.length
+        }
+        me.group = grp;
+        groups.push( grp );
+        barcodes.push( { code: group.code, format: group.format } );
+
+        var params = {
+            authautologin: vm.user.token,
+            groups: JSON.stringify(groups),
+            barcodes: JSON.stringify(barcodes)
+        };
+
+        $$.post(vm.baseuri()+'app/uploaddata', params, function (data) {
+            var result = JSON.parse(data);
+		    if ( result.message.length ) {
+                myApp.alert('', result.message );
 		    }
-		});
+		    if ( result.success ) {
+                me.uploadFotos( group.fotos, success, fail );
+		    }
+            else {
+                fail();
+            }
+        });
     },
 
     // bilder inkl. name und kommentar hochladen
@@ -131,13 +142,15 @@ fc.file =  {
     uploadFoto: function( fotos, idx, success, fail ) {
     	var me = this;
     	var fotostore = fotos;
-    	if ( idx < fotostore.getCount() ) {
-	    	var foto = fotostore.getAt( idx );
+    	if ( idx < fotostore.length ) {
+	    	var foto = fotostore[idx];
 	    	me.fotocount++;
             me.fotototal++;
-		    Ext.Viewport.setMasked({xtype:'loadmask',message:'Sende Bild ' + me.fotototal } );
-		    var fileURI = foto.get('uri');
-		    var serverURI = me.options.serveruri + 'app/upload' ;
+
+		    //Ext.Viewport.setMasked({xtype:'loadmask',message:'Sende Bild ' + me.fotototal } );
+
+		    var fileURI = foto.uri;
+		    var serverURI = vm.baseuri() + 'app/upload' ;
             if ( navigator.camera ) {
                 try {
                     var options = new FileUploadOptions();
@@ -146,11 +159,11 @@ fc.file =  {
                     options.mimeType="text/plain";
                     options.chunkedMode = false;
                     options.params = {
-                        guid: me.group.data.gid,
+                        guid: me.group.gid,
                         index: idx,
-                        title: foto.data.title,
-                        bemerkung: foto.data.bemerkung,
-                        authautologin: me.options.authautologin
+                        title: foto.title,
+                        bemerkung: foto.bemerkung,
+                        authautologin: vm.user.token
                     };
                     var ft = new FileTransfer();
                     ft.upload(fileURI, encodeURI(serverURI),
@@ -158,25 +171,26 @@ fc.file =  {
                             //alert("Code = " + r.responseCode);
                             //alert("Response = " + r.response);
                             //alert("Sent = " + r.bytesSent);
-                            var res = Ext.decode( r.response );
+                            var res = JSON.stringify( r.response );
                             try {
                                 if ( res.success ) {
+                                    vm.sets[ me.group.idx ].sended = true;
                                     me.uploadFoto( fotos, idx + 1, success, fail );
                                 }
                                 else {
                                     if ( res.message && res.message.length )
                                         fail( res.message );
                                     else
-                                        fail();
+                                        fail('Upload failed');
                                 }
                             }
                             catch(e) {
-                                appgeordnet.app.log( "Upload: " + e.message );
+                                //appgeordnet.app.log( "Upload: " + e.message );
                                 fail( "Upload: " + e.message );
                             }
                         },
                         function(error) {
-                            Ext.Viewport.setMasked(false);
+                            //Ext.Viewport.setMasked(false);
                             var msg= "Code = " + error.code ;
                             if ( error.code == FileTransferError.FILE_NOT_FOUND_ERR)
                                 msg='Die Datei wurde nicht gefunden! - ' + options.fileName;
@@ -188,45 +202,42 @@ fc.file =  {
                                 msg='Der Transfer wurde abgebrochen!';
                             //alert("upload error source " + error.source);
                             //alert("upload error target " + error.target);
-                            appgeordnet.app.log( "Upload Failed: " + msg );
+                            //appgeordnet.app.log( "Upload Failed: " + msg );
                             fail( "Fehler beim Upload: " + msg );
                         },
                         options);
                 }
                 catch(e) {
-                  appgeordnet.app.log( "Upload Fehler: " + e.message );
+                  //appgeordnet.app.log( "Upload Fehler: " + e.message );
                   fail( e.message );
                 }
             }
             else {
+                vm.sets[ me.group.idx ].sended = true;
                 me.uploadFoto( fotos, idx + 1, success, fail );
             }
 	    }
 		else {
-            var serverURI = me.options.serveruri + 'app/uploaddone';
+            var serverURI = vm.baseuri() + 'app/uploaddone';
             var groups = [];
             var stats = {
-                version: appgeordnet.app.version,
-                name: device.name,
-                platform: device.platform,
-                uuid: device.uuid,
-                devversion: device.version,
-                numfotos: fotostore.getCount()
+                version: '2.0.0',
+                name: '',
+                platform: '',
+                uuid: '',
+                devversion: '',
+                numfotos: -1
             };
-            groups.push( me.group.data.gid );
-            Ext.Ajax.request( {
-                url: serverURI,
-                params: { authautologin: me.options.authautologin, groups:Ext.encode(groups), stats: Ext.encode(stats)  },
-                success: function(response, opts ) {
-                    fotostore.each( function( foto ) {
-                        me.removeFotoFromFileSystem( foto.data.uri );
-                    });
-                    success();
+            groups.push( me.group.gid );
+            $$.post( serverURI, {
+                    authautologin: vm.user.token,
+                    groups:JSON.stringify(groups),
+                    stats: JSON.stringify(stats)
                 },
-                failure: function(){
-                    fail('Upload Done failed' );
+                function(response, opts ) {
+                    success();
                 }
-            });
+            );
 		}
     },
 

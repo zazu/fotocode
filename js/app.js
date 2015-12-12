@@ -29,7 +29,9 @@ var vm = new Vue({
     sets:[],
     set: {
         name: '',
+        dateCreated: '',
         code: '',
+        format:'',
         usecamera:true,
         fotos: []
     },
@@ -68,6 +70,9 @@ var vm = new Vue({
     },
     loggedin: function() {
         return this.user.token && this.user.token.length > 0;
+    },
+    validquickscan:function() {
+        return this.set.name.length && (this.set.code.length || this.set.usecamera );
     }
   },
   created: function () {
@@ -79,9 +84,13 @@ var vm = new Vue({
           this.set.fotos.length=0;
           this.set.name="";
           this.set.code="";
+          this.set.format="";
+          this.set.dateCreated='';
       },
       scanfoto: function(event) {
-          if (this.set.usecamera) {
+          var me = this;
+          me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
+          if (me.set.usecamera) {
               vm.barcode();
           }
           else {
@@ -90,14 +99,14 @@ var vm = new Vue({
       },
       barcode: function() {
         var me = this;
-        console.log('barcode');
         fc.camera.captureBarcode( function(result){
             if ( ! result.cancelled ) {
                 me.set.code = result.text;
+                me.set.format = result.format;
                 vm.foto();
             }
         }, function(){
-          alert("error getting barcode");
+          myApp.alert("Fehler beim Erfassen des Barcodes");
         });
 
       },
@@ -209,6 +218,41 @@ var vm = new Vue({
           me.user={};
           Lockr.set('user',me.user);
       },
+      senden: function() {
+          var $$ = Dom7;
+          var me = this;
+          var done = [];
+
+          $$.each( me.sets, function( idx, set ) {
+              var group = {
+                  idx:idx,
+                  name: set.name,
+                  code: set.code,
+                  format: set.format,
+                  fotos: set.fotos
+              };
+              fc.file.uploadGroup( group,
+                  function(){
+                    console.log('success');
+                    me.removeSended();
+                  },
+                  function(msg){
+                    myApp.alert( msg );
+                  }
+              );
+          });
+      },
+      removeSended: function() {
+          var me=this;
+          var idx=me.sets.length;
+          while (--idx >= 0) {
+              if ( me.sets[idx].sended ) {
+                  me.sets.splice(idx, 1);
+                  //@todo fotos löschen
+              }
+          }
+      },
+
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
       }
