@@ -151,14 +151,9 @@ var vm = new Vue({
               "Löschen?",
               function(){
                 var idx = me.myPhotoBrowser.activeSlideIndex;
-
-                console.log(idx);
                 var foto = me.sets[me.selectedSet].fotos.splice(idx, 1);
-                console.log(foto);
                 FileIO.removeDeletedImage( foto[0].uri );
-
                 me.myPhotoBrowser.close();
-
                 Lockr.set('sets',me.sets);
           }, function(){}
           );
@@ -254,8 +249,11 @@ var vm = new Vue({
           var idx=me.sets.length;
           while (--idx >= 0) {
               if ( me.sets[idx].sended ) {
+                  while ( me.sets[idx].fotos.length ) {
+                    var foto = me.sets[idx].fotos.splice(me.sets[idx].fotos.length-1, 1);
+                    FileIO.removeDeletedImage( foto[0].uri );
+                  }
                   me.sets.splice(idx, 1);
-                  //@todo fotos löschen
               }
           }
       },
