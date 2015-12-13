@@ -177,6 +177,7 @@ fc.file =  {
                     var ft = new FileTransfer();
                     ft.upload(fileURI, encodeURI(serverURI),
                         function(r) {
+                            myApp.hidePreloader();
                             //alert("Code = " + r.responseCode);
                             //alert("Response = " + r.response);
                             //alert("Sent = " + r.bytesSent);
