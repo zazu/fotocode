@@ -9,7 +9,6 @@ fc.camera =  {
     	if ( cam ) {
             navigator.camera.getPicture(
                 function(imageUri) {
-                    console.log('getPicture2 success');
                     console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
                     success( { uri: imageUri, title: title }  );

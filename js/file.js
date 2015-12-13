@@ -7,67 +7,65 @@ var gFileSystem = {};
 
 var FileIO = {
 
-// sets the filesystem to the global var gFileSystem
- gotFS : function(fileSystem) {
-      gFileSystem = fileSystem;
- },
+    // sets the filesystem to the global var gFileSystem
+     gotFS : function(fileSystem) {
+          gFileSystem = fileSystem;
+     },
 
-// pickup the URI from the Camera edit and assign it to the global var gImageURI
-// create a filesystem object called a 'file entry' based on the image URI
-// pass that file entry over to gotImageURI()
-updateCameraImages : function(imageURI, success) {
-        gImageURI = imageURI;
-        window.resolveLocalFileSystemURL(imageURI,
-                function(fileEntryFrom) {
-                    window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
-                        //console.log('DestDir');
-                        //console.log(dirEntry);
-                        var now = new Date();
-                        var newName = "appg_" + (now.getTime()).toString() + ".jpg";
-                        fileEntryFrom.moveTo(dirEntry, newName,
-                            function(fileEntryTo) {
-                                success(fileEntryTo);
-                            },
-                            FileIO.errorHandler);
-                    }, FileIO.errorHandler )
-                },
-                FileIO.errorHandler);
-    },
+    // pickup the URI from the Camera edit and assign it to the global var gImageURI
+    // create a filesystem object called a 'file entry' based on the image URI
+    // pass that file entry over to gotImageURI()
+    updateCameraImages : function(imageURI, success) {
+            gImageURI = imageURI;
+            window.resolveLocalFileSystemURL(imageURI,
+                    function(fileEntryFrom) {
+                        window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
+                            //console.log('DestDir');
+                            //console.log(dirEntry);
+                            var now = new Date();
+                            var newName = "appg_" + (now.getTime()).toString() + ".jpg";
+                            fileEntryFrom.moveTo(dirEntry, newName,
+                                function(fileEntryTo) {
+                                    success(fileEntryTo);
+                                },
+                                FileIO.errorHandler);
+                        }, FileIO.errorHandler )
+                    },
+                    FileIO.errorHandler);
+        },
 
-// pickup the file entry, rename it, and move the file to the app's root directory.
-// on success run the movedImageSuccess() method
- gotImageURI : function(fileEntry) {
-    var now = new Date();
-    var newName = "appg_" + (now.getTime()).toString() + ".jpg";
-    fileEntry.moveTo(gFileSystem.root, newName, FileIO.movedImageSuccess, FileIO.errorHandler);
- },
+    // pickup the file entry, rename it, and move the file to the app's root directory.
+    // on success run the movedImageSuccess() method
+     gotImageURI : function(fileEntry) {
+        var now = new Date();
+        var newName = "appg_" + (now.getTime()).toString() + ".jpg";
+        fileEntry.moveTo(gFileSystem.root, newName, FileIO.movedImageSuccess, FileIO.errorHandler);
+     },
 
-// send the full URI of the moved image to the updateImageSrc() method which does some DOM manipulation
- movedImageSuccess : function(fileEntry) {
-      updateImageSrc(fileEntry.fullPath);
- },
+    // send the full URI of the moved image to the updateImageSrc() method which does some DOM manipulation
+     movedImageSuccess : function(fileEntry) {
+          updateImageSrc(fileEntry.fullPath);
+     },
 
-// get a new file entry for the moved image when the user hits the delete button
-// pass the file entry to removeFile()
- removeDeletedImage : function(imageURI){
-     //console.log('removeDeletedImage');
-     //console.log(imageURI);
-     window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
- },
+    // get a new file entry for the moved image when the user hits the delete button
+    // pass the file entry to removeFile()
+     removeDeletedImage : function(imageURI){
+         //console.log('removeDeletedImage');
+         //console.log(imageURI);
+         window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
+     },
 
-// delete the file
- removeFile : function(fileEntry){
-     //console.log('removeFile');
-     //console.log(fileEntry);
-     fileEntry.remove();
- },
+    // delete the file
+     removeFile : function(fileEntry){
+         fileEntry.remove();
+     },
 
-// simple error handler
- errorHandler : function(e) {
-       var msg = '';
-       msg = e.code;
-       appgeordnet.app.log('FileIO-Fehler: ' + msg);
- }
+    // simple error handler
+     errorHandler : function(e) {
+           var msg = '';
+           msg = e.code;
+           myApp.alert('FileIO-Fehler: ' + msg);
+     }
 }
 
 fc.file =  {
