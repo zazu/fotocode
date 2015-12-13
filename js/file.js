@@ -51,13 +51,15 @@ var FileIO = {
     // pass the file entry to removeFile()
      removeDeletedImage : function(imageURI){
          //console.log('removeDeletedImage');
-         //console.log(imageURI);
+         myApp.alert(imageURI);
          window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
      },
 
     // delete the file
      removeFile : function(fileEntry){
-         fileEntry.remove();
+         fileEntry.remove(function(){
+            myApp.alert('File removed');
+         }, FileIO.errorHandler);
      },
 
     // simple error handler
