@@ -4,7 +4,9 @@ var myApp = new Framework7({
   template7Pages: false,
   material: true, //enable Material theme
   notificationCloseButtonText:'Schließen',
-  notificationHold: 2500
+  notificationHold: 2500,
+  modalTitle: 'appgeordnet',
+  modalButtonCancel:'Abbrechen'
 });
 
 // Export selectors engine

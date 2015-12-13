@@ -171,7 +171,7 @@ fc.file =  {
                             //alert("Code = " + r.responseCode);
                             //alert("Response = " + r.response);
                             //alert("Sent = " + r.bytesSent);
-                            var res = JSON.stringify( r.response );
+                            var res = JSON.parse( r.response );
                             try {
                                 if ( res.success ) {
                                     vm.sets[ me.group.idx ].sended = true;
