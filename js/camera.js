@@ -4,12 +4,12 @@ var fc = fc || {};
 fc.camera =  {
 
     getPicture: function( success, fail ) {
-        console.log('getPicture');
+        //console.log('getPicture');
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
                 function(imageUri) {
-                    console.log(imageUri);
+                    //console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
                     success( { uri: imageUri, title: title }  );
                 },

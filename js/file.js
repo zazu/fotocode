@@ -52,7 +52,9 @@ var FileIO = {
      removeDeletedImage : function(imageURI){
          //console.log('removeDeletedImage');
          //console.log(imageURI);
-         window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
+         if ( navigator.camera ) {
+            window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
+         }
      },
 
     // delete the file
@@ -75,6 +77,13 @@ fc.file =  {
     fotocount: 0,
     fotototal: 0,
     group:null,
+
+    init: function() {
+        this.options = {};
+        this.fotocount= 0;
+        this.fotototal = 0;
+        this.group=null;
+    },
 
     setOptions: function( options  ){
         this.options = options;
@@ -147,7 +156,7 @@ fc.file =  {
 	    	me.fotocount++;
             me.fotototal++;
 
-		    //Ext.Viewport.setMasked({xtype:'loadmask',message:'Sende Bild ' + me.fotototal } );
+            myApp.showPreloader('Sende Bild ' + me.fotototal);
 
 		    var fileURI = foto.uri;
 		    var serverURI = vm.baseuri() + 'app/upload' ;
@@ -190,7 +199,7 @@ fc.file =  {
                             }
                         },
                         function(error) {
-                            //Ext.Viewport.setMasked(false);
+                            myApp.hidePreloader();
                             var msg= "Code = " + error.code ;
                             if ( error.code == FileTransferError.FILE_NOT_FOUND_ERR)
                                 msg='Die Datei wurde nicht gefunden! - ' + options.fileName;
@@ -208,11 +217,13 @@ fc.file =  {
                         options);
                 }
                 catch(e) {
+                    myApp.hidePreloader();
                   //appgeordnet.app.log( "Upload Fehler: " + e.message );
                   fail( e.message );
                 }
             }
             else {
+                myApp.hidePreloader();
                 vm.sets[ me.group.idx ].sended = true;
                 me.uploadFoto( fotos, idx + 1, success, fail );
             }

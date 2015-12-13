@@ -225,6 +225,7 @@ var vm = new Vue({
           var me = this;
           var done = [];
 
+          fc.file.init();
           $$.each( me.sets, function( idx, set ) {
               var group = {
                   idx:idx,
@@ -235,7 +236,6 @@ var vm = new Vue({
               };
               fc.file.uploadGroup( group,
                   function(){
-                    console.log('success');
                     me.removeSended();
                   },
                   function(msg){
