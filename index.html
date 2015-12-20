@@ -103,7 +103,6 @@
                       <li>{{numcodes}}
                         <span v-if="numcodes==1"> Barcode</span>
                         <span v-else> Barcodes</span>
-
                       </li>
                       <li>{{numfotos}}
                         <span v-if="numfotos==1"> Foto</span>
@@ -159,6 +158,27 @@
             <div class="page-content">
               <div class="list-block">
                 <ul>
+
+                <li v-show="hasbereiche">
+                  <a href="#" class="item-link smart-select" data-back-on-select="true">
+                    <select v-model="bereich">
+                      <option value="-1" ></option>
+                      <option v-for="option in user.bereiche.bereich | notEmpty" v-bind:value="$index">
+                        {{ option }}
+                      </option>
+                    </select>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-inner" style="display:flex;">
+                        <!-- Select label -->
+                        <div class="item-title">Bereich</div>
+                        <!-- Selected value, not required -->
+                        <div class="item-after"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
                   <li>
                     <div class="item-content">
                       <div class="item-media"><i class="icon icon-form-name"></i></div>
@@ -169,7 +189,7 @@
                       </div>
                     </div>
                   </li>
-                  <li>
+                  <li v-show="!set.usecamera">
                     <div class="item-content">
                       <div class="item-media"><i class="icon icon-form-password"></i></div>
                       <div class="item-inner">
@@ -179,6 +199,28 @@
                       </div>
                     </div>
                   </li>
+
+                <li v-show="!set.usecamera">
+                  <a href="#" class="item-link smart-select" data-back-on-select="true">
+                    <select v-model="codeformat">
+                      <option value="" ></option>
+                      <option v-for="format in codeformats" v-bind:value="format">
+                        {{ format }}
+                      </option>
+                    </select>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-password"></i></div>
+                      <div class="item-inner" style="display:flex;">
+                        <!-- Select label -->
+                        <div class="item-title">Barcodeformat</div>
+                        <!-- Selected value, not required -->
+                        <div class="item-after"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
+
                   <li>
                     <label class="label-checkbox item-content">
                       <input v-model="set.usecamera" type="checkbox" name="bc-checkbox" />

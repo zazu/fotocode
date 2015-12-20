@@ -23,11 +23,19 @@ myApp.onPageInit('quickscan', function (page) {
     vm.cleanset();
 });
 
+
+Vue.config.debug = true;
+
+Vue.filter('notEmpty', function (values) {
+    return values ? values.filter( function(val){return val.length;} ):[];
+})
+
 var vm = new Vue({
   el: '#app',
   myPhotoBrowser: null,
   selectedSet: null,
   data: {
+    bereich:-1,
     sets:[],
     set: {
         name: '',
@@ -44,7 +52,12 @@ var vm = new Vue({
     user:{
         name:'',
         token:''
-    }
+    },
+    codeformat:'',
+    codeformats: [
+        'EAN_13','EAN_8','UPC_A','UPC_E','ITF','CODE_128','CODE_39','CODE_93',
+        'CODABAR','QR_CODE','DATA_MATRIX','PDF417'
+    ]
   },
   computed: {
     numsets: function() {
@@ -75,19 +88,35 @@ var vm = new Vue({
     },
     validquickscan:function() {
         return this.set.name.length && (this.set.code.length || this.set.usecamera );
+    },
+    hasbereiche:function(){
+        return this.user.bereiche && this.user.bereiche.bereich[0].length;
+    },
+    bereichkurzname: function() {
+        var me = this;
+        return (me.bereich>=0 &&
+                me.user.bereiche &&
+                me.user.bereiche.bereich[me.bereich].length)?
+                    me.user.bereiche.bereichshort[me.bereich]:'';
     }
   },
   created: function () {
-    this.sets = Lockr.get('sets',[]);
-    this.user = Lockr.get('user',{});
+      var me = this;
+      me.sets = Lockr.get('sets',[]);
+      me.user = Lockr.get('user',{});
+      me.codeformat = Lockr.get('codeformat','');
+      me.bereich = Lockr.get('bereich',-1);
+      if ( me.bereich >=0 && ( ! me.hasbereiche || !me.user.bereiche.bereich[me.bereich].length ) )
+          me.bereich=-1;
   },
   methods: {
       cleanset: function() {
-          this.set.fotos.length=0;
-          this.set.name="";
-          this.set.code="";
-          this.set.format="";
-          this.set.dateCreated='';
+          var me = this;
+          me.set.fotos.length=0;
+          me.set.name="";
+          me.set.code="";
+          me.set.format="";
+          me.set.dateCreated='';
       },
       scanfoto: function(event) {
           var me = this;
@@ -96,6 +125,7 @@ var vm = new Vue({
               vm.barcode();
           }
           else {
+              me.set.format = me.codeformat;
               vm.foto();
           }
       },
@@ -209,6 +239,8 @@ var vm = new Vue({
                 myApp.addNotification( { 'title':data.msg } );
             else {
                 me.login.password='';
+                data.form = JSON.parse(data.form);
+                data.bereiche = JSON.parse(data.bereiche);
                 me.user = data;
                 Lockr.set('user',me.user);
                 mainView.router.load({pageName: 'index'});
@@ -229,7 +261,7 @@ var vm = new Vue({
           $$.each( me.sets, function( idx, set ) {
               var group = {
                   idx:idx,
-                  name: set.name,
+                  name: me.bereichkurzname + set.name,
                   code: set.code,
                   format: set.format,
                   fotos: set.fotos
@@ -257,7 +289,6 @@ var vm = new Vue({
               }
           }
       },
-
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
       }
@@ -266,6 +297,14 @@ var vm = new Vue({
 
 vm.$watch('sets', function (newVal, oldVal) {
     Lockr.set('sets',newVal);
+});
+
+vm.$watch('bereich', function (newVal, oldVal) {
+    Lockr.set('bereich',newVal);
+});
+
+vm.$watch('codeformat', function (newVal, oldVal) {
+    Lockr.set('codeformat',newVal);
 });
 
 
