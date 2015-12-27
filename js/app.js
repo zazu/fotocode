@@ -24,11 +24,19 @@ myApp.onPageInit('quickscan', function (page) {
 });
 
 
-Vue.config.debug = true;
+Vue.config.debug = ! navigator.camera;
 
 Vue.filter('notEmpty', function (values) {
     return values ? values.filter( function(val){return val.length;} ):[];
 })
+
+// define
+var VueHidden = Vue.extend({
+  template: '<div>A custom component!</div>'
+});
+
+// register
+Vue.component('vue-hidden', VueHidden);
 
 var vm = new Vue({
   el: '#app',
@@ -239,8 +247,6 @@ var vm = new Vue({
                 myApp.addNotification( { 'title':data.msg } );
             else {
                 me.login.password='';
-                data.form = JSON.parse(data.form);
-                data.bereiche = JSON.parse(data.bereiche);
                 me.user = data;
                 Lockr.set('user',me.user);
                 mainView.router.load({pageName: 'index'});
@@ -291,6 +297,28 @@ var vm = new Vue({
       },
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
+      },
+      showForm: function() {
+        var me = this;
+        var b = 0;
+        var name = me.user.bereiche.bereich[b];
+
+        var navbar = '<div class="navbar"><div class="navbar-inner">'+
+                '<div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>'+
+                '<div class="center">'+name+'</div>'+
+                '<div class="right"> </div>'+
+            '</div></div>';
+
+        var form = '<div class="content-block">' + me.user.form[b] + '</div>';
+        var newPageContent = '<div class="page" data-page="my-page">' +
+                            navbar +
+                        '<div class="page-content">' +
+                            form +
+                        '</div>' +
+                      '</div>';
+
+        //Load new content as new page
+        mainView.router.loadContent(newPageContent);
       }
   }
 });
