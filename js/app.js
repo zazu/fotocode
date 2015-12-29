@@ -43,7 +43,7 @@ var vm = new Vue({
   myPhotoBrowser: null,
   selectedSet: null,
   data: {
-    bereich:-1,
+    bereich:999,
     sets:[],
     set: {
         name: '',
@@ -51,7 +51,9 @@ var vm = new Vue({
         code: '',
         format:'',
         usecamera:true,
-        fotos: []
+        fotos: [],
+        formdata: [],
+        bereich:999
     },
     login: {
         login:'',
@@ -59,7 +61,8 @@ var vm = new Vue({
     },
     user:{
         name:'',
-        token:''
+        token:'',
+        form:[]
     },
     codeformat:'',
     codeformats: [
@@ -86,7 +89,7 @@ var vm = new Vue({
         return num;
     },
     emptycode: function () {
-        return this.sets.code.length==0;
+        return this.set.code.length==0;
     },
     validlogin:function() {
         return this.login.login.length && this.login.password.length;
@@ -98,7 +101,7 @@ var vm = new Vue({
         return this.set.name.length && (this.set.code.length || this.set.usecamera );
     },
     hasbereiche:function(){
-        return this.user.bereiche && this.user.bereiche.bereich[0].length;
+        return this.user.form && this.user.form.length > 1;
     },
     bereichkurzname: function() {
         var me = this;
@@ -113,9 +116,11 @@ var vm = new Vue({
       me.sets = Lockr.get('sets',[]);
       me.user = Lockr.get('user',{});
       me.codeformat = Lockr.get('codeformat','');
-      me.bereich = Lockr.get('bereich',-1);
-      if ( me.bereich >=0 && ( ! me.hasbereiche || !me.user.bereiche.bereich[me.bereich].length ) )
-          me.bereich=-1;
+      me.bereich = Lockr.get('bereich',999);
+      if ( me.bereich >=0 && me.bereich < 999 && ( ! me.hasbereiche ||
+                              !me.user.bereiche.bereich[me.bereich] ||
+                              !me.user.bereiche.bereich[me.bereich].length ) )
+          me.bereich=999;
   },
   methods: {
       cleanset: function() {
@@ -124,11 +129,14 @@ var vm = new Vue({
           me.set.name="";
           me.set.code="";
           me.set.format="";
+          me.set.bereich=999;
           me.set.dateCreated='';
+          me.set.formdata.length=0;
       },
       scanfoto: function(event) {
           var me = this;
           me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
+          me.set.bereich = me.bereich;
           if (me.set.usecamera) {
               vm.barcode();
           }
@@ -224,7 +232,7 @@ var vm = new Vue({
       baseuri: function() {
           var url = window.location.href;
           if ( url.indexOf('www') > 0 )
-            return 'http://www.app-geordnet.de/';
+            return 'http://test.app-geordnet.de/';
           else
             return 'http://localhost/app-geordnet/';
       },
@@ -298,9 +306,9 @@ var vm = new Vue({
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
       },
-      showForm: function() {
+      showForm: function(idx) {
         var me = this;
-        var b = 0;
+        var b = me.sets[idx].bereich;
         var name = me.user.bereiche.bereich[b];
 
         var navbar = '<div class="navbar"><div class="navbar-inner">'+
@@ -308,6 +316,7 @@ var vm = new Vue({
                 '<div class="center">'+name+'</div>'+
                 '<div class="right"> </div>'+
             '</div></div>';
+
 
         var form = '<div class="content-block">' + me.user.form[b] + '</div>';
         var newPageContent = '<div class="page" data-page="my-page">' +
