@@ -319,6 +319,7 @@ var vm = new Vue({
                   me.sets.splice(idx, 1);
               }
           }
+          //Lockr.set('appg-sets',me.sets);
       },
       notyet: function() {
           myApp.alert("Diese Funktion ist noch nicht implementiert.",'appgeordnet');
