@@ -278,15 +278,17 @@ var vm = new Vue({
           Lockr.set('appg-user',me.user);
       },
       senden: function() {
-          var $$ = Dom7;
           var me = this;
-          var done = [];
-
           fc.file.init();
-          $$.each( me.sets, function( idx, set ) {
+          me.vorgangSenden();
+      },
+      vorgangSenden: function() {
+          var me = this;
+          if ( me.sets.length ) {
+              var set = me.sets[0];
               var bereich = me.bereiche.bereichshort[set.bereich];
               var group = {
-                  idx:idx,
+                  idx:0,
                   name: set.name,
                   code: set.code,
                   format: set.format,
@@ -297,12 +299,13 @@ var vm = new Vue({
               fc.file.uploadGroup( group,
                   function(){
                     me.removeSended();
+                    me.vorgangSenden();
                   },
                   function(msg){
                     myApp.alert( msg );
                   }
               );
-          });
+          }
       },
       removeSended: function() {
           var me=this;
