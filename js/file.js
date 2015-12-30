@@ -110,8 +110,8 @@ fc.file =  {
             gid: this.getguid(),
             dateCreated: group.dateCreated,
             title: group.name,
-            prefix: '',
-            formdata: '',
+            prefix: group.bereich,
+            formdata: JSON.stringify(group.formdata),
             code: group.code,
             format:group.format,
             numf:group.fotos.length

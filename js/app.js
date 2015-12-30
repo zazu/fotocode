@@ -4,6 +4,7 @@ var myApp = new Framework7({
   template7Pages: false,
   material: true, //enable Material theme
   notificationCloseButtonText:'Schließen',
+  smartSelectPickerCloseText:'Fertig',
   notificationHold: 2500,
   modalTitle: 'appgeordnet',
   modalButtonCancel:'Abbrechen'
@@ -23,6 +24,9 @@ myApp.onPageInit('quickscan', function (page) {
     vm.cleanset();
 });
 
+Dom7.isEmpty = function(obj) {
+    return Object.keys(obj).length === 0;
+}
 
 Vue.config.debug = ! navigator.camera;
 
@@ -43,7 +47,7 @@ var vm = new Vue({
   myPhotoBrowser: null,
   selectedSet: null,
   data: {
-    bereich:999,
+    bereich:0,
     sets:[],
     set: {
         name: '',
@@ -53,17 +57,12 @@ var vm = new Vue({
         usecamera:true,
         fotos: [],
         formdata: [],
-        bereich:999
+        bereich:0
     },
-    login: {
-        login:'',
-        password:'',
-    },
-    user:{
-        name:'',
-        token:'',
-        form:[]
-    },
+    login: { login:'', password:'' },
+    user:  { name:'', token:'' },
+    form:[],
+    bereiche:{},
     codeformat:'',
     codeformats: [
         'EAN_13','EAN_8','UPC_A','UPC_E','ITF','CODE_128','CODE_39','CODE_93',
@@ -101,37 +100,42 @@ var vm = new Vue({
         return this.set.name.length && (this.set.code.length || this.set.usecamera );
     },
     hasbereiche:function(){
-        return this.user.form && this.user.form.length > 1;
+        return !$$.isEmpty(this.user) && this.form && this.form.length > 1;
     },
     bereichkurzname: function() {
         var me = this;
         return (me.bereich>=0 &&
-                me.user.bereiche &&
-                me.user.bereiche.bereich[me.bereich].length)?
-                    me.user.bereiche.bereichshort[me.bereich]:'';
+                !$$.isEmpty(me.user) &&
+                me.bereiche &&
+                me.bereiche.bereich[me.bereich].length
+               )?me.bereiche.bereichshort[me.bereich]
+                    :'';
     }
   },
   created: function () {
       var me = this;
-      me.sets = Lockr.get('sets',[]);
-      me.user = Lockr.get('user',{});
-      me.codeformat = Lockr.get('codeformat','');
-      me.bereich = Lockr.get('bereich',999);
-      if ( me.bereich >=0 && me.bereich < 999 && ( ! me.hasbereiche ||
-                              !me.user.bereiche.bereich[me.bereich] ||
-                              !me.user.bereiche.bereich[me.bereich].length ) )
-          me.bereich=999;
+      me.sets = Lockr.get('appg-sets',[]);
+      me.user = Lockr.get('appg-user',{});
+      me.form = Lockr.get('appg-form',[]);
+      me.bereiche = Lockr.get('appg-bereiche',{});
+      me.codeformat = Lockr.get('appg-codeformat','');
+      me.bereich = Lockr.get('appg-bereich',0);
+      if ( me.bereich >0 && me.bereich < 0 && ( ! me.hasbereiche ||
+                              $$.isEmpty(me.user) ||
+                              !me.bereiche.bereich[me.bereich] ||
+                              !me.bereiche.bereich[me.bereich].length ) )
+          me.bereich=0;
   },
   methods: {
       cleanset: function() {
           var me = this;
-          me.set.fotos.length=0;
+          me.set.fotos=[];
           me.set.name="";
           me.set.code="";
           me.set.format="";
-          me.set.bereich=999;
+          me.set.bereich=0;
           me.set.dateCreated='';
-          me.set.formdata.length=0;
+          me.set.formdata=[];
       },
       scanfoto: function(event) {
           var me = this;
@@ -172,12 +176,14 @@ var vm = new Vue({
       },
       usefotos: function() {
           var me=this;
-        if ( me.set.fotos.length ) {
+          if ( me.set.fotos.length ) {
             var s = JSON.parse(JSON.stringify(me.set));
+            s.formdata = {name:s.name};
             me.sets.push(s);
-        }
-        me.cleanset();
-        mainView.router.load({pageName: 'index'});
+          }
+          me.cleanset();
+          //mainView.router.load({pageName: 'index'});
+          mainView.router.back();
       },
       removeset: function(idx) {
           var me = this;
@@ -200,16 +206,16 @@ var vm = new Vue({
                 var foto = me.sets[me.selectedSet].fotos.splice(idx, 1);
                 FileIO.removeDeletedImage( foto[0].uri );
                 me.myPhotoBrowser.close();
-                Lockr.set('sets',me.sets);
+                Lockr.set('appg-sets',me.sets);
           }, function(){}
           );
       },
       showFotos: function(idx) {
           var me = this;
           var photos = [];
-          this.selectedSet = idx;
+          me.selectedSet = idx;
           photos = me.sets[idx].fotos.map(function(f){ return f.uri;});
-          this.myPhotoBrowser = myApp.photoBrowser({
+          me.myPhotoBrowser = myApp.photoBrowser({
                 photos : photos,
                 ofText : 'von',
                 toolbarTemplate: '\
@@ -255,16 +261,21 @@ var vm = new Vue({
                 myApp.addNotification( { 'title':data.msg } );
             else {
                 me.login.password='';
-                me.user = data;
-                Lockr.set('user',me.user);
-                mainView.router.load({pageName: 'index'});
+                me.user = { name: data.name, token: data.token };
+                me.form = data.form;
+                me.bereiche = data.bereiche;
+                Lockr.set('appg-bereiche',me.bereiche);
+                Lockr.set('appg-form',me.form);
+                Lockr.set('appg-user',me.user);
+                //mainView.router.load({pageName: 'index'});
+                mainView.router.back();
             }
         });
       },
       logout: function() {
           var me = this;
           me.user={};
-          Lockr.set('user',me.user);
+          Lockr.set('appg-user',me.user);
       },
       senden: function() {
           var $$ = Dom7;
@@ -273,12 +284,15 @@ var vm = new Vue({
 
           fc.file.init();
           $$.each( me.sets, function( idx, set ) {
+              var bereich = me.bereiche.bereichshort[set.bereich];
               var group = {
                   idx:idx,
-                  name: me.bereichkurzname + set.name,
+                  name: set.name,
                   code: set.code,
                   format: set.format,
-                  fotos: set.fotos
+                  fotos: set.fotos,
+                  formdata: set.formdata,
+                  bereich: bereich
               };
               fc.file.uploadGroup( group,
                   function(){
@@ -309,7 +323,7 @@ var vm = new Vue({
       showForm: function(idx) {
         var me = this;
         var b = me.sets[idx].bereich;
-        var name = me.user.bereiche.bereich[b];
+        var name = me.bereiche.bereich[b];
 
         var navbar = '<div class="navbar"><div class="navbar-inner">'+
                 '<div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>'+
@@ -317,31 +331,51 @@ var vm = new Vue({
                 '<div class="right"> </div>'+
             '</div></div>';
 
+        var form = '<div class="content-block">' + me.form[b] + '</div>';
+        var button = '<div class="content-block">'+
+                '<div class="row">'+
+                  '<div class="col-25"></div>'+
+                  '<div class="col-50">'+
+                    '<input '+
+                        'onClick="vm.saveForm();"'+
+                           'type="submit" value="Speichern" class="button button-big button-fill color-green"/>'+
+                  '</div>'+
+                  '<div class="col-25"></div>'+
+                '</div></div>';
 
-        var form = '<div class="content-block">' + me.user.form[b] + '</div>';
-        var newPageContent = '<div class="page" data-page="my-page">' +
+        var newPageContent = '<div class="page" data-page="bereichform">' +
                             navbar +
                         '<div class="page-content">' +
-                            form +
+                            form + button +
                         '</div>' +
                       '</div>';
 
-        //Load new content as new page
-        mainView.router.loadContent(newPageContent);
+        me.selectedSet = idx;
+        mainView.router.load({ content: newPageContent, ignoreCache:true });
+        var formData = me.sets[idx].formdata;
+        myApp.formFromJSON('#bereichform', formData)
+      },
+      saveForm: function() {
+          var me = this;
+          var idx = me.selectedSet;
+          var formData = myApp.formToJSON('#bereichform');
+          me.sets[idx].formdata = formData;
+          Lockr.set('appg-sets',me.sets);
+          mainView.router.back();
       }
   }
 });
 
 vm.$watch('sets', function (newVal, oldVal) {
-    Lockr.set('sets',newVal);
+    Lockr.set('appg-sets',newVal);
 });
 
 vm.$watch('bereich', function (newVal, oldVal) {
-    Lockr.set('bereich',newVal);
+    Lockr.set('appg-bereich',newVal);
 });
 
 vm.$watch('codeformat', function (newVal, oldVal) {
-    Lockr.set('codeformat',newVal);
+    Lockr.set('appg-codeformat',newVal);
 });
 
 

@@ -155,11 +155,10 @@
               <div class="list-block">
                 <ul>
 
-                <li v-show="hasbereiche">
+                <li v-if="hasbereiche">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="bereich">
-                      <option value="999" ></option>
-                      <option v-for="option in user.bereiche.bereich | notEmpty" v-bind:value="$index">
+                      <option v-for="option in bereiche.bereich | notEmpty" v-bind:value="$index">
                         {{ option }}
                       </option>
                     </select>
