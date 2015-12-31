@@ -34,30 +34,23 @@ Vue.filter('notEmpty', function (values) {
     return values ? values.filter( function(val){return val.length;} ):[];
 })
 
-// define
-var VueHidden = Vue.extend({
-  template: '<div>A custom component!</div>'
-});
-
-// register
-Vue.component('vue-hidden', VueHidden);
-
 var vm = new Vue({
   el: '#app',
   myPhotoBrowser: null,
   selectedSet: null,
   data: {
     bereich:0,
+    usecamera:true,
     sets:[],
     set: {
         name: '',
         dateCreated: '',
         code: '',
         format:'',
-        usecamera:true,
         fotos: [],
         formdata: [],
-        bereich:0
+        bereich:0,
+        showform:true
     },
     login: { login:'', password:'' },
     user:  { name:'', token:'' },
@@ -97,7 +90,7 @@ var vm = new Vue({
         return this.user.token && this.user.token.length > 0;
     },
     validquickscan:function() {
-        return this.set.name.length && (this.set.code.length || this.set.usecamera );
+        return this.set.name.length && (this.set.code.length || this.usecamera );
     },
     hasbereiche:function(){
         return !$$.isEmpty(this.user) && this.form && this.form.length > 1;
@@ -110,6 +103,10 @@ var vm = new Vue({
                 me.bereiche.bereich[me.bereich].length
                )?me.bereiche.bereichshort[me.bereich]
                     :'';
+    },
+    hasform: function() {
+        var me = this;
+        return me.bereich > 0 && me.bereiche.bereich[me.bereich].length>3;
     }
   },
   created: function () {
@@ -120,6 +117,7 @@ var vm = new Vue({
       me.bereiche = Lockr.get('appg-bereiche',{});
       me.codeformat = Lockr.get('appg-codeformat','');
       me.bereich = Lockr.get('appg-bereich',0);
+      me.usecamera = Lockr.get('appg-usecamera',true);
       if ( me.bereich >0 && me.bereich < 0 && ( ! me.hasbereiche ||
                               $$.isEmpty(me.user) ||
                               !me.bereiche.bereich[me.bereich] ||
@@ -141,7 +139,8 @@ var vm = new Vue({
           var me = this;
           me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
           me.set.bereich = me.bereich;
-          if (me.set.usecamera) {
+          Lockr.set('appg-set',me.set);
+          if (me.usecamera) {
               vm.barcode();
           }
           else {
@@ -182,8 +181,13 @@ var vm = new Vue({
             me.sets.push(s);
           }
           me.cleanset();
-          //mainView.router.load({pageName: 'index'});
-          mainView.router.back();
+          if ( me.hasform && me.set.showform ) {
+              //mainView.history=[];
+              //$$('.page-on-left').remove();
+              me.showForm(me.sets.length-1);
+          }
+          else
+              mainView.router.back();
       },
       removeset: function(idx) {
           var me = this;
@@ -243,7 +247,6 @@ var vm = new Vue({
             return 'http://localhost/app-geordnet/';
       },
       submitlogin: function() {
-         var $$ = Dom7;
           var me = this;
           var params = {
                 version: '2.0.0',
@@ -330,7 +333,7 @@ var vm = new Vue({
         var name = me.bereiche.bereich[b];
 
         var navbar = '<div class="navbar"><div class="navbar-inner">'+
-                '<div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>'+
+                '<div class="left"><a href="#index" class="back link"> <i class="icon icon-back"></i><span></span></a></div>'+
                 '<div class="center">'+name+'</div>'+
                 '<div class="right"> </div>'+
             '</div></div>';
@@ -358,6 +361,11 @@ var vm = new Vue({
         mainView.router.load({ content: newPageContent, ignoreCache:true });
         var formData = me.sets[idx].formdata;
         myApp.formFromJSON('#bereichform', formData)
+
+        mainView.history=[];
+        $$('.page-on-left').remove();
+
+
       },
       saveForm: function() {
           var me = this;
@@ -365,7 +373,7 @@ var vm = new Vue({
           var formData = myApp.formToJSON('#bereichform');
           me.sets[idx].formdata = formData;
           Lockr.set('appg-sets',me.sets);
-          mainView.router.back();
+          mainView.router.back( {force:true, pageName:'index'} );
       }
   }
 });
@@ -376,6 +384,10 @@ vm.$watch('sets', function (newVal, oldVal) {
 
 vm.$watch('bereich', function (newVal, oldVal) {
     Lockr.set('appg-bereich',newVal);
+});
+
+vm.$watch('usecamera', function (newVal, oldVal) {
+    Lockr.set('appg-usecamera',newVal);
 });
 
 vm.$watch('codeformat', function (newVal, oldVal) {

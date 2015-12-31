@@ -185,7 +185,7 @@
                       </div>
                     </div>
                   </li>
-                  <li v-show="!set.usecamera">
+                  <li v-show="!usecamera" transition="expand">
                     <div class="item-content">
                       <div class="item-media"><i class="icon icon-form-password"></i></div>
                       <div class="item-inner">
@@ -196,7 +196,7 @@
                     </div>
                   </li>
 
-                <li v-show="!set.usecamera">
+                <li v-show="!usecamera" transition="expand">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="codeformat">
                       <option value="" ></option>
@@ -218,13 +218,24 @@
 
                   <li>
                     <label class="label-checkbox item-content">
-                      <input v-model="set.usecamera" type="checkbox" name="bc-checkbox" />
+                      <input v-model="usecamera" type="checkbox" name="bc-checkbox" />
                       <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
                       <div class="item-inner">
                         <div class="item-title">Barcode per Kamera</div>
                       </div>
                     </label>
                   </li>
+
+                  <li v-show="hasform" transition="expand">
+                    <label class="label-checkbox item-content">
+                      <input v-model="set.showform" type="checkbox" name="bc-checkbox" />
+                      <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                      <div class="item-inner">
+                        <div class="item-title">Formular anzeigen</div>
+                      </div>
+                    </label>
+                  </li>
+
                 </ul>
               </div>
               <div class="content-block">
