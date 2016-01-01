@@ -31,12 +31,12 @@
                       Quickscan</div>
                 </div>
               </div></a></li>
-            <li><a v-on:click="senden" href="#" class="item-link close-panel">
+            <li v-if="sets.length" ><a v-on:click="senden" href="#" class="item-link close-panel">
               <div class="item-content">
 
                 <div class="item-inner"> 
                   <div class="item-title">
-                      <i class="icon icon-form-url"></i>
+                      <i class="icon icon-cloud-upload"></i>
                       Senden</div>
                 </div>
               </div></a></li>
@@ -46,7 +46,7 @@
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
-                      <i class="icon icon-close"></i>
+                      <i class="icon icon-cross"></i>
                       Logout</div>
                 </div>
               </div></a></li>
@@ -54,13 +54,14 @@
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
-                      <i class="icon icon-form-name"></i>
+                      <i class="icon icon-user"></i>
                       Login</div>
                 </div>
               </div></a></li>
-
-
           </ul>
+            <div class="infoby">
+            Software by cesart - cesar@cesart.de
+            </div>
         </div>
       </div>
     </div>
@@ -90,6 +91,7 @@
 
             <!-- Scrollable page content-->
             <div class="page-content">
+                <!--
               <div class="content-block-title">appgeordnet - Barcode und Foto App</div>
               <div class="content-block">
                 <div class="content-block-innerx">
@@ -109,8 +111,17 @@
                     </ul>
                 </div>
               </div>
+-->
+            <div class="content-block-title">
+                {{numsets}}
+                <span v-if="numsets==1"> Vorgang</span>
+                <span v-else> Vorgänge</span>
+                 /
+                {{numfotos}}
+                <span v-if="numfotos==1"> Foto</span>
+                <span v-else> Fotos</span>
+            </div>
 
-            <div  v-if="sets.length" class="content-block-title">Vorgänge</div>
             <div class="list-block media-list">
               <ul>
                   <li class="swipeout" v-for="ds in sets">
@@ -130,8 +141,12 @@
                         </div>
                       </a>
                      <div class="swipeout-actions-right">
-                        <a v-on:click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >Löschen</a>
-                         <a v-on:click.stop.prevent="showForm($index)" class="swipeout-close bg-green" >Formular</a>
+                        <a v-on:click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
+                            <i class="icon icon-bin"></i>
+                         </a>
+                         <a v-on:click.stop.prevent="showForm($index)" class="swipeout-close bg-lightgreen" >
+                             <i class="icon icon-file-text2"></i>
+                         </a>
                       </div>
                     </div>
                 </li>
@@ -164,7 +179,7 @@
                       </option>
                     </select>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-media"><i class="icon icon-spinner4"></i></div>
                       <div class="item-inner" style="display:flex;">
                         <!-- Select label -->
                         <div class="item-title">Bereich</div>
@@ -177,7 +192,7 @@
 
                   <li>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-media"><i class="icon icon-price-tag"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
                           <input type="text" v-model="set.name" placeholder="Vorgansname"/>
@@ -187,7 +202,7 @@
                   </li>
                   <li v-show="!usecamera" transition="expand">
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-password"></i></div>
+                      <div class="item-media"><i class="icon icon-barcode"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
                           <input type="text" v-model="set.code" placeholder="Barcode (manuell oder Scanner)"/>
@@ -205,7 +220,7 @@
                       </option>
                     </select>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-password"></i></div>
+                      <div class="item-media"><i class="icon icon-list2"></i></div>
                       <div class="item-inner" style="display:flex;">
                         <!-- Select label -->
                         <div class="item-title">Barcodeformat</div>
@@ -228,7 +243,7 @@
 
                   <li v-show="hasform" transition="expand">
                     <label class="label-checkbox item-content">
-                      <input v-model="set.showform" type="checkbox" name="bc-checkbox" />
+                      <input v-model="showform" type="checkbox" name="bc-checkbox" />
                       <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
                       <div class="item-inner">
                         <div class="item-title">Formular anzeigen</div>

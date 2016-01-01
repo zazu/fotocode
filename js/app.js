@@ -41,6 +41,7 @@ var vm = new Vue({
   data: {
     bereich:0,
     usecamera:true,
+    showform:true,
     sets:[],
     set: {
         name: '',
@@ -49,8 +50,7 @@ var vm = new Vue({
         format:'',
         fotos: [],
         formdata: [],
-        bereich:0,
-        showform:true
+        bereich:0
     },
     login: { login:'', password:'' },
     user:  { name:'', token:'' },
@@ -117,7 +117,8 @@ var vm = new Vue({
       me.bereiche = Lockr.get('appg-bereiche',{});
       me.codeformat = Lockr.get('appg-codeformat','');
       me.bereich = Lockr.get('appg-bereich',0);
-      me.usecamera = Lockr.get('appg-usecamera',true);
+      me.usecamera = (Lockr.get('appg-usecamera','true') !== 'false');
+      me.showform = (Lockr.get('appg-showform','true') !== 'false');
       if ( me.bereich >0 && me.bereich < 0 && ( ! me.hasbereiche ||
                               $$.isEmpty(me.user) ||
                               !me.bereiche.bereich[me.bereich] ||
@@ -181,10 +182,10 @@ var vm = new Vue({
             me.sets.push(s);
           }
           me.cleanset();
-          if ( me.hasform && me.set.showform ) {
-              //mainView.history=[];
-              //$$('.page-on-left').remove();
+          if ( me.hasform && me.showform ) {
+              mainView.router.back({animatePages:false});
               me.showForm(me.sets.length-1);
+              //setTimeout(function() { me.showForm(me.sets.length-1); }, 50);
           }
           else
               mainView.router.back();
@@ -195,7 +196,6 @@ var vm = new Vue({
               "Bitte bestätigen Sie das endgültige Löschen des Vorgangs.",
               "Löschen?",
               function(){
-                //var i = me.sets.indexOf( me.sets[idx] );
                 me.sets.splice(idx, 1);
           }, function(){}
           );
@@ -361,11 +361,6 @@ var vm = new Vue({
         mainView.router.load({ content: newPageContent, ignoreCache:true });
         var formData = me.sets[idx].formdata;
         myApp.formFromJSON('#bereichform', formData)
-
-        mainView.history=[];
-        $$('.page-on-left').remove();
-
-
       },
       saveForm: function() {
           var me = this;
@@ -387,7 +382,11 @@ vm.$watch('bereich', function (newVal, oldVal) {
 });
 
 vm.$watch('usecamera', function (newVal, oldVal) {
-    Lockr.set('appg-usecamera',newVal);
+    Lockr.set('appg-usecamera',newVal?'true':'false');
+});
+
+vm.$watch('showform', function (newVal, oldVal) {
+    Lockr.set('appg-showform',newVal?'true':'false');
 });
 
 vm.$watch('codeformat', function (newVal, oldVal) {
