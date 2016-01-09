@@ -146,8 +146,47 @@ var vm = new Vue({
           }
           else {
               me.set.format = me.codeformat;
-              vm.foto();
+              me.validateBarcode();
           }
+      },
+      validateBarcode:function() {
+          var me = this;
+          var msg = [];
+          var compiled;
+          var err = me.checkBarcode();
+          if ( err & 1 ) {
+              compiled = _.template('Die Barcodelänge (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
+              msg.push( compiled({ 'ist': me.set.code.length, 'soll': me.bereiche.bclen[me.set.bereich] }));
+          }
+          if ( err & 2 ) {
+              compiled = _.template('Der Barcodetyp (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
+              msg.push( compiled({ 'ist': me.set.format, 'soll': me.bereiche.bctyp[me.set.bereich] }));
+          }
+          if ( err > 0 ) {
+              msg.push('');
+              msg.push('Sollen die Vorgaben ignoriert werden?');
+              myApp.confirm( msg.join('<br>'), function () {
+                vm.foto();
+              });
+          }
+          else
+            vm.foto();
+          return err===0;
+      },
+      checkBarcode:function() {
+          var err = 0;
+          var me = this;
+          var bereich = me.set.bereich;
+          me.set.code = _.trim( me.set.code );
+          if ( bereich >= 0 && me.bereiche.bclen[bereich].length ) {
+              var soll = _.parseInt(me.bereiche.bclen[bereich]);
+              if ( soll > 0 && soll != me.set.code.length )
+                  err+=1;
+              soll = me.bereiche.bctyp[bereich];
+              if ( soll != 'all' && soll != me.set.format)
+                  err+=2;
+          }
+          return err;
       },
       barcode: function() {
         var me = this;
@@ -155,7 +194,7 @@ var vm = new Vue({
             if ( ! result.cancelled ) {
                 me.set.code = result.text;
                 me.set.format = result.format;
-                vm.foto();
+                me.validateBarcode();
             }
         }, function(){
           myApp.alert("Fehler beim Erfassen des Barcodes");
@@ -258,22 +297,24 @@ var vm = new Vue({
                 password: me.login.password,
                 remember:1
             };
-        $$.post(me.baseuri()+'user/login', params, function (data) {
-            data = JSON.parse(data);
-            if ( !data.success )
-                myApp.addNotification( { 'title':data.msg } );
-            else {
-                me.login.password='';
-                me.user = { name: data.name, token: data.token };
-                me.form = data.form;
-                me.bereiche = data.bereiche;
-                Lockr.set('appg-bereiche',me.bereiche);
-                Lockr.set('appg-form',me.form);
-                Lockr.set('appg-user',me.user);
-                //mainView.router.load({pageName: 'index'});
-                mainView.router.back();
-            }
-        });
+            myApp.showPreloader('Anmelden');
+            $$.post(me.baseuri()+'user/login', params, function (data) {
+                data = JSON.parse(data);
+                if ( !data.success )
+                    myApp.addNotification( { 'title':data.msg } );
+                else {
+                    me.login.password='';
+                    me.user = { name: data.name, token: data.token };
+                    me.form = data.form;
+                    me.bereiche = data.bereiche;
+                    Lockr.set('appg-bereiche',me.bereiche);
+                    Lockr.set('appg-form',me.form);
+                    Lockr.set('appg-user',me.user);
+                    //mainView.router.load({pageName: 'index'});
+                    mainView.router.back();
+                    myApp.hidePreloader();
+                }
+            });
       },
       logout: function() {
           var me = this;
