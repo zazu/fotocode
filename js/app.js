@@ -38,6 +38,7 @@ var vm = new Vue({
   el: '#app',
   myPhotoBrowser: null,
   selectedSet: null,
+  numsent:0,
   data: {
     bereich:0,
     usecamera:true,
@@ -324,6 +325,7 @@ var vm = new Vue({
       senden: function() {
           var me = this;
           fc.file.init();
+          me.numsent=0;
           me.vorgangSenden();
       },
       vorgangSenden: function() {
@@ -350,12 +352,21 @@ var vm = new Vue({
                   }
               );
           }
+          else {
+             var compiled = _.template(me.numsent===1?'<%= num %> Vorgang wurde gesendet.':'<%= num %> Vorgänge wurden gesendet.');
+             myApp.addNotification({
+                 title: 'Senden',
+                 message: compiled({ 'num': me.numsent }),
+                 hold: 0
+             });
+          }
       },
       removeSended: function() {
           var me=this;
           var idx=me.sets.length;
           while (--idx >= 0) {
               if ( me.sets[idx].sended ) {
+                  me.numsent++;
                   while ( me.sets[idx].fotos.length ) {
                     var foto = me.sets[idx].fotos.splice(me.sets[idx].fotos.length-1, 1);
                     FileIO.removeDeletedImage( foto[0].uri );
