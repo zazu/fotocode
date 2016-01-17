@@ -15,10 +15,22 @@ i.icon.icon-bin {
   background-image: url("../img/bin.svg");
 }
 
+i.icon.icon-bin-white {
+  width: 24px;
+  height: 24px;
+  background-image: url("../img/bin-white.svg");
+}
+
 i.icon.icon-file-text2 {
   width: 24px;
   height: 24px;
   background-image: url("../img/file-text2.svg");
+ }
+
+i.icon.icon-file-text2-white {
+  width: 24px;
+  height: 24px;
+  background-image: url("../img/file-text2-white.svg");
  }
 
 i.icon.icon-barcode {

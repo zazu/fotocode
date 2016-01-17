@@ -46,7 +46,10 @@
     <gap:plugin name="org.apache.cordova.device-motion" />
 -->    
 
+<!--
     <gap:plugin name="cordova-plugin-app-update" source="npm" />
+    <gap:plugin name="cordova-plugin-appversion" source="npm" />
+-->
     <gap:plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
     
     <!-- to enable individual permissions use the following examples -->
