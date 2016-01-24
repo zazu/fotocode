@@ -1,3 +1,11 @@
+
+.infoby {
+    font-size: 0.75em;
+    bottom: 0.1em;
+    position: absolute;
+    line-height: 1em;
+}
+
 svg {
   fill: currentColor;
 }
@@ -38,6 +46,13 @@ i.icon.icon-barcode {
   height: 24px;
   background-image: url("../img/barcode.svg");
  }
+
+i.icon.icon-barcode-white {
+  width: 24px;
+  height: 24px;
+  background-image: url("../img/barcode-white.svg");
+ }
+
 
 i.icon.icon-price-tag {
   width: 24px;
@@ -91,8 +106,3 @@ i.icon.icon-cross {
   opacity: 0;
 }
 
-.infoby {
-    font-size: 0.75em;
-    bottom: 0.1em;
-    position: absolute;
-}

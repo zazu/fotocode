@@ -60,6 +60,7 @@
               </div></a></li>
           </ul>
             <div class="infoby">
+            Version 0.2<br>
             Software by cesart - cesar@cesart.de
             </div>
         </div>
@@ -144,8 +145,14 @@
                         <a v-on:click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
                             <i class="icon icon-bin-white"></i>
                          </a>
-                         <a v-on:click.stop.prevent="showForm($index)" class="swipeout-close bg-lightgreen" >
+                         <a v-on:click.stop.prevent="showForm($index)" class="swipeout-close bg-lightblue" >
                              <i class="icon icon-file-text2-white"></i>
+                         </a>
+                         <a v-on:click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
+                             <i class="icon icon-barcode-white"></i>
+                         </a>
+                         <a v-on:click.prevent="addfotos($index)" class="swipeout-close bg-bluegray" >
+                             <i class="icon icon-camera-light"></i>
                          </a>
                       </div>
                     </div>
@@ -195,7 +202,7 @@
                       <div class="item-media"><i class="icon icon-price-tag"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
-                          <input type="text" v-model="set.name" placeholder="Vorgansname"/>
+                          <input type="text" v-model="set.name" placeholder="Vorgangsname"/>
                         </div>
                       </div>
                     </div>
@@ -266,6 +273,91 @@
               </div>
             </div>
           </div>
+
+          <!-- Barcode page -->
+          <div class="page cached" data-page="barcode" >
+            <!-- Top Navbar-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
+                </div>
+                <div class="center">Barcodeeingabe</div>
+              </div>
+            </div>
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="list-block">
+                <ul>
+                  <li>
+
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-price-tag"></i></div>
+                      <div class="item-inner">
+                        <div class="item-input">
+                          <input type="text" v-model="set.name" placeholder="Vorgangsname" readonly />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li v-show="!usecamera" transition="expand">
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-barcode"></i></div>
+                      <div class="item-inner">
+                        <div class="item-input">
+                          <input type="text" v-model="set.code" placeholder="Barcode (manuell oder Scanner)"/>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                <li v-show="!usecamera" transition="expand">
+                  <a href="#" class="item-link smart-select" data-back-on-select="true">
+                    <select v-model="codeformat">
+                      <option value="" ></option>
+                      <option v-for="format in codeformats" v-bind:value="format">
+                        {{ format }}
+                      </option>
+                    </select>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-list2"></i></div>
+                      <div class="item-inner" style="display:flex;">
+                        <!-- Select label -->
+                        <div class="item-title">Barcodeformat</div>
+                        <!-- Selected value, not required -->
+                        <div class="item-after"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
+                  <li>
+                    <label class="label-checkbox item-content">
+                      <input v-model="usecamera" type="checkbox" name="bc-checkbox" />
+                      <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                      <div class="item-inner">
+                        <div class="item-title">Barcode per Kamera</div>
+                      </div>
+                    </label>
+                  </li>
+
+                </ul>
+              </div>
+              <div class="content-block">
+                <div class="row">
+                  <div class="col-25"></div>
+                  <div class="col-50">
+                    <input v-show="validbarcode"
+                           v-on:click.stop.prevent="scanbarcode"
+                           type="submit" value="Weiter" class="button button-big button-fill color-green"/>
+                  </div>
+                  <div class="col-25"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
           <!--Login Page -->
           <div data-page="login" class="page cached">

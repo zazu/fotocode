@@ -19,8 +19,12 @@ var mainView = myApp.addView('.view-main', {
 });
 
 
-// Callbacks to run specific code for specific pages, for example for About page:
 myApp.onPageInit('quickscan', function (page) {
+    vm.cleanset();
+});
+
+// Callbacks to run specific code for specific pages, for example for About page:
+myApp.onPageReinit('quickscan', function (page) {
     vm.cleanset();
 });
 
@@ -91,7 +95,12 @@ var vm = new Vue({
         return this.user.token && this.user.token.length > 0;
     },
     validquickscan:function() {
-        return this.set.name.length && (this.set.code.length || this.usecamera );
+        // vorgangsname oder barcode muss definiert sein
+        return this.set.name.length || (this.set.code.length || this.usecamera );
+    },
+    validbarcode:function() {
+        // barcode muss definiert sein
+        return this.set.code.length || this.usecamera;
     },
     hasbereiche:function(){
         return !$$.isEmpty(this.user) && this.form && this.form.length > 1;
@@ -107,7 +116,7 @@ var vm = new Vue({
     },
     hasform: function() {
         var me = this;
-        return me.bereich > 0 && me.bereiche.bereich[me.bereich].length>3;
+        return me.bereich > 0 && me.bereiche.hasform[me.bereich]>0;
     }
   },
   created: function () {
@@ -137,20 +146,42 @@ var vm = new Vue({
           me.set.dateCreated='';
           me.set.formdata=[];
       },
+      // Weiter Button im Quickscan-Formular
       scanfoto: function(event) {
           var me = this;
           me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
           me.set.bereich = me.bereich;
           Lockr.set('appg-set',me.set);
           if (me.usecamera) {
-              vm.barcode();
+              vm.barcode( function(){ vm.foto(vm.usefotos); });
           }
           else {
               me.set.format = me.codeformat;
-              me.validateBarcode();
+              me.validateBarcode( function(){vm.foto(vm.usefotos);} );
           }
       },
-      validateBarcode:function() {
+      // Weiter Button im Barcodeformular
+      scanbarcode: function(event) {
+          var me= this;
+          if (me.usecamera) {
+              vm.barcode( function(){
+                  me.sets[me.selectedSet].code = me.set.code;
+                  me.sets[me.selectedSet].format = me.set.format;
+                  Lockr.set('appg-sets',me.sets);
+                  mainView.router.back();
+              });
+          }
+          else {
+              me.set.format = me.codeformat;
+              me.validateBarcode( function(){
+                  me.sets[me.selectedSet].code = me.set.code;
+                  me.sets[me.selectedSet].format = me.set.format;
+                  Lockr.set('appg-sets',me.sets);
+                  mainView.router.back();
+              } );
+          }
+      },
+      validateBarcode:function(success) {
           var me = this;
           var msg = [];
           var compiled;
@@ -167,11 +198,11 @@ var vm = new Vue({
               msg.push('');
               msg.push('Sollen die Vorgaben ignoriert werden?');
               myApp.confirm( msg.join('<br>'), function () {
-                vm.foto();
+                success();
               });
           }
           else
-            vm.foto();
+              success();
           return err===0;
       },
       checkBarcode:function() {
@@ -189,29 +220,48 @@ var vm = new Vue({
           }
           return err;
       },
-      barcode: function() {
+      barcode: function(success) {
         var me = this;
         fc.camera.captureBarcode( function(result){
             if ( ! result.cancelled ) {
                 me.set.code = result.text;
                 me.set.format = result.format;
-                me.validateBarcode();
+                me.validateBarcode( success );
             }
         }, function(){
           myApp.alert("Fehler beim Erfassen des Barcodes");
         });
-
       },
-      foto: function() {
+      // Listenhandler Barcode ändern
+      setbarcode: function(idx) {
+          var me = this;
+          me.selectedSet = idx;
+          me.cleanset();
+          me.set.bereich = me.sets[me.selectedSet].bereich;
+          me.set.name = me.sets[me.selectedSet].name;
+          me.set.code = me.sets[me.selectedSet].code;
+          me.set.format = me.sets[me.selectedSet].format;
+          mainView.router.load({pageName: 'barcode'});
+      },
+      foto: function(success) {
+          var me = this;
+          // Barcode als Vorgangsname setzen, falls der Name leer ist
+          if ( me.set.name.length == 0 )
+              me.set.name = me.set.code;
+          me.takefoto(success);
+      },
+      takefoto: function(success) {
           var me = this;
           fc.camera.getPicture(function(result){
             me.set.fotos.push(result);
             if ( navigator.camera || me.set.fotos.length < 2)
-                me.foto();
+                me.takefoto(success);
             else
-                me.usefotos();
+                success();
+                //me.usefotos();
           }, function(){
-              me.usefotos();
+              success();
+              //me.usefotos();
           });
       },
       usefotos: function() {
@@ -225,10 +275,23 @@ var vm = new Vue({
           if ( me.hasform && me.showform ) {
               mainView.router.back({animatePages:false});
               me.showForm(me.sets.length-1);
-              //setTimeout(function() { me.showForm(me.sets.length-1); }, 50);
           }
           else
               mainView.router.back();
+      },
+      addfotos: function(idx) {
+          var me = this;
+          me.selectedSet = idx;
+          me.cleanset();
+          me.takefoto(
+              function() {
+                  if ( me.set.fotos.length ) {
+                    me.sets[me.selectedSet].fotos.push.apply( me.sets[me.selectedSet].fotos, me.set.fotos );
+                    Lockr.set('appg-sets',me.sets);
+                  }
+                  me.cleanset();
+              }
+          );
       },
       removeset: function(idx) {
           var me = this;
@@ -257,27 +320,32 @@ var vm = new Vue({
       showFotos: function(idx) {
           var me = this;
           var photos = [];
-          me.selectedSet = idx;
-          photos = me.sets[idx].fotos.map(function(f){ return f.uri;});
-          me.myPhotoBrowser = myApp.photoBrowser({
-                photos : photos,
-                ofText : 'von',
-                toolbarTemplate: '\
-                <div class="toolbar tabbar"> \
-                    <div class="toolbar-inner">\
-                        <a href="#" class="link photo-browser-prev">\
-                            <i class="icon icon-prev {{iconsColorClass}}"></i>\
-                        </a>\
-                        <a href="#" onClick="vm.removeFoto();return false;" class="link">\
-                            <i class="icon">Löschen</i>\
-                        </a>\
-                        <a href="#" class="link photo-browser-next">\
-                            <i class="icon icon-next {{iconsColorClass}}"></i>\
-                        </a>\
-                    </div>\
-                </div>'
-          });
-          this.myPhotoBrowser.open(0);
+          if ( ! me.myPhotoBrowser ) {
+              me.selectedSet = idx;
+              photos = me.sets[idx].fotos.map(function(f){ return f.uri;});
+              me.myPhotoBrowser = myApp.photoBrowser({
+                    photos : photos,
+                    ofText : 'von',
+                    toolbarTemplate: '\
+                    <div class="toolbar tabbar"> \
+                        <div class="toolbar-inner">\
+                            <a href="#" class="link photo-browser-prev">\
+                                <i class="icon icon-prev {{iconsColorClass}}"></i>\
+                            </a>\
+                            <a href="#" onClick="vm.removeFoto();return false;" class="link">\
+                                <i class="icon">Löschen</i>\
+                            </a>\
+                            <a href="#" class="link photo-browser-next">\
+                                <i class="icon icon-next {{iconsColorClass}}"></i>\
+                            </a>\
+                        </div>\
+                    </div>',
+                    onClose: function() {
+                        me.myPhotoBrowser = null;
+                    }
+              });
+              me.myPhotoBrowser.open(0);
+          }
       },
       baseuri: function() {
           var url = window.location.href;
