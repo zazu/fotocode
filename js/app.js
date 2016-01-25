@@ -327,7 +327,7 @@ var vm = new Vue({
                     '<div class="item-inner">'+
                     '<div class="item-title label">Bemerkung</div>'+
                     '<div class="item-input">'+
-                    '<textarea>'+foto.comment+'</textarea>'+
+                    '<textarea>'+foto.bemerkung+'</textarea>'+
                     '</div>'+
                     '</div>'+
                     '</div>'+
@@ -338,7 +338,7 @@ var vm = new Vue({
                   '</div>'
           myApp.popup(popupHTML)
           $$('.popup-comment').once('close', function () {
-             foto.comment = $$('.popup-comment textarea').val();
+             foto.bemerkung = $$('.popup-comment textarea').val();
               Lockr.set('appg-sets',me.sets);
               me.showFotos(me.selectedSet, sliderIndex);
          });
@@ -350,7 +350,7 @@ var vm = new Vue({
           var photos = [];
           if ( ! me.myPhotoBrowser ) {
               me.selectedSet = idx;
-              photos = me.sets[idx].fotos.map(function(f){ return {url:f.uri, caption:f.comment } ;});
+              photos = me.sets[idx].fotos.map(function(f){ return {url:f.uri, caption:f.bemerkung } ;});
               me.myPhotoBrowser = myApp.photoBrowser({
                     photos : photos,
                     initialSlide: initialSlide,
