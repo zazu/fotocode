@@ -258,10 +258,8 @@ var vm = new Vue({
                 me.takefoto(success);
             else
                 success();
-                //me.usefotos();
           }, function(){
               success();
-              //me.usefotos();
           });
       },
       usefotos: function() {
@@ -317,14 +315,45 @@ var vm = new Vue({
           }, function(){}
           );
       },
-      showFotos: function(idx) {
+      commentFoto: function() {
+          var me = this;
+          var sliderIndex = me.myPhotoBrowser.activeIndex;
+          var foto = me.sets[me.selectedSet].fotos[sliderIndex];
+          var popupHTML = '<div class="popup popup-comment">'+
+                    '<div class="content-block">'+
+                    '<div class="list-block">'+
+                    '<ul><li class="align-top">'+
+                    '<div class="item-content">'+
+                    '<div class="item-inner">'+
+                    '<div class="item-title label">Bemerkung</div>'+
+                    '<div class="item-input">'+
+                    '<textarea>'+foto.comment+'</textarea>'+
+                    '</div>'+
+                    '</div>'+
+                    '</div>'+
+                    '</li></ul>'+
+                    '</div>'+
+                    '<input value="Weiter" class="button  button-fill color-green close-popup"/>'+
+                    '</div>'+
+                  '</div>'
+          myApp.popup(popupHTML)
+          $$('.popup-comment').once('close', function () {
+             foto.comment = $$('.popup-comment textarea').val();
+              Lockr.set('appg-sets',me.sets);
+              me.showFotos(me.selectedSet, sliderIndex);
+         });
+         me.myPhotoBrowser.close();
+      },
+      showFotos: function(idx, initialSlide) {
+          initialSlide = initialSlide || 0;
           var me = this;
           var photos = [];
           if ( ! me.myPhotoBrowser ) {
               me.selectedSet = idx;
-              photos = me.sets[idx].fotos.map(function(f){ return f.uri;});
+              photos = me.sets[idx].fotos.map(function(f){ return {url:f.uri, caption:f.comment } ;});
               me.myPhotoBrowser = myApp.photoBrowser({
                     photos : photos,
+                    initialSlide: initialSlide,
                     ofText : 'von',
                     toolbarTemplate: '\
                     <div class="toolbar tabbar"> \
@@ -333,7 +362,10 @@ var vm = new Vue({
                                 <i class="icon icon-prev {{iconsColorClass}}"></i>\
                             </a>\
                             <a href="#" onClick="vm.removeFoto();return false;" class="link">\
-                                <i class="icon">Löschen</i>\
+                                <i class="icon icon-bin-white"></i>\
+                            </a>\
+                            <a href="#" onClick="vm.commentFoto();return false;" class="link">\
+                                <i class="icon icon-file-text2-white"></i>\
                             </a>\
                             <a href="#" class="link photo-browser-next">\
                                 <i class="icon icon-next {{iconsColorClass}}"></i>\

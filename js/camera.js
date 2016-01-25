@@ -11,7 +11,7 @@ fc.camera =  {
                 function(imageUri) {
                     //console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
-                    success( { uri: imageUri, title: title }  );
+                    success( { uri: imageUri, title: title, comment:"" }  );
                 },
                 function(error) {
                     console.log('getPicture error');
@@ -27,7 +27,7 @@ fc.camera =  {
                 });
         }
         else {
-            success( { uri: 'test.jpg', title: 'title' }  );
+            success( { uri: 'test.jpg', title: 'title', comment: 'Bild ' + _.now() }  );
         }
     },
 
