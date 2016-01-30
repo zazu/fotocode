@@ -31,7 +31,7 @@
                       Quickscan</div>
                 </div>
               </div></a></li>
-            <li v-if="sets.length && loggedin" ><a v-on:click="senden" href="#" class="item-link close-panel">
+            <li v-if="sets.length && loggedin" ><a @click="senden" href="#" class="item-link close-panel">
               <div class="item-content">
 
                 <div class="item-inner"> 
@@ -42,7 +42,7 @@
               </div></a></li>
 
 
-            <li v-if="loggedin"><a v-on:click="logout" href="#" class="close-panel">
+            <li v-if="loggedin"><a @click="logout" href="#" class="close-panel">
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
@@ -60,7 +60,7 @@
               </div></a></li>
           </ul>
             <div class="infoby">
-            Version 0.4<br>
+            Version 0.5<br>
             Software by cesart - cesar@cesart.de
             </div>
         </div>
@@ -78,7 +78,7 @@
               
             <!-- Top Navbar-->
             <div class="navbar">
-              <div class="navbar-inner">
+              <div class="navbar-inner" v-cloak>
                 <!-- We have home navbar without left link-->
                 <div class="center">appgeordnet&nbsp;<span v-if="loggedin"> - {{user.name}}</span></div>
                 <div class="right">
@@ -92,28 +92,7 @@
 
             <!-- Scrollable page content-->
             <div class="page-content">
-                <!--
-              <div class="content-block-title">appgeordnet - Barcode und Foto App</div>
-              <div class="content-block">
-                <div class="content-block-innerx">
-                  <ul>
-                      <li>{{numsets}}
-                        <span v-if="numsets==1"> Vorgang</span>
-                        <span v-else> Vorgänge</span>
-                      </li>
-                      <li>{{numcodes}}
-                        <span v-if="numcodes==1"> Barcode</span>
-                        <span v-else> Barcodes</span>
-                      </li>
-                      <li>{{numfotos}}
-                        <span v-if="numfotos==1"> Foto</span>
-                        <span v-else> Fotos</span>
-                          </li>
-                    </ul>
-                </div>
-              </div>
--->
-            <div class="content-block-title">
+            <div class="content-block-title" v-cloak>
                 {{numsets}}
                 <span v-if="numsets==1"> Vorgang</span>
                 <span v-else> Vorgänge</span>
@@ -123,13 +102,13 @@
                 <span v-else> Fotos</span>
             </div>
 
-            <div class="list-block media-list">
+            <div class="list-block media-list" v-cloak>
               <ul>
                   <li class="swipeout" v-for="ds in sets">
                     <div class="swipeout-content">
-                      <a v-on:click.stop.prevent="showFotos($index)" class="item-link item-content">
+                      <a @click.stop.prevent="showFotos($index)" class="item-link item-content">
                         <div class="item-media">
-                            <img v-if="ds.fotos.length" v-bind:src="ds.fotos[0].uri" width="80">
+                            <img v-if="ds.fotos.length" :src="ds.fotos[0].uri" width="80">
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
@@ -143,16 +122,16 @@
                       </a>
                     </div>
                     <div class="swipeout-actions-right">
-                        <a v-on:click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
+                        <a @click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
                             <i class="icon icon-bin-white"></i>
                          </a>
-                         <a v-on:click.stop.prevent="showForm($index)" class="swipeout-close bg-lightblue" >
+                         <a @click.stop.prevent="showForm($index)" class="swipeout-close bg-lightblue" >
                              <i class="icon icon-file-text2-white"></i>
                          </a>
-                         <a v-on:click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
+                         <a @click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
                              <i class="icon icon-barcode-white"></i>
                          </a>
-                         <a v-on:click.prevent="addfotos($index)" class="swipeout-close bg-bluegray" >
+                         <a @click.prevent="addfotos($index)" class="swipeout-close bg-bluegray" >
                              <i class="icon icon-camera-light"></i>
                          </a>
                    </div>
@@ -181,7 +160,7 @@
                 <li v-if="hasbereiche">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="bereich">
-                      <option v-for="option in bereiche.bereich | notEmpty" v-bind:value="$index">
+                      <option v-for="option in bereiche.bereich | notEmpty" :value="$index">
                         {{ option }}
                       </option>
                     </select>
@@ -222,7 +201,7 @@
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="codeformat">
                       <option value="" ></option>
-                      <option v-for="format in codeformats" v-bind:value="format">
+                      <option v-for="format in codeformats" :value="format">
                         {{ format }}
                       </option>
                     </select>
@@ -265,7 +244,7 @@
                   <div class="col-25"></div>
                   <div class="col-50">
                     <input v-show="validquickscan"
-                           v-on:click.stop.prevent="scanfoto"
+                           @click.stop.prevent="scanfoto"
                            type="submit" value="Weiter" class="button button-big button-fill color-green"/>
                   </div>
                   <div class="col-25"></div>
@@ -316,7 +295,7 @@
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="codeformat">
                       <option value="" ></option>
-                      <option v-for="format in codeformats" v-bind:value="format">
+                      <option v-for="format in codeformats" :value="format">
                         {{ format }}
                       </option>
                     </select>
@@ -349,7 +328,7 @@
                   <div class="col-25"></div>
                   <div class="col-50">
                     <input v-show="validbarcode"
-                           v-on:click.stop.prevent="scanbarcode"
+                           @click.stop.prevent="scanbarcode"
                            type="submit" value="Weiter" class="button button-big button-fill color-green"/>
                   </div>
                   <div class="col-25"></div>

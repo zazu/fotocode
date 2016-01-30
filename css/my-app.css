@@ -1,4 +1,8 @@
 
+[v-cloak] {
+    display: none;
+}
+
 .infoby {
     font-size: 0.75em;
     bottom: 0.1em;

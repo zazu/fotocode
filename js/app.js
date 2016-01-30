@@ -210,7 +210,7 @@ var vm = new Vue({
           var me = this;
           var bereich = me.set.bereich;
           me.set.code = _.trim( me.set.code );
-          if ( bereich >= 0 && me.bereiche.bclen[bereich].length ) {
+          if ( bereich >= 0 && !_.isEmpty(me.bereiche) && me.bereiche.bclen[bereich].length ) {
               var soll = _.parseInt(me.bereiche.bclen[bereich]);
               if ( soll > 0 && soll != me.set.code.length )
                   err+=1;
@@ -384,7 +384,7 @@ var vm = new Vue({
           if ( url.indexOf('www') > 0 )
             return 'http://test.app-geordnet.de/';
           else
-            return 'http://localhost/app-geordnet/';
+            return 'http://localhost:8080/app-geordnet/';
       },
       submitlogin: function() {
           var me = this;
@@ -482,7 +482,9 @@ var vm = new Vue({
       showForm: function(idx) {
         var me = this;
         var b = me.sets[idx].bereich;
-        var name = me.bereiche.bereich[b];
+        var name = me.hasbereiche?me.bereiche.bereich[b]:'';
+        var form ='';
+        var button='';
 
         var navbar = '<div class="navbar"><div class="navbar-inner">'+
                 '<div class="left"><a href="#index" class="back link"> <i class="icon icon-back"></i><span></span></a></div>'+
@@ -490,17 +492,19 @@ var vm = new Vue({
                 '<div class="right"> </div>'+
             '</div></div>';
 
-        var form = '<div class="content-block">' + me.form[b] + '</div>';
-        var button = '<div class="content-block">'+
-                '<div class="row">'+
-                  '<div class="col-25"></div>'+
-                  '<div class="col-50">'+
-                    '<input '+
-                        'onClick="vm.saveForm();"'+
-                           'type="submit" value="Speichern" class="button button-big button-fill color-green"/>'+
-                  '</div>'+
-                  '<div class="col-25"></div>'+
+        if (me.hasbereiche) {
+            form = '<div class="content-block">' + me.form[b] + '</div>';
+            button = '<div class="content-block">' +
+                '<div class="row">' +
+                '<div class="col-25"></div>' +
+                '<div class="col-50">' +
+                '<input ' +
+                'onClick="vm.saveForm();"' +
+                'type="submit" value="Speichern" class="button button-big button-fill color-green"/>' +
+                '</div>' +
+                '<div class="col-25"></div>' +
                 '</div></div>';
+        }
 
         var newPageContent = '<div class="page" data-page="bereichform">' +
                             navbar +
