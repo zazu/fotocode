@@ -7,6 +7,12 @@
     background-color: rgba(0, 0, 0, .03);
 }
 
+.infocollabel {
+    display:inline-block;
+    width:7.7em;
+    line-height:1.3em;
+}
+
 .infoby {
     font-size: 0.75em;
     bottom: 0.1em;

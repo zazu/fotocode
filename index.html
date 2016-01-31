@@ -60,7 +60,7 @@
               </div></a></li>
           </ul>
             <div class="infoby">
-            Version 0.5<br>
+            Version {{appversion}}<br>
             Software by cesart - cesar@cesart.de
             </div>
         </div>
@@ -98,13 +98,13 @@
             <!-- Scrollable page content-->
             <div class="page-content">
             <div class="content-block-title" v-cloak>
-                {{numsets}}
-                <span v-if="numsets==1"> Vorgang</span>
-                <span v-else> Vorgänge</span>
-                 /
-                {{numfotos}}
-                <span v-if="numfotos==1"> Foto</span>
-                <span v-else> Fotos</span>
+                <div><span class="infocollabel">Letzer Versand:</span>{{lastsent}}</div>
+                <div><span class="infocollabel">Lokale Daten:</span>{{numsets}}
+                    <span v-if="numsets==1"> Vorgang</span>
+                    <span v-else> Vorgänge</span> / {{numfotos}}
+                    <span v-if="numfotos==1"> Foto</span>
+                    <span v-else> Fotos</span>
+                </div>
             </div>
 
             <div class="list-block media-list" v-cloak>

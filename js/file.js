@@ -70,7 +70,7 @@ var FileIO = {
            msg = e.code;
            myApp.alert('FileIO-Fehler: ' + msg);
      }
-}
+};
 
 fc.file =  {
    options:{},
@@ -126,7 +126,7 @@ fc.file =  {
             barcodes: JSON.stringify(barcodes)
         };
 
-        $$.post(vm.baseuri()+'app/uploaddata', params, function (data) {
+        $$.post(vm.baseuri +'app/uploaddata', params, function (data) {
             var result = JSON.parse(data);
 		    if ( result.message.length ) {
                 myApp.alert('', result.message );
@@ -159,7 +159,7 @@ fc.file =  {
             myApp.showPreloader('Sende Bild ' + me.fotototal);
 
 		    var fileURI = foto.uri;
-		    var serverURI = vm.baseuri() + 'app/upload' ;
+		    var serverURI = vm.baseuri + 'app/upload' ;
             if ( navigator.camera ) {
                 try {
                     var options = new FileUploadOptions();
@@ -230,14 +230,14 @@ fc.file =  {
             }
 	    }
 		else {
-            var serverURI = vm.baseuri() + 'app/uploaddone';
+            var serverURI = vm.baseuri + 'app/uploaddone';
             var groups = [];
             var stats = {
-                version: '2.0.0',
-                name: '',
-                platform: '',
-                uuid: '',
-                devversion: '',
+                version: window.cfg.version,
+                name: window.cfg.device.model,
+                platform: window.cfg.device.platform,
+                uuid: window.cfg.device.uuid,
+                devversion: window.cfg.device.version,
                 numfotos: -1
             };
             groups.push( me.group.gid );
@@ -263,7 +263,7 @@ fc.file =  {
     },
 
 	faillocal: function(evt) {
-		appgeordnet.app.log( "Fehler beim Anfordern des Filesystems: " + Ext.encode(evt) );
+		//appgeordnet.app.log( "Fehler beim Anfordern des Filesystems: " + Ext.encode(evt) );
   	},
 
     // Foto in (neues) Verzeichnis appgeordnet verschieben
