@@ -159,7 +159,13 @@ var vm = new Vue({
           myApp.actions(buttons);
       },
       backButton: function() {
-          mainView.router.back();
+          var me = this;
+          if ( me.myPhotoBrowser )
+            me.myPhotoBrowser.close();
+          else if ( $$(".popup-comment").length )
+            myApp.closeModal(".popup-comment");
+          else
+            mainView.router.back();
       },
       cleanset: function() {
           var me = this;
