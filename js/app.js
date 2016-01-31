@@ -1,7 +1,7 @@
 // Initialize your app
 var myApp = new Framework7({
   swipePanel: 'right',
-  pushState:true,
+//  pushState:true,
   template7Pages: false,
   material: true, //enable Material theme
   notificationCloseButtonText:'Schließen',
@@ -18,7 +18,6 @@ var $$ = Dom7;
 var mainView = myApp.addView('.view-main', {
     domCache: true
 });
-
 
 myApp.onPageInit('quickscan', function (page) {
     vm.cleanset();
@@ -138,27 +137,30 @@ var vm = new Vue({
                               !me.bereiche.bereich[me.bereich].length ) )
           me.bereich=0;
 
-//      document.addEventListener("backbutton", me.backButton, false);
-      document.addEventListener("menubutton", me.menuButton, false);
-  },
-  menuButton: function() {
-      var buttons = [{
-          text: 'appgeordnet beenden',
-          color: 'red',
-          bold: false,
-          onClick: function () {
-              navigator.app.exitApp();
-          }
-      },
-      {
-          text: 'Abbrechen'
-      }];
-      myApp.actions(buttons);
-  },
-  backButton: function() {
-      mainView.router.back();
   },
   methods: {
+      deviceReady: function() {
+          var me = this;
+          document.addEventListener("backbutton", me.backButton, false);
+          document.addEventListener("menubutton", me.menuButton, false);
+      },
+      menuButton: function() {
+          var buttons = [{
+              text: 'appgeordnet beenden',
+              color: 'red',
+              bold: false,
+              onClick: function () {
+                  navigator.app.exitApp();
+              }
+          },
+              {
+                  text: 'Abbrechen'
+              }];
+          myApp.actions(buttons);
+      },
+      backButton: function() {
+          mainView.router.back();
+      },
       cleanset: function() {
           var me = this;
           me.set.fotos=[];
@@ -552,6 +554,8 @@ var vm = new Vue({
       }
   }
 });
+
+document.addEventListener('deviceready', vm.deviceReady, false);
 
 vm.$watch('sets', function (newVal, oldVal) {
     Lockr.set('appg-sets',newVal);
