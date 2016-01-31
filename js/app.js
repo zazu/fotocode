@@ -142,7 +142,6 @@ var vm = new Vue({
       deviceReady: function() {
           var me = this;
           document.addEventListener("backbutton", me.backButton, false);
-          document.addEventListener("menubutton", me.menuButton, false);
       },
       menuButton: function() {
           var buttons = [{
@@ -153,19 +152,21 @@ var vm = new Vue({
                   navigator.app.exitApp();
               }
           },
-              {
-                  text: 'Abbrechen'
-              }];
+          {
+              text: 'Abbrechen'
+          }];
           myApp.actions(buttons);
       },
       backButton: function() {
           var me = this;
           if ( me.myPhotoBrowser )
-            me.myPhotoBrowser.close();
+              me.myPhotoBrowser.close();
           else if ( $$(".popup-comment").length )
-            myApp.closeModal(".popup-comment");
+              myApp.closeModal(".popup-comment");
+          else if ( mainView.activePage.name !== "index" )
+              mainView.router.back();
           else
-            mainView.router.back();
+              me.menuButton();
       },
       cleanset: function() {
           var me = this;
