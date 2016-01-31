@@ -72,21 +72,26 @@
       <div class="view view-main">
           
         <!-- Pages -->
-        <div class="pages navbar-fixed">
-          <!-- Page, data-page contains page name-->
-          <div data-page="index" class="page">
+        <div class="pages ">
+          <!-- Index page -->
+          <div data-page="index" class="page toolbar-fixed navbar-fixed">
               
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner" v-cloak>
-                <!-- We have home navbar without left link-->
-                <div class="center">appgeordnet&nbsp;<span v-if="loggedin"> - {{user.name}}</span></div>
+                <div class="center">appgeordnet</div>
                 <div class="right">
-                    <!-- Right link contains only icon - additional "icon-only" class-->
-                    <a href="#quickscan" class="link icon-only">
-                        <i class="icon icon-camera-light"></i></a>
+<!--                    <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a> -->
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                 </div>
+              </div>
+            </div>
+
+            <div class="toolbar toolbar-bottom">
+              <div class="toolbar-inner" v-cloak>
+                <span>&nbsp;&nbsp;{{user.name}}</span>
+                <span></span>
+                <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a>
               </div>
             </div>
 
@@ -112,12 +117,12 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">{{ds.name}}</div>
+                            <div class="item-title">{{ds.code}}</div>
                             <div class="item-after">
                                 <span class="badge bg-green">{{ds.fotos.length}}</span>
                             </div>
                           </div>
-                          <div class="item-subtitle">{{ds.code}}</div>
+                          <div class="item-subtitle">{{ds.name}}</div>
                         </div>
                       </a>
                     </div>
@@ -129,7 +134,7 @@
                              <i class="icon icon-file-text2-white"></i>
                          </a>
                          <a @click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
-                             <i class="icon icon-barcode-white"></i>
+                             <i class="icon icon-price-tag-white"></i>
                          </a>
                          <a @click.prevent="addfotos($index)" class="swipeout-close bg-bluegray" >
                              <i class="icon icon-camera-light"></i>
@@ -142,7 +147,7 @@
           </div>
 
           <!-- Quickscan page -->
-          <div class="page cached" data-page="quickscan" >
+          <div class="page cached navbar-fixed" data-page="quickscan" >
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
@@ -176,22 +181,23 @@
                   </a>
                 </li>
 
-                  <li>
+                <li v-show="!usecamera" transition="expand">
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-price-tag"></i></div>
-                      <div class="item-inner">
-                        <div class="item-input">
-                          <input type="text" v-model="set.name" placeholder="Vorgangsname"/>
+                        <div class="item-media"><i class="icon icon-price-tag"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="text" v-model="set.code" placeholder="Vorgangsname / Barcode"/>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </li>
-                  <li v-show="!usecamera" transition="expand">
+                </li>
+
+                  <li v-show="validbarcode">
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-barcode"></i></div>
+                      <div class="item-media"><i class="icon icon-info"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
-                          <input type="text" v-model="set.code" placeholder="Barcode (manuell oder Scanner)"/>
+                          <input type="text" v-model="set.name" placeholder="Vorgangsinfo"/>
                         </div>
                       </div>
                     </div>
@@ -254,14 +260,14 @@
           </div>
 
           <!-- Barcode page -->
-          <div class="page cached" data-page="barcode" >
+          <div class="page cached navbar-fixed" data-page="barcode" >
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
                 <div class="left">
                     <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
                 </div>
-                <div class="center">Barcodeeingabe</div>
+                <div class="center">Vorgangsname / Barcode</div>
               </div>
             </div>
             <!-- Scrollable page content-->
@@ -270,8 +276,19 @@
                 <ul>
                   <li>
 
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-price-tag"></i></div>
+                    <li v-show="!usecamera" transition="expand">
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-price-tag"></i></div>
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="text" v-model="set.code" placeholder="Vorgangsname / Barcode"/>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <div v-show="validbarcode" class="item-content">
+                      <div class="item-media"><i class="icon icon-info"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
                           <input type="text" v-model="set.name" placeholder="Vorgangsname" readonly />
@@ -280,16 +297,6 @@
                     </div>
                   </li>
 
-                  <li v-show="!usecamera" transition="expand">
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-barcode"></i></div>
-                      <div class="item-inner">
-                        <div class="item-input">
-                          <input type="text" v-model="set.code" placeholder="Barcode (manuell oder Scanner)"/>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
 
                 <li v-show="!usecamera" transition="expand">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
@@ -337,9 +344,8 @@
             </div>
           </div>
 
-
           <!--Login Page -->
-          <div data-page="login" class="page cached">
+          <div data-page="login" class="page cached navbar-fixed">
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">

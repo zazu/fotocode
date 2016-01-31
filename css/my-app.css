@@ -3,6 +3,10 @@
     display: none;
 }
 
+.list-block textarea {
+    background-color: rgba(0, 0, 0, .03);
+}
+
 .infoby {
     font-size: 0.75em;
     bottom: 0.1em;
@@ -64,6 +68,13 @@ i.icon.icon-price-tag {
   background-image: url("../img/price-tag.svg");
  }
 
+i.icon.icon-price-tag-white {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/price-tag-white.svg");
+}
+
+
 i.icon.icon-spinner4 {
   width: 24px;
   height: 24px;
@@ -94,6 +105,13 @@ i.icon.icon-cross {
   height: 24px;
   background-image: url("../img/cross.svg");
  }
+
+i.icon.icon-info {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/info.svg");
+}
+
 
 
 /* always present */

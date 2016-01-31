@@ -135,7 +135,7 @@ fc.file =  {
                 me.uploadFotos( group.fotos, success, fail );
 		    }
             else {
-                fail();
+                fail('Die Daten konnten nicht gesendet werden.');
             }
         });
     },

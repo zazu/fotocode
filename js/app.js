@@ -1,6 +1,6 @@
 // Initialize your app
 var myApp = new Framework7({
-  swipePanel: 'left',
+  swipePanel: 'right',
   template7Pages: false,
   material: true, //enable Material theme
   notificationCloseButtonText:'Schließen',
@@ -25,11 +25,13 @@ myApp.onPageInit('quickscan', function (page) {
 
 // Callbacks to run specific code for specific pages, for example for About page:
 myApp.onPageReinit('quickscan', function (page) {
-    vm.cleanset();
+    if (page.fromPage.name === 'index')
+        vm.cleanset();
 });
 
+
 Dom7.isEmpty = function(obj) {
-    return Object.keys(obj).length === 0;
+    return _.isEmpty(obj);
 }
 
 Vue.config.debug = ! navigator.camera;
@@ -134,6 +136,26 @@ var vm = new Vue({
                               !me.bereiche.bereich[me.bereich] ||
                               !me.bereiche.bereich[me.bereich].length ) )
           me.bereich=0;
+
+      document.addEventListener("menubutton", (function(self){ return function(){ self.menuButton(); }; })(this), true);
+      document.addEventListener("backbutton", (function(self){ return function(){ self.backButton(); }; })(this), true);
+  },
+  menuButton: function() {
+      var buttons = [{
+          text: 'appgeordnet beenden',
+          color: 'red',
+          bold: false,
+          onClick: function () {
+              navigator.app.exitApp();
+          }
+      },
+      {
+          text: 'Abbrechen'
+      }];
+      myApp.actions(buttons);
+  },
+  backButton: function() {
+      mainView.router.back();
   },
   methods: {
       cleanset: function() {
@@ -206,17 +228,21 @@ var vm = new Vue({
           return err===0;
       },
       checkBarcode:function() {
-          var err = 0;
+          var soll,err = 0;
           var me = this;
           var bereich = me.set.bereich;
           me.set.code = _.trim( me.set.code );
-          if ( bereich >= 0 && !_.isEmpty(me.bereiche) && me.bereiche.bclen[bereich].length ) {
-              var soll = _.parseInt(me.bereiche.bclen[bereich]);
-              if ( soll > 0 && soll != me.set.code.length )
-                  err+=1;
-              soll = me.bereiche.bctyp[bereich];
-              if ( soll != 'all' && soll != me.set.format)
-                  err+=2;
+          if ( bereich >= 0 && !_.isEmpty(me.bereiche) ) {
+              if ( me.bereiche.bclen[bereich].length ) {
+                  soll = _.parseInt(me.bereiche.bclen[bereich]);
+                  if (soll > 0 && soll != me.set.code.length)
+                      err += 1;
+              }
+              if ( me.bereiche.bctyp[bereich].length ) {
+                  soll = me.bereiche.bctyp[bereich];
+                  if (soll != 'all' && soll != me.set.format)
+                      err += 2;
+              }
           }
           return err;
       },
@@ -245,9 +271,6 @@ var vm = new Vue({
       },
       foto: function(success) {
           var me = this;
-          // Barcode als Vorgangsname setzen, falls der Name leer ist
-          if ( me.set.name.length == 0 )
-              me.set.name = me.set.code;
           me.takefoto(success);
       },
       takefoto: function(success) {
@@ -320,12 +343,11 @@ var vm = new Vue({
           var sliderIndex = me.myPhotoBrowser.activeIndex;
           var foto = me.sets[me.selectedSet].fotos[sliderIndex];
           var popupHTML = '<div class="popup popup-comment">'+
-                    '<div class="content-block">'+
+                    '<div class="content-block-title">Bemerkung</div>'+
                     '<div class="list-block">'+
                     '<ul><li class="align-top">'+
                     '<div class="item-content">'+
                     '<div class="item-inner">'+
-                    '<div class="item-title label">Bemerkung</div>'+
                     '<div class="item-input">'+
                     '<textarea>'+foto.bemerkung+'</textarea>'+
                     '</div>'+
@@ -333,9 +355,10 @@ var vm = new Vue({
                     '</div>'+
                     '</li></ul>'+
                     '</div>'+
-                    '<input value="Weiter" class="button  button-fill color-green close-popup"/>'+
-                    '</div>'+
-                  '</div>'
+                    '<div class="content-block"><div class="row"><div class="col-25"></div><div class="col-50">'+
+                    '<input value="Weiter" class="button button-fill color-green close-popup"/>'+
+                    '</div><div class="col-25"></div></div></div>'+
+                    '</div>'
           myApp.popup(popupHTML)
           $$('.popup-comment').once('close', function () {
              foto.bemerkung = $$('.popup-comment textarea').val();
@@ -506,7 +529,7 @@ var vm = new Vue({
                 '</div></div>';
         }
 
-        var newPageContent = '<div class="page" data-page="bereichform">' +
+        var newPageContent = '<div class="page navbar-fixed" data-page="bereichform">' +
                             navbar +
                         '<div class="page-content">' +
                             form + button +
@@ -549,4 +572,13 @@ vm.$watch('codeformat', function (newVal, oldVal) {
     Lockr.set('appg-codeformat',newVal);
 });
 
-
+/*
+function updateIndicator() {
+    if(navigator.onLine) {
+    }
+}
+// Update the online status icon based on connectivity
+window.addEventListener('online',  updateIndicator);
+window.addEventListener('offline', updateIndicator);
+updateIndicator();
+*/
