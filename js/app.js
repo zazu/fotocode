@@ -1,6 +1,7 @@
 // Initialize your app
 var myApp = new Framework7({
   swipePanel: 'right',
+  pushState:true,
   template7Pages: false,
   material: true, //enable Material theme
   notificationCloseButtonText:'Schließen',
@@ -137,8 +138,8 @@ var vm = new Vue({
                               !me.bereiche.bereich[me.bereich].length ) )
           me.bereich=0;
 
-      document.addEventListener("menubutton", (function(self){ return function(){ self.menuButton(); }; })(this), true);
-      document.addEventListener("backbutton", (function(self){ return function(){ self.backButton(); }; })(this), true);
+//      document.addEventListener("backbutton", me.backButton, false);
+      document.addEventListener("menubutton", me.menuButton, false);
   },
   menuButton: function() {
       var buttons = [{
