@@ -417,32 +417,34 @@ function onDeviceReady() {
                     photos = me.sets[idx].fotos.map(function (f) {
                         return {url: f.uri, caption: f.bemerkung};
                     });
-                    me.myPhotoBrowser = myApp.photoBrowser({
-                        photos: photos,
-                        initialSlide: initialSlide,
-                        ofText: 'von',
-                        toolbarTemplate: '\
-                    <div class="toolbar tabbar"> \
-                        <div class="toolbar-inner">\
-                            <a href="#" class="link photo-browser-prev">\
-                                <i class="icon icon-prev {{iconsColorClass}}"></i>\
-                            </a>\
-                            <a href="#" onClick="vm.removeFoto();return false;" class="link">\
-                                <i class="icon icon-bin-white"></i>\
-                            </a>\
-                            <a href="#" onClick="vm.commentFoto();return false;" class="link">\
-                                <i class="icon icon-file-text2-white"></i>\
-                            </a>\
-                            <a href="#" class="link photo-browser-next">\
-                                <i class="icon icon-next {{iconsColorClass}}"></i>\
-                            </a>\
-                        </div>\
-                    </div>',
-                        onClose: function () {
-                            me.myPhotoBrowser = null;
-                        }
-                    });
-                    me.myPhotoBrowser.open(0);
+                    if ( photos.length ) {
+                        me.myPhotoBrowser = myApp.photoBrowser({
+                            photos: photos,
+                            initialSlide: initialSlide,
+                            ofText: 'von',
+                            toolbarTemplate: '\
+                        <div class="toolbar tabbar"> \
+                            <div class="toolbar-inner">\
+                                <a href="#" class="link photo-browser-prev">\
+                                    <i class="icon icon-prev {{iconsColorClass}}"></i>\
+                                </a>\
+                                <a href="#" onClick="vm.removeFoto();return false;" class="link">\
+                                    <i class="icon icon-bin-white"></i>\
+                                </a>\
+                                <a href="#" onClick="vm.commentFoto();return false;" class="link">\
+                                    <i class="icon icon-file-text2-white"></i>\
+                                </a>\
+                                <a href="#" class="link photo-browser-next">\
+                                    <i class="icon icon-next {{iconsColorClass}}"></i>\
+                                </a>\
+                            </div>\
+                        </div>',
+                            onClose: function () {
+                                me.myPhotoBrowser = null;
+                            }
+                        });
+                        me.myPhotoBrowser.open(0);
+                    }
                 }
             },
             submitlogin: function () {
@@ -533,8 +535,12 @@ function onDeviceReady() {
             },
             vorgangSenden: function () {
                 var me = this;
-                if (me.sets.length) {
-                    var set = me.sets[0];
+                var idx=0;
+                // ersten set mit fotos finden
+                while ( idx < me.sets.length && !me.sets[idx].fotos.length )
+                    idx++;
+                if ( idx < me.sets.length ) {
+                    var set = me.sets[idx];
                     var bereich = me.bereiche.bereichshort[set.bereich];
                     var group = {
                         idx: 0,
@@ -556,7 +562,10 @@ function onDeviceReady() {
                     );
                 }
                 else {
-                    var compiled = _.template(me.numsent === 1 ? '<%= num %> Vorgang wurde gesendet.' : '<%= num %> Vorgänge wurden gesendet.');
+                    var s = '<%= num %> Vorgänge wurden gesendet.'
+                    if ( me.numsent === 0)
+                        s += '<br>Es werden nur Vorgänge mit Fotos gesendet!';
+                    var compiled = _.template(me.numsent === 1 ? '<%= num %> Vorgang wurde gesendet.' : s);
                     myApp.addNotification({
                         title: 'Senden',
                         message: compiled({'num': me.numsent}),
