@@ -1,7 +1,7 @@
 
 window.onload = function () {
     window.cfg = {
-        version: '2.0.7',
+        version: '2.0.8',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
@@ -22,6 +22,8 @@ function onDeviceReady() {
 
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
         window.cfg.device = device;
+        window.addEventListener('native.keyboardshow', function(e){StatusBar.hide();});
+        window.addEventListener('native.keyboardhide', function(e){StatusBar.hide();});
     }
 
     // Initialize the app
