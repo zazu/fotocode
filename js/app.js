@@ -1,28 +1,28 @@
 
 window.onload = function () {
-
     window.cfg = {
-        version: '2.0.6',
-        baseuri: ((window.location.href).indexOf('www') > 0) ?
+        version: '2.0.7',
+        baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
-            'http://localhost:8080/app-geordnet/'
+            'http://localhost:8080/app-geordnet/',
+        device: {
+            model: '',
+            platform: '',
+            uuid: '',
+            version: ''
+        }
     };
-
-    if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+    if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/))
         document.addEventListener("deviceready", onDeviceReady, false);
-        window.cfg.device = device;
-    } else {
-        window.cfg.device = {
-            model: 'Desktop',
-            platform: 'PC',
-            uuid: '0',
-            devversion: '0'
-        };
+    else
         onDeviceReady();
-    }
 };
 
 function onDeviceReady() {
+
+    if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        window.cfg.device = device;
+    }
 
     // Initialize the app
     window.myApp = new Framework7({
@@ -673,4 +673,4 @@ function onDeviceReady() {
      updateIndicator();
      */
 
-}
+};
