@@ -1,7 +1,7 @@
 
 window.onload = function () {
     window.cfg = {
-        version: '2.0.8',
+        version: '2.0.x',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
@@ -22,6 +22,7 @@ function onDeviceReady() {
 
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
         window.cfg.device = device;
+        window.cfg.version = AppVersion.version;
         window.addEventListener('native.keyboardshow', function(e){StatusBar.hide();});
         window.addEventListener('native.keyboardhide', function(e){StatusBar.hide();});
     }
@@ -328,11 +329,10 @@ function onDeviceReady() {
             },
             usefotos: function () {
                 var me = this;
-                if (me.set.fotos.length) {
-                    var s = JSON.parse(JSON.stringify(me.set));
-                    s.formdata = {name: s.name};
-                    me.sets.push(s);
-                }
+                // Vorgang auch ohne Fotos anlegen (me.set.fotos.length)
+                var s = JSON.parse(JSON.stringify(me.set));
+                s.formdata = {name: s.name};
+                me.sets.push(s);
                 me.cleanset();
                 if (me.hasform && me.showform) {
                     mainView.router.back({animatePages: false});

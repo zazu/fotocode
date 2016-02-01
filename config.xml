@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.rblumenthal.fotocode" version="2.0.8" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Foto Code</name>
+<widget id="de.rblumenthal.fotocode" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>appgeordnet</name>
     <description>
-        Barcode lesen und Fotos zuordnen
+        Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
     </description>
     <author email="info@rblumenthal.de" href="http://rblumenthal.de">
         Ralf Blumenthal
@@ -48,6 +48,7 @@
     <gap:plugin name="cordova-plugin-dialogs" source="npm" version="1.2.0" />
     <gap:plugin name="cordova-plugin-media-capture" source="npm" version="1.2.0" />
     <gap:plugin name="ionic-plugin-keyboard" source="npm" version="1.0.8" />
+    <gap:plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
 
     <!-- to enable individual permissions use the following examples -->
     <feature name="http://api.phonegap.com/1.0/file"/>
