@@ -41,6 +41,7 @@ function onDeviceReady() {
             // which is triggered when the native keyboard is opened
             window.addEventListener('native.showkeyboard', function(e) {
                 StatusBar.hide();
+                /*
                 // get viewport height
                 var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
                 // get the maximum allowed height without the need to scroll the page up/down
@@ -56,10 +57,12 @@ function onDeviceReady() {
                     //move(document.body).to(0, -scrollYDistance).duration('.2s').ease('in-out').end();
                     $$(document.body).scrollTo(0,scrollYDistance,200);
                 }
+                */
             });
 
             window.addEventListener('native.hidekeyboard', function() {
                 StatusBar.hide();
+                /*
                 // remove focus from activeElement
                 // which is naturally an input since the nativekeyboard is hiding
                 document.activeElement.blur();
@@ -68,6 +71,7 @@ function onDeviceReady() {
                 //$$(document.body).scrollTo(0,0,200);
                 $$('.view-main div.page-content').scrollTo(0,0,200);
                 $$('.kbscrollhlp').remove();
+                */
             });
         }
 /*
