@@ -47,6 +47,9 @@ function onDeviceReady() {
                 var scrollLimit = viewportHeight - (document.activeElement.offsetHeight + document.activeElement.offsetTop);
                 // if the keyboard height is bigger than the maximum allowed height
                 if (e.keyboardHeight > scrollLimit) {
+
+                    $$('<div class="kbscrollhlp"></div>').attr('height', e.keyboardHeight+'px').appendTo($$('.view-main div.page-content'));
+
                     // calculate the Y distance
                     var scrollYDistance = document.activeElement.offsetHeight + (e.keyboardHeight - scrollLimit);
                     // animate using move.min.js (CSS3 animations)
@@ -64,6 +67,7 @@ function onDeviceReady() {
                 //move(document.body).to(0, 0).duration('.2s').ease('in-out').end();
                 //$$(document.body).scrollTo(0,0,200);
                 $$('.view-main div.page-content').scrollTo(0,scrollYDistance,200);
+                $$('.kbscrollhlp').remove();
             });
         }
 /*
@@ -80,7 +84,10 @@ function onDeviceReady() {
 /*
     else {
         window.keyboardShowHandler = function () {
-            keyboardHeight = 500;
+            var keyboardHeight = 1500;
+
+            $$('<div class="kbscrollhlp"></div>').attr('height',keyboardHeight+'px').appendTo($$('.view-main div.page-content'));
+
             // get viewport height
             var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
             // get the maximum allowed height without the need to scroll the page up/down
