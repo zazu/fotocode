@@ -54,7 +54,7 @@ function onDeviceReady() {
                     var scrollYDistance = document.activeElement.offsetHeight + (e.keyboardHeight - scrollLimit);
                     // animate using move.min.js (CSS3 animations)
                     //move(document.body).to(0, -scrollYDistance).duration('.2s').ease('in-out').end();
-                    $$(document.body).scrollTo(0,-scrollYDistance,200);
+                    $$(document.body).scrollTo(0,scrollYDistance,200);
                 }
             });
 
@@ -66,7 +66,7 @@ function onDeviceReady() {
                 // animate using move.min.js (CSS3 animations)
                 //move(document.body).to(0, 0).duration('.2s').ease('in-out').end();
                 //$$(document.body).scrollTo(0,0,200);
-                $$('.view-main div.page-content').scrollTo(0,scrollYDistance,200);
+                $$('.view-main div.page-content').scrollTo(0,0,200);
                 $$('.kbscrollhlp').remove();
             });
         }
