@@ -25,6 +25,7 @@
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
 
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="android-windowSoftInputMode" value="stateVisible|adjustResize" />
 
     <!-- ios -->
@@ -54,7 +55,7 @@
     <gap:plugin name="cordova-plugin-media-capture" source="npm" version="1.2.0" />
     <gap:plugin name="ionic-plugin-keyboard" source="npm" version="1.0.8" />
     <gap:plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
-    <gap:plugin name="cordova-plugin-fileopener" source="npm" version="1.0.0" />
+    <gap:plugin name="cordova-plugin-fileopener" source="npm" version="1.0.4" />
 
     <!-- to enable individual permissions use the following examples -->
     <feature name="http://api.phonegap.com/1.0/file"/>
