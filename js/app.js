@@ -20,11 +20,24 @@ window.onload = function () {
 
 function onDeviceReady() {
 
+    // Export selectors engine
+    window.$$ = Dom7;
+
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
         window.cfg.device = device;
         window.cfg.version = AppVersion.version;
         window.addEventListener('native.keyboardshow', function(e){StatusBar.hide();});
         window.addEventListener('native.keyboardhide', function(e){StatusBar.hide();});
+/*
+        window.cordova.plugins.FileOpener.openFile("http://www.website.com/file.pdf",
+            function(){
+                navigator.app.exitApp();
+            },
+            function(error) {
+                alert('Fehler beim Update: '  + error.message);
+            }
+        );
+*/
     }
 
     // Initialize the app
@@ -40,22 +53,38 @@ function onDeviceReady() {
         modalButtonCancel: 'Abbrechen'
     });
 
-    // Export selectors engine
-    window.$$ = Dom7;
-
     // Add view
     window.mainView = myApp.addView('.view-main', {
         domCache: true
     });
 
-    myApp.onPageInit('quickscan', function (page) {
-        vm.cleanset();
+    myApp.params.swipePanel = false;
+
+
+    $$(document).on('pageInit', function (e) {
+        var page = e.detail.page;
+
+        if ( page.name !== 'index')
+            myApp.params.swipePanel = false;
+
+        if ( page.name === 'quickscan') {
+            vm.cleanset();
+            vm.updateQuickscanCodeformat();
+        }
     });
 
-    // Callbacks to run specific code for specific pages, for example for About page:
-    myApp.onPageReinit('quickscan', function (page) {
-        if (page.fromPage.name === 'index')
-            vm.cleanset();
+    $$(document).on('pageReinit', function (e) {
+        var page = e.detail.page;
+        if ( page.name === 'quickscan') {
+            if (page.fromPage.name === 'index') {
+                vm.cleanset();
+                vm.updateQuickscanCodeformat();
+                myApp.params.swipePanel = false;
+            }
+        }
+        else if ( page.name === 'index') {
+            myApp.params.swipePanel = 'right';
+        }
     });
 
     Vue.config.debug = !navigator.camera;
@@ -399,7 +428,7 @@ function onDeviceReady() {
                     '</li></ul>' +
                     '</div>' +
                     '<div class="content-block"><div class="row"><div class="col-25"></div><div class="col-50">' +
-                    '<input value="Weiter" class="button button-fill color-green close-popup"/>' +
+                    '<input type="submit" value="Weiter" class="button button-fill color-green close-popup"/>' +
                     '</div><div class="col-25"></div></div></div>' +
                     '</div>'
                 myApp.popup(popupHTML)
@@ -638,6 +667,17 @@ function onDeviceReady() {
                 me.sets[idx].formdata = formData;
                 Lockr.set('appg-sets', me.sets);
                 mainView.router.back({force: true, pageName: 'index'});
+            },
+            // codeformat auf basis des gewählten bereichs einstellen
+            updateQuickscanCodeformat: function() {
+                var me= this;
+                if (me.bereiche.bctyp[me.bereich].length &&
+                    me.bereiche.bctyp[me.bereich]!=="all") {
+                    me.codeformat = me.bereiche.bctyp[me.bereich];
+                    $$("#bctyp select").val(me.codeformat);
+                    $$("#bctyp select").trigger('change');
+                    $$("#bctyp div.item-after").html(me.codeformat==="all"?"":me.codeformat);
+                }
             }
         }
     });
@@ -650,6 +690,7 @@ function onDeviceReady() {
 
     vm.$watch('bereich', function (newVal, oldVal) {
         Lockr.set('appg-bereich', newVal);
+        this.updateQuickscanCodeformat();
     });
 
     vm.$watch('usecamera', function (newVal, oldVal) {

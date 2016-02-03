@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.rblumenthal.fotocode" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="de.rblumenthal.fotocode" version="2.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -24,7 +24,12 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
-    
+
+    <preference name="android-windowSoftInputMode" value="stateVisible|adjustResize" />
+
+    <!-- ios -->
+    <preference name="KeyboardShrinksView" value="true"/>
+    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
 <!--
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="org.apache.cordova.vibration" />
@@ -49,6 +54,7 @@
     <gap:plugin name="cordova-plugin-media-capture" source="npm" version="1.2.0" />
     <gap:plugin name="ionic-plugin-keyboard" source="npm" version="1.0.8" />
     <gap:plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
+    <gap:plugin name="cordova-plugin-fileopener" source="npm" version="1.0.0" />
 
     <!-- to enable individual permissions use the following examples -->
     <feature name="http://api.phonegap.com/1.0/file"/>

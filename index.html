@@ -28,7 +28,7 @@
                 <div class="item-inner"> 
                   <div class="item-title">
                       <i class="icon icon-camera"></i>
-                      Quickscan</div>
+                      Neuer Vorgang</div>
                 </div>
               </div></a></li>
             <li v-if="sets.length && loggedin" ><a @click="senden" href="#" class="item-link close-panel">
@@ -154,7 +154,7 @@
                 <div class="left">
                     <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
                 </div>
-                <div class="center">Quickscan</div>
+                <div class="center">Neuer Vorgang</div>
               </div>
             </div>
             <!-- Scrollable page content-->
@@ -201,7 +201,7 @@
                     </div>
                   </li>
 
-                <li v-show="!usecamera" transition="expand">
+                <li id="bctyp" v-show="!usecamera" transition="expand">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="codeformat">
                       <option value="" ></option>
