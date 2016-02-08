@@ -611,7 +611,7 @@ function onDeviceReady() {
                 });
             },
             checkVersion: function() {
-                fc.updater.checkVersion( me.baseuri + 'app/version?'+_.now(), this.appversion );
+                fc.updater.checkVersion( this.baseuri + 'app/version?'+_.now(), this.appversion );
             },
             logout: function () {
                 var me = this;

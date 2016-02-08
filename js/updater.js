@@ -13,14 +13,26 @@ fc.updater =  {
                 success: function (data) {
                     myApp.hidePreloader();
                     data = JSON.parse(data);
-                    var alt = updater.version( version);
-                    var neu = updater.version(data.version);
+                    var alt = fc.updater.version( version);
+                    var neu = fc.updater.version(data.version);
                     if ( neu > alt ) {
-                        var msg = 'Ein Update auf die Version ' + result.version +
+                        var msg = 'Ein Update auf die Version ' + data.version +
                                 ' ist verfügbar. Soll das Update jetzt geladen werden?&nbsp;&nbsp;' +
                                 data.msg;
                         myApp.confirm(msg, function () {
-                            fc.updater.updateApp( data.url, function(){}, function(){} );
+                            fc.updater.updateApp( data.url, function(){
+                                myApp.addNotification({
+                                    title: 'Update',
+                                    message: 'Das Update wurde ausgeführt. Die neue Version steht beim nächsten Start zur Verfügung.',
+                                    hold: 0
+                                });
+                            }, function(err){
+                                myApp.addNotification({
+                                    title: 'Updatefehler',
+                                    message: err,
+                                    hold: 0
+                                });
+                            } );
                         });
                     }
                 },
