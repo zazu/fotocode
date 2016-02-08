@@ -21,13 +21,7 @@ fc.updater =  {
                                 data.msg;
                         myApp.confirm(msg, function () {
                             fc.updater.updateApp( data.url, function(){
-                                /*
-                                myApp.addNotification({
-                                    title: 'Update',
-                                    message: 'Das Update wurde ausgeführt. Die neue Version steht beim nächsten Start zur Verfügung.',
-                                    hold: 0
-                                });
-                                */
+                                navigator.app.exitApp();
                             }, function(err){
                                 myApp.addNotification({
                                     title: 'Updatefehler',
