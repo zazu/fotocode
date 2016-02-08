@@ -74,16 +74,6 @@ function onDeviceReady() {
                 */
             });
         }
-/*
-        window.cordova.plugins.FileOpener.openFile("http://www.website.com/file.pdf",
-            function(){
-                navigator.app.exitApp();
-            },
-            function(error) {
-                alert('Fehler beim Update: '  + error.message);
-            }
-        );
-*/
     }
 /*
     else {
@@ -260,6 +250,7 @@ function onDeviceReady() {
                 me.bereich = 0;
             if (me.loggedin)
                 me.syncUserInfo();
+            me.checkVersion();
         },
         methods: {
             deviceReady: function () {
@@ -618,6 +609,21 @@ function onDeviceReady() {
                         myApp.addNotification({'title': 'Beim Synchronisieren ist ein Fehler aufgetreten.'});
                     }
                 });
+            },
+            checkVersion: function() {
+                $$.ajax({
+                    url: me.baseuri + 'app/version?'+_.now(),
+                    method:'GET',
+                    data: params,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        var alt = appgeordnet.utils.Functions.version( version);
+                        var neu = appgeordnet.utils.Functions.version(result.version);
+                        if ( neu > alt ) {
+                        }
+                    }
+                });
+
             },
             logout: function () {
                 var me = this;
