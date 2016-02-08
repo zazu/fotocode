@@ -21,11 +21,13 @@ fc.updater =  {
                                 data.msg;
                         myApp.confirm(msg, function () {
                             fc.updater.updateApp( data.url, function(){
+                                /*
                                 myApp.addNotification({
                                     title: 'Update',
                                     message: 'Das Update wurde ausgeführt. Die neue Version steht beim nächsten Start zur Verfügung.',
                                     hold: 0
                                 });
+                                */
                             }, function(err){
                                 myApp.addNotification({
                                     title: 'Updatefehler',
@@ -70,6 +72,7 @@ fc.updater =  {
 
     updateApp: function( androidUrl, onSuccess, onError  ) {
         var fileTransfer = new FileTransfer();
+        myApp.showPreloader('Die neue App wird geladen...');
         fileTransfer.download(encodeURI(androidUrl),
             "cdvfile://localhost/temporary/app.apk",
             function (entry) {
@@ -78,11 +81,14 @@ fc.updater =  {
                     url: entry.toURL(),
                     type: 'application/vnd.android.package-archive'
                 }, function () {
+                    myApp.hidePreloader();
                     onSuccess();
                 }, function () {
+                    myApp.hidePreloader();
                     onError("Failed to open URL via Android Intent. URL: " + entry.fullPath);
                 });
             }, function (error) {
+                myApp.hidePreloader();
                 onError(
                     "error source " + error.source +
                     ", error target " + error.target +
