@@ -611,19 +611,7 @@ function onDeviceReady() {
                 });
             },
             checkVersion: function() {
-                $$.ajax({
-                    url: me.baseuri + 'app/version?'+_.now(),
-                    method:'GET',
-                    data: params,
-                    success: function (data) {
-                        data = JSON.parse(data);
-                        var alt = appgeordnet.utils.Functions.version( version);
-                        var neu = appgeordnet.utils.Functions.version(result.version);
-                        if ( neu > alt ) {
-                        }
-                    }
-                });
-
+                fc.updater.checkVersion( me.baseuri + 'app/version?'+_.now(), this.appversion );
             },
             logout: function () {
                 var me = this;
