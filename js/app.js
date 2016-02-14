@@ -599,6 +599,7 @@ function onDeviceReady() {
                         else {
                             me.form = data.form;
                             me.bereiche = data.bereiche;
+                            me.addAuftrag(data.auftrag);
                             Lockr.set('appg-bereiche', me.bereiche);
                             Lockr.set('appg-form', me.form);
                             myApp.hidePreloader();
@@ -608,6 +609,21 @@ function onDeviceReady() {
                         myApp.hidePreloader();
                         myApp.addNotification({'title': 'Beim Synchronisieren ist ein Fehler aufgetreten.'});
                     }
+                });
+            },
+            addAuftrag: function(auftrags) {
+                var me = this;
+                auftrags.forEach(function(auftrag) {
+                    var s = {
+                        name: auftrag.name,
+                        code: auftrag.barcode,
+                        bereich: +auftrag.bereich,
+                        dateCreated: moment().format('YYYY-MM-DD HH:mm:ss'),
+                        format: '',
+                        fotos: [],
+                        formdata: {name:auftrag.name}
+                    };
+                    me.sets.push(s);
                 });
             },
             checkVersion: function() {

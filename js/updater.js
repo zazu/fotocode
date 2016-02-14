@@ -17,18 +17,17 @@ fc.updater =  {
                     var neu = fc.updater.version(data.version);
                     if ( neu > alt ) {
                         var msg = 'Ein Update auf die Version ' + data.version +
-                                ' ist verfügbar. Soll das Update jetzt geladen werden?&nbsp;&nbsp;' +
+                                ' ist verfügbar. Soll das Update jetzt geladen werden?' +
                                 data.msg;
                         myApp.confirm(msg, function () {
-                            fc.updater.updateApp( data.url, function(){
-                                navigator.app.exitApp();
-                            }, function(err){
+                            fc.updater.updateApp( data.url, function(){},
+                                function(err){
                                 myApp.addNotification({
                                     title: 'Updatefehler',
                                     message: err,
                                     hold: 0
                                 });
-                            } );
+                            });
                         });
                     }
                 },
