@@ -114,7 +114,7 @@ function onDeviceReady() {
         domCache: true
     });
 
-    myApp.params.swipePanel = false;
+    //myApp.params.swipePanel = false;
 
 
     $$(document).on('pageInit', function (e) {
@@ -122,6 +122,8 @@ function onDeviceReady() {
 
         if ( page.name !== 'index')
             myApp.params.swipePanel = false;
+        else
+            myApp.params.swipePanel = 'right';
 
         if ( page.name === 'quickscan') {
             vm.cleanset();
@@ -248,8 +250,7 @@ function onDeviceReady() {
             if (me.bereich > 0 && me.bereich < 0 && ( !me.hasbereiche ||
                 _.isEmpty(me.user) || !me.bereiche.bereich[me.bereich] || !me.bereiche.bereich[me.bereich].length ))
                 me.bereich = 0;
-            if (me.loggedin)
-                me.syncUserInfo();
+            me.syncUserInfo();
             me.checkVersion();
         },
         methods: {
@@ -578,38 +579,40 @@ function onDeviceReady() {
             },
             syncUserInfo: function() {
                 var me = this;
-                var params = {
-                    version: me.appversion,
-                    name: window.cfg.device.model,
-                    platform: window.cfg.device.platform,
-                    uuid: window.cfg.device.uuid,
-                    devversion: window.cfg.device.version
-                };
-                myApp.showPreloader('Synchronisation');
-                $$.ajax({
-                    url: me.baseuri + 'user/syncinfo?'+_.now(),
-                    method:'POST',
-                    data: params,
-                    success: function (data) {
-                        data = JSON.parse(data);
-                        if (!data.success) {
+                if (me.loggedin) {
+                    var params = {
+                        version: me.appversion,
+                        name: window.cfg.device.model,
+                        platform: window.cfg.device.platform,
+                        uuid: window.cfg.device.uuid,
+                        devversion: window.cfg.device.version
+                    };
+                    myApp.showPreloader('Synchronisation');
+                    $$.ajax({
+                        url: me.baseuri + 'user/syncinfo?' + _.now(),
+                        method: 'POST',
+                        data: params,
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if (!data.success) {
+                                myApp.hidePreloader();
+                                myApp.addNotification({'title': data.msg});
+                            }
+                            else {
+                                me.form = data.form;
+                                me.bereiche = data.bereiche;
+                                me.addAuftrag(data.auftrag);
+                                Lockr.set('appg-bereiche', me.bereiche);
+                                Lockr.set('appg-form', me.form);
+                                myApp.hidePreloader();
+                            }
+                        },
+                        error: function () {
                             myApp.hidePreloader();
-                            myApp.addNotification({'title': data.msg});
+                            myApp.addNotification({'title': 'Beim Synchronisieren ist ein Fehler aufgetreten.'});
                         }
-                        else {
-                            me.form = data.form;
-                            me.bereiche = data.bereiche;
-                            me.addAuftrag(data.auftrag);
-                            Lockr.set('appg-bereiche', me.bereiche);
-                            Lockr.set('appg-form', me.form);
-                            myApp.hidePreloader();
-                        }
-                    },
-                    error: function() {
-                        myApp.hidePreloader();
-                        myApp.addNotification({'title': 'Beim Synchronisieren ist ein Fehler aufgetreten.'});
-                    }
-                });
+                    });
+                }
             },
             addAuftrag: function(auftrags) {
                 var me = this;

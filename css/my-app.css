@@ -118,6 +118,12 @@ i.icon.icon-info {
     background-image: url("../img/info.svg");
 }
 
+i.icon.icon-feed {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/feed.svg");
+}
+
 
 
 /* always present */
