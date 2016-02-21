@@ -604,6 +604,8 @@ function onDeviceReady() {
                                 me.addAuftrag(data.auftrag);
                                 Lockr.set('appg-bereiche', me.bereiche);
                                 Lockr.set('appg-form', me.form);
+                                // Empfangsbestätigung zum Löschen vom Server
+                                $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
                                 myApp.hidePreloader();
                             }
                         },
@@ -620,7 +622,7 @@ function onDeviceReady() {
                     var s = {
                         name: auftrag.name,
                         code: auftrag.barcode,
-                        bereich: +auftrag.bereich,
+                        bereich: +auftrag.bereich + 1,
                         dateCreated: moment().format('YYYY-MM-DD HH:mm:ss'),
                         format: '',
                         fotos: [],
