@@ -200,7 +200,7 @@ function onDeviceReady() {
             numvideos: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
-                    num = num + this.sets[i].videos.length;
+                    num = num + (this.sets[i].videos)?this.sets[i].videos.length:0;
                 }
                 return num;
             },
