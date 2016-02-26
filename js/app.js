@@ -173,7 +173,8 @@ function onDeviceReady() {
                 format: '',
                 fotos: [],
                 formdata: [],
-                bereich: 0
+                bereich: 0,
+                videos: []
             },
             login: {login: '', password: ''},
             user: {name: '', token: ''},
@@ -292,6 +293,7 @@ function onDeviceReady() {
                 me.set.bereich = 0;
                 me.set.dateCreated = '';
                 me.set.formdata = [];
+                me.set.videos = [];
             },
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {
@@ -414,6 +416,17 @@ function onDeviceReady() {
                     success();
                 });
             },
+
+            takevideo: function (success) {
+                var me = this;
+                fc.camera.captureVideo(function (result) {
+                    me.set.videos.push(result);
+                    success();
+                }, function () {
+                    success();
+                });
+            },
+
             usefotos: function () {
                 var me = this;
                 // Vorgang auch ohne Fotos anlegen (me.set.fotos.length)
@@ -442,6 +455,33 @@ function onDeviceReady() {
                     }
                 );
             },
+
+            addvideo: function(idx) {
+                var me = this;
+                me.selectedSet = idx;
+                me.cleanset();
+                me.takevideo(
+                    function(){
+                        if (me.set.videos.length) {
+                            me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
+                            Lockr.set('appg-sets', me.sets);
+                        }
+                        me.cleanset();
+                    }
+                );
+            },
+
+            addmedia: function(idx) {
+                var me = this;
+                var buttons = [
+                    {text: 'Foto',onClick: function () {me.addfotos(idx);}},
+                    {text: 'Video',onClick: function () {me.addvideo(idx);}},
+                    {text: 'Audio',onClick: function () {me.addaudio(idx);}},
+                    {text: 'Abbrechen',color: 'red'},
+                ];
+                myApp.actions(buttons);
+            },
+
             removeset: function (idx) {
                 var me = this;
                 myApp.confirm(
@@ -536,6 +576,19 @@ function onDeviceReady() {
                     }
                 }
             },
+
+            openVorgang: function(idx) {
+                var me = this;
+                me.selectedSet = idx;
+                me.set =  me.sets[me.selectedSet];
+                //me.showFotos(idx);
+                me.showMedia(idx);
+            },
+
+            showMedia: function(idx) {
+                mainView.router.load({pageName: 'medien'});
+            },
+
             submitlogin: function () {
                 var me = this;
                 var params = {

@@ -50,7 +50,24 @@ fc.camera =  {
         else {
             success( { 'text':'1234567890123','format':'EAN_13' } );
         }
-    }
+    },
 
+    captureVideo: function(success, fail ) {
+
+        navigator.device.capture.captureVideo(
+            function (mediaFiles) {
+                var i, len;
+                for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                    var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+                    success({uri: mediaFiles[i].fullPath, title: title});
+                }
+            },
+            function (error) {
+                fail(error);
+            },
+            {
+                limit: 1
+            });
+    }
 
 };
