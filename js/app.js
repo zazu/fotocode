@@ -155,6 +155,10 @@ function onDeviceReady() {
         }) : [];
     });
 
+    Vue.filter('kB2MB', function (value) {
+        return (value / 1024).toFixed(2);
+    })
+
     window.vm = new Vue({
         el: '#app',
         myPhotoBrowser: null,
@@ -176,7 +180,8 @@ function onDeviceReady() {
                 fotos: [],
                 formdata: [],
                 bereich: 0,
-                videos: []
+                videos: [],
+                audios: []
             },
             login: {login: '', password: ''},
             user: {name: '', token: ''},
@@ -203,6 +208,13 @@ function onDeviceReady() {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
                     num = num + ( (typeof this.sets[i].videos!== "undefined")?this.sets[i].videos.length:0);
+                }
+                return num;
+            },
+            numaudios: function () {
+                var num = 0;
+                for (var i = 0; i < this.sets.length; i++) {
+                    num = num + ( (typeof this.sets[i].audios!== "undefined")?this.sets[i].audios.length:0);
                 }
                 return num;
             },
@@ -303,6 +315,7 @@ function onDeviceReady() {
                 me.set.dateCreated = '';
                 me.set.formdata = [];
                 me.set.videos = [];
+                me.set.audios=[];
             },
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {
@@ -436,6 +449,16 @@ function onDeviceReady() {
                 });
             },
 
+            takeaudio: function (success) {
+                var me = this;
+                fc.camera.captureAudio(function (result) {
+                    me.set.audios.push(result);
+                    success();
+                }, function () {
+                    success();
+                });
+            },
+
             usefotos: function () {
                 var me = this;
                 // Vorgang auch ohne Fotos anlegen (me.set.fotos.length)
@@ -473,6 +496,21 @@ function onDeviceReady() {
                     function(){
                         if (me.set.videos.length) {
                             me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
+                            Lockr.set('appg-sets', me.sets);
+                        }
+                        me.cleanset();
+                    }
+                );
+            },
+
+            addaudio: function(idx) {
+                var me = this;
+                me.selectedSet = idx;
+                me.cleanset();
+                me.takeaudio(
+                    function(){
+                        if (me.set.audios.length) {
+                            me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
                             Lockr.set('appg-sets', me.sets);
                         }
                         me.cleanset();
@@ -603,6 +641,14 @@ function onDeviceReady() {
             openVideo: function(idx) {
                 var me = this;
                 var uri = me.sets[me.selectedSet].videos[idx].uri;
+                if (navigator.camera)
+                    cordova.plugins.disusered.open( uri );
+                else
+                    alert(uri);
+            },
+            openAudio: function(idx) {
+                var me = this;
+                var uri = me.sets[me.selectedSet].audios[idx].uri;
                 if (navigator.camera)
                     cordova.plugins.disusered.open( uri );
                 else

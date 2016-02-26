@@ -193,11 +193,23 @@
                                 <li v-for="ds in set.videos">
                                     <a @click.stop.prevent="openVideo($index)" class="item-link item-content">
                                         <div class="item-inner">
-                                            <div class="item-title">{{ds.title}} ({{ds.size}} kB)</div>
+                                            <div class="item-title">{{ds.title}} ({{ds.size|kB2MB}} MB)</div>
                                         </div>
                                     </a>
                                 </li>
-
+                            </ul>
+                        </div>
+                        <!-- Audio-->
+                        <div class="list-group">
+                            <ul>
+                                <li class="list-group-title">Audios</li>
+                                <li v-for="ds in set.audios">
+                                    <a @click.stop.prevent="openAudio($index)" class="item-link item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">{{ds.title}} ({{ds.size|kB2MB}} MB)</div>
+                                        </div>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

@@ -53,7 +53,6 @@ fc.camera =  {
     },
 
     captureVideo: function(success, fail ) {
-
         if (navigator.camera) {
             navigator.device.capture.captureVideo(
                 function (mediaFiles) {
@@ -77,7 +76,29 @@ fc.camera =  {
                 });
         }
         else {
-            success({uri: "fullPath", title: "title", size: 12345, type:"vid",date:"01.03.2016"} );
+            success({uri: "fullPath", title: "video.mp4", size: 12345, type:"mp4",date:"01.03.2016"} );
+        }
+    },
+
+    captureAudio: function(success, fail ) {
+        if (navigator.camera) {
+            navigator.device.capture.captureAudio(
+                function(mediaFiles) {
+                    var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+                    success({uri: mediaFiles[i].fullPath,
+                        title: title,
+                        size: mediaFiles[i].size,
+                        type: mediaFiles[i].type,
+                        date: mediaFiles[i].lastModifiedDate
+                    } );
+                },
+                function (error) {
+                    fail(error);
+                },
+                {limit: 1});
+        }
+        else {
+            success({uri: "fullPath", title: "audio.mp3", size: 12345, type:"mp3",date:"01.03.2016"} );
         }
     }
 
