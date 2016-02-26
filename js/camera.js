@@ -54,20 +54,31 @@ fc.camera =  {
 
     captureVideo: function(success, fail ) {
 
-        navigator.device.capture.captureVideo(
-            function (mediaFiles) {
-                var i, len;
-                for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                    var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                    success({uri: mediaFiles[i].fullPath, title: title});
-                }
-            },
-            function (error) {
-                fail(error);
-            },
-            {
-                limit: 1
-            });
+        if (navigator.camera) {
+            navigator.device.capture.captureVideo(
+                function (mediaFiles) {
+                    var i, len;
+                    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                        var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+                        success({uri: mediaFiles[i].fullPath,
+                            title: title,
+                            size: mediaFiles[i].size,
+                            type: mediaFiles[i].type,
+                            date: mediaFiles[i].lastModifiedDate
+                        } );
+                    }
+                },
+                function (error) {
+                    fail(error);
+                },
+                {
+                    limit: 1,
+                    quality: 0
+                });
+        }
+        else {
+            success({uri: "fullPath", title: "title", size: 12345, type:"vid",date:"01.03.2016"} );
+        }
     }
 
 };

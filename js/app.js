@@ -200,7 +200,7 @@ function onDeviceReady() {
             numvideos: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
-                    num = num + (this.sets[i].videos)?this.sets[i].videos.length:0;
+                    num = num + ( (typeof this.sets[i].videos!== "undefined")?this.sets[i].videos.length:0);
                 }
                 return num;
             },
@@ -590,6 +590,15 @@ function onDeviceReady() {
                 me.set =  me.sets[me.selectedSet];
                 //me.showFotos(idx);
                 me.showMedia(idx);
+            },
+
+            openVideo: function(idx) {
+                var me = this;
+                var uri = me.sets[me.selectedSet].videos[idx].uri;
+                if (navigator.camera)
+                    cordova.plugins.disusered.open( uri );
+                else
+                    alert(uri);
             },
 
             showMedia: function(idx) {

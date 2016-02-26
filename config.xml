@@ -49,6 +49,7 @@
     <gap:plugin name="ionic-plugin-keyboard" source="npm" version="1.0.8" />
     <gap:plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <gap:plugin name="cordova-plugin-fileopener" source="npm" version="1.0.4" />
+    <gap:plugin name="cordova-open" source="npm" version="1.0.9" />
 
     <gap:plugin name="cordova-plugin-webintent2" source="npm" version="1.0.1" />
 
