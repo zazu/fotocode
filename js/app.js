@@ -197,6 +197,13 @@ function onDeviceReady() {
                 }
                 return num;
             },
+            numvideos: function () {
+                var num = 0;
+                for (var i = 0; i < this.sets.length; i++) {
+                    num = num + this.sets[i].videos.length;
+                }
+                return num;
+            },
             numcodes: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
@@ -463,7 +470,7 @@ function onDeviceReady() {
                 me.takevideo(
                     function(){
                         if (me.set.videos.length) {
-                            me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
+                            me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
                             Lockr.set('appg-sets', me.sets);
                         }
                         me.cleanset();
