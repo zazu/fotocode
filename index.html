@@ -113,7 +113,7 @@
                     <span v-if="numfotos==1"> Foto</span>
                     <span v-else> Fotos</span> / {{numvideos}}
                     <span v-if="numvideos==1"> Video</span>
-                    <span v-else> Fotos</span>
+                    <span v-else> Videos</span>
                 </div>
             </div>
 
@@ -173,13 +173,15 @@
                         <div class="list-group">
                             <ul>
                                 <li class="list-group-title">Fotos</li>
-                                <li class="item-content" v-for="ds in set.fotos">
-                                    <div class="item-media">
-                                        <img  :src="ds.uri" width="80">
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title">{{ds.title}}</div>
-                                    </div>
+                                <li class="" v-for="ds in set.fotos">
+                                    <a @click.stop.prevent="openFotos($index)" class="item-link item-content">
+                                        <div class="item-media">
+                                            <img  :src="ds.uri" width="80">
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">{{ds.title}}</div>
+                                        </div>
+                                    </a>
                                 </li>
 
                             </ul>

@@ -116,7 +116,6 @@ function onDeviceReady() {
 
     //myApp.params.swipePanel = false;
 
-
     $$(document).on('pageInit', function (e) {
         var page = e.detail.page;
 
@@ -142,6 +141,9 @@ function onDeviceReady() {
         }
         else if ( page.name === 'index') {
             myApp.params.swipePanel = 'right';
+        }
+        else {
+            myApp.params.swipePanel = false;
         }
     });
 
@@ -590,6 +592,12 @@ function onDeviceReady() {
                 me.set =  me.sets[me.selectedSet];
                 //me.showFotos(idx);
                 me.showMedia(idx);
+            },
+
+            // aus medienliste heraus öffnen
+            openFotos: function(idx) {
+                var me = this;
+                me.showFotos(me.selectedSet);
             },
 
             openVideo: function(idx) {
