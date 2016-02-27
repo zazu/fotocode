@@ -84,13 +84,17 @@ fc.camera =  {
         if (navigator.camera) {
             navigator.device.capture.captureAudio(
                 function(mediaFiles) {
-                    var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                    success({uri: mediaFiles[i].fullPath,
-                        title: title,
-                        size: mediaFiles[i].size,
-                        type: mediaFiles[i].type,
-                        date: mediaFiles[i].lastModifiedDate
-                    } );
+                    var i, len;
+                    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                        var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+                        success({
+                            uri: mediaFiles[i].fullPath,
+                            title: title,
+                            size: mediaFiles[i].size,
+                            type: mediaFiles[i].type,
+                            date: mediaFiles[i].lastModifiedDate
+                        });
+                    }
                 },
                 function (error) {
                     fail(error);
