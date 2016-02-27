@@ -145,7 +145,9 @@ fc.file =  {
     	var me = this;
         me.fotocount = 0;
         me.uploadFoto( group.fotos, 0, function(){
+            me.fotocount = 0;
             me.uploadFoto( group.videos, 0, function(){
+                me.fotocount = 0;
                 me.uploadFoto( group.audios, 0, function(){
                     me.sendUploadDone(success);
                 }, fail, "Sende Audio " );
@@ -229,7 +231,6 @@ fc.file =  {
             }
             else {
                 myApp.hidePreloader();
-                vm.sets[ me.group.idx ].sended = true;
                 me.uploadFoto( fotos, idx + 1, success, fail, msg );
             }
 	    }
@@ -257,6 +258,7 @@ fc.file =  {
                 stats: JSON.stringify(stats)
             },
             function(response, opts ) {
+                vm.sets[ me.group.idx ].sended = true;
                 success();
             }
         );

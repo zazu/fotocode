@@ -589,6 +589,8 @@ function onDeviceReady() {
                             media = me.sets[me.selectedSet].audios.splice(idx, 1);
                             me.set.audios.splice(idx,1);
                         }
+
+
                         FileIO.removeDeletedImage(media[0].uri);
                         Lockr.set('appg-sets', me.sets);
                     }, function () {
