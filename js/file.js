@@ -132,7 +132,7 @@ fc.file =  {
                 myApp.alert('', result.message );
 		    }
 		    if ( result.success ) {
-                me.uploadFotos( group.fotos, success, fail );
+                me.uploadMedia( group, success, fail );
 		    }
             else {
                 fail('Die Daten konnten nicht gesendet werden.');
@@ -141,23 +141,27 @@ fc.file =  {
     },
 
     // bilder inkl. name und kommentar hochladen
-    uploadFotos: function( fotos, success, fail ) {
+    uploadMedia: function( group, success, fail ) {
     	var me = this;
-        me.fotocount = 0,
-        me.uploadFoto( fotos, 0, success, fail );
+        me.fotocount = 0;
+        me.uploadFoto( group.fotos, 0, function(){
+            me.uploadFoto( group.videos, 0, function(){
+                me.uploadFoto( group.audios, 0, function(){
+                    me.sendUploadDone(success);
+                }, fail, "Sende Audio " );
+            }, fail, "Sende Video " );
+        }, fail, "Sende Bild " );
     },
 
     // bilder inkl. name und kommentar hochladen
-    uploadFoto: function( fotos, idx, success, fail ) {
+    uploadFoto: function( fotos, idx, success, fail, msg ) {
     	var me = this;
     	var fotostore = fotos;
     	if ( idx < fotostore.length ) {
 	    	var foto = fotostore[idx];
 	    	me.fotocount++;
             me.fotototal++;
-
-            myApp.showPreloader('Sende Bild ' + me.fotototal);
-
+            myApp.showPreloader(msg + me.fotototal);
 		    var fileURI = foto.uri;
 		    var serverURI = vm.baseuri + 'app/upload' ;
             if ( navigator.camera ) {
@@ -171,7 +175,7 @@ fc.file =  {
                         guid: me.group.gid,
                         index: idx,
                         title: foto.title,
-                        bemerkung: foto.bemerkung,
+                        bemerkung: _.isUndefined(foto.bemerkung)?"":foto.bemerkung,
                         authautologin: vm.user.token
                     };
                     var ft = new FileTransfer();
@@ -185,7 +189,7 @@ fc.file =  {
                             try {
                                 if ( res.success ) {
                                     vm.sets[ me.group.idx ].sended = true;
-                                    me.uploadFoto( fotos, idx + 1, success, fail );
+                                    me.uploadFoto( fotos, idx + 1, success, fail, msg );
                                 }
                                 else {
                                     if ( res.message && res.message.length )
@@ -219,38 +223,43 @@ fc.file =  {
                 }
                 catch(e) {
                     myApp.hidePreloader();
-                  //appgeordnet.app.log( "Upload Fehler: " + e.message );
-                  fail( e.message );
+                    //appgeordnet.app.log( "Upload Fehler: " + e.message );
+                    fail( e.message );
                 }
             }
             else {
                 myApp.hidePreloader();
                 vm.sets[ me.group.idx ].sended = true;
-                me.uploadFoto( fotos, idx + 1, success, fail );
+                me.uploadFoto( fotos, idx + 1, success, fail, msg );
             }
 	    }
 		else {
-            var serverURI = vm.baseuri + 'app/uploaddone';
-            var groups = [];
-            var stats = {
-                version: window.cfg.version,
-                name: window.cfg.device.model,
-                platform: window.cfg.device.platform,
-                uuid: window.cfg.device.uuid,
-                devversion: window.cfg.device.version,
-                numfotos: -1
-            };
-            groups.push( me.group.gid );
-            $$.post( serverURI, {
-                    authautologin: vm.user.token,
-                    groups:JSON.stringify(groups),
-                    stats: JSON.stringify(stats)
-                },
-                function(response, opts ) {
-                    success();
-                }
-            );
+            success();
 		}
+    },
+
+    sendUploadDone: function(success) {
+        var me = this;
+        var serverURI = vm.baseuri + 'app/uploaddone';
+        var groups = [];
+        var stats = {
+            version: window.cfg.version,
+            name: window.cfg.device.model,
+            platform: window.cfg.device.platform,
+            uuid: window.cfg.device.uuid,
+            devversion: window.cfg.device.version,
+            numfotos: -1
+        };
+        groups.push( me.group.gid );
+        $$.post( serverURI, {
+                authautologin: vm.user.token,
+                groups:JSON.stringify(groups),
+                stats: JSON.stringify(stats)
+            },
+            function(response, opts ) {
+                success();
+            }
+        );
     },
 
     removeFotoFromFileSystem: function( fileuri ) {

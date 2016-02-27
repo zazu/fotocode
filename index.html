@@ -175,17 +175,25 @@
                                         &nbsp;Fotos
                                     </a>
                                 </li>
-                                <li class="" v-for="ds in set.fotos">
-                                    <a @click.stop.prevent="openFotos($index)" class="item-link item-content">
+                                <li v-for="ds in set.fotos">
+                                    <div class="item-content">
                                         <div class="item-media">
-                                            <img  :src="ds.uri" width="80">
+                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                                <img  :src="ds.uri" width="80">
+                                            </a>
                                         </div>
                                         <div class="item-inner">
-                                            <div class="item-title">{{ds.title}}</div>
+                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                                <div class="item-title">{{ds.title}}</div>
+                                            </a>
+                                            <a @click.stop.prevent="removeMedia('foto',$index)" class="" >
+                                                <div class="item-after">
+                                                    <i class="icon icon-bin"></i>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
-
                             </ul>
                         </div>
                         <!-- Videos-->
@@ -198,11 +206,18 @@
                                     </a>
                                 </li>
                                 <li v-for="ds in set.videos">
-                                    <a @click.stop.prevent="openVideo($index)" class="item-link item-content">
+                                    <div class="item-content">
                                         <div class="item-inner">
-                                            <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                            <a @click.stop.prevent="openVideo($index)" class="item-link">
+                                                <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                            </a>
+                                            <a @click.stop.prevent="removeMedia('video',$index)" class="" >
+                                                <div class="item-after">
+                                                    <i class="icon icon-bin"></i>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -215,12 +230,17 @@
                                         &nbsp;Audios
                                     </a>
                                 </li>
-                                <li v-for="ds in set.audios">
-                                    <a @click.stop.prevent="openAudio($index)" class="item-link item-content">
-                                        <div class="item-inner">
+                                <li class="item-content" v-for="ds in set.audios">
+                                    <div class="item-inner">
+                                        <a @click.stop.prevent="openAudio($index)" class="item-link">
                                             <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
-                                        </div>
-                                    </a>
+                                        </a>
+                                        <a @click.stop.prevent="removeMedia('audio',$index)" class="" >
+                                            <div class="item-after">
+                                                <i class="icon icon-bin"></i>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

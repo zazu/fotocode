@@ -207,14 +207,14 @@ function onDeviceReady() {
             numvideos: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
-                    num = num + ( (typeof this.sets[i].videos!== "undefined")?this.sets[i].videos.length:0);
+                    num = num +  (!_.isUndefined(this.sets[i].videos)?this.sets[i].videos.length:0);
                 }
                 return num;
             },
             numaudios: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
-                    num = num + ( (typeof this.sets[i].audios!== "undefined")?this.sets[i].audios.length:0);
+                    num = num + (!_.isUndefined(this.sets[i].audios)?this.sets[i].audios.length:0);
                 }
                 return num;
             },
@@ -570,6 +570,31 @@ function onDeviceReady() {
                     }
                 );
             },
+            removeMedia: function(type, idx ) {
+                var me = this;
+                myApp.confirm(
+                    "Bitte bestätigen Sie das endgültige Löschen.",
+                    "Löschen?",
+                    function () {
+                        var media;
+                        if ( type === 'foto' ) {
+                            media = me.sets[me.selectedSet].fotos.splice(idx, 1);
+                            me.set.fotos.splice(idx,1);
+                        }
+                        else if ( type === 'video' ) {
+                            media = me.sets[me.selectedSet].videos.splice(idx,1);
+                            me.set.videos.splice(idx,1);
+                        }
+                        else if ( type === 'audio' ) {
+                            media = me.sets[me.selectedSet].audios.splice(idx, 1);
+                            me.set.audios.splice(idx,1);
+                        }
+                        FileIO.removeDeletedImage(media[0].uri);
+                        Lockr.set('appg-sets', me.sets);
+                    }, function () {
+                    }
+                );
+            },
             commentFoto: function () {
                 var me = this;
                 var sliderIndex = me.myPhotoBrowser.activeIndex;
@@ -638,7 +663,6 @@ function onDeviceReady() {
                     }
                 }
             },
-
             openVorgang: function(idx) {
                 var me = this;
                 me.selectedSet = idx;
@@ -646,13 +670,11 @@ function onDeviceReady() {
                 //me.showFotos(idx);
                 me.showMedia(idx);
             },
-
             // aus medienliste heraus öffnen
             openFotos: function(idx) {
                 var me = this;
                 me.showFotos(me.selectedSet);
             },
-
             openVideo: function(idx) {
                 var me = this;
                 var uri = me.sets[me.selectedSet].videos[idx].uri;
@@ -669,11 +691,9 @@ function onDeviceReady() {
                 else
                     alert(uri);
             },
-
             showMedia: function(idx) {
                 mainView.router.load({pageName: 'medien'});
             },
-
             submitlogin: function () {
                 var me = this;
                 var params = {
@@ -800,6 +820,8 @@ function onDeviceReady() {
                         code: set.code,
                         format: set.format,
                         fotos: set.fotos,
+                        videos: _.isUndefined(set.videos)?[]:set.videos,
+                        audios: _.isUndefined(set.audios)?[]:set.audios,
                         formdata: set.formdata,
                         bereich: bereich
                     };
@@ -825,15 +847,25 @@ function onDeviceReady() {
                     });
                 }
             },
+
             removeSended: function () {
                 var me = this;
                 var idx = me.sets.length;
+                var medium;
                 while (--idx >= 0) {
                     if (me.sets[idx].sended) {
                         me.numsent++;
                         while (me.sets[idx].fotos.length) {
-                            var foto = me.sets[idx].fotos.splice(me.sets[idx].fotos.length - 1, 1);
-                            FileIO.removeDeletedImage(foto[0].uri);
+                            medium = me.sets[idx].fotos.splice(me.sets[idx].fotos.length - 1, 1);
+                            FileIO.removeDeletedImage(medium[0].uri);
+                        }
+                        while (me.sets[idx].videos.length) {
+                            medium = me.sets[idx].videos.splice(me.sets[idx].videos.length - 1, 1);
+                            FileIO.removeDeletedImage(medium[0].uri);
+                        }
+                        while (me.sets[idx].audios.length) {
+                            medium = me.sets[idx].audios.splice(me.sets[idx].audios.length - 1, 1);
+                            FileIO.removeDeletedImage(medium[0].uri);
                         }
                         me.sets.splice(idx, 1);
                         me.lastsent = moment().format('DD.MM.YYYY HH:mm');
