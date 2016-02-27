@@ -109,11 +109,11 @@
                 <div><span class="infocollabel">Letzter Versand:</span>{{lastsent}}</div>
                 <div><span class="infocollabel">Lokale Daten:</span>{{numsets}}
                     <span v-if="numsets==1"> Vorgang</span>
-                    <span v-else> Vorgänge</span> / {{numfotos}}
-                    <span v-if="numfotos==1"> Foto</span>
-                    <span v-else> Fotos</span> / {{numvideos}}
-                    <span v-if="numvideos==1"> Video</span>
-                    <span v-else> Videos</span>
+                    <span v-else> Vorgänge</span>
+                    / {{numfotos}}
+                    / {{numvideos}}
+                    / {{numaudios}}
+                    <span v-else> Medien</span>
                 </div>
             </div>
 
@@ -146,9 +146,6 @@
                          <a @click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
                              <i class="icon icon-price-tag-white"></i>
                          </a>
-                         <a @click.prevent="addmedia($index)" class="swipeout-close bg-bluegray" >
-                             <i class="icon icon-camera-light"></i>
-                         </a>
                    </div>
                 </li>
               </ul>
@@ -172,7 +169,12 @@
                         <!-- Fotos-->
                         <div class="list-group">
                             <ul>
-                                <li class="list-group-title">Fotos</li>
+                                <li class="list-group-title">
+                                    <a @click.stop.prevent="addfotos(-1)" >
+                                        <i class="icon icon-plus-sm"></i>
+                                        &nbsp;Fotos
+                                    </a>
+                                </li>
                                 <li class="" v-for="ds in set.fotos">
                                     <a @click.stop.prevent="openFotos($index)" class="item-link item-content">
                                         <div class="item-media">
@@ -189,7 +191,12 @@
                         <!-- Videos-->
                         <div class="list-group">
                             <ul>
-                                <li class="list-group-title">Videos</li>
+                                <li class="list-group-title">
+                                    <a @click.stop.prevent="addvideo(-1)" >
+                                        <i class="icon icon-plus-sm"></i>
+                                        &nbsp;Videos
+                                    </a>
+                                </li>
                                 <li v-for="ds in set.videos">
                                     <a @click.stop.prevent="openVideo($index)" class="item-link item-content">
                                         <div class="item-inner">
@@ -202,7 +209,12 @@
                         <!-- Audio-->
                         <div class="list-group">
                             <ul>
-                                <li class="list-group-title">Audios</li>
+                                <li class="list-group-title">
+                                    <a @click.stop.prevent="addaudio(-1)" >
+                                        <i class="icon icon-plus-sm"></i>
+                                        &nbsp;Audios
+                                    </a>
+                                </li>
                                 <li v-for="ds in set.audios">
                                     <a @click.stop.prevent="openAudio($index)" class="item-link item-content">
                                         <div class="item-inner">

@@ -1,7 +1,7 @@
 
 window.onload = function () {
     window.cfg = {
-        version: '2.0.x',
+        version: '2.0.30',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
@@ -475,7 +475,8 @@ function onDeviceReady() {
             },
             addfotos: function (idx) {
                 var me = this;
-                me.selectedSet = idx;
+                if ( idx >=0 )
+                    me.selectedSet = idx;
                 me.cleanset();
                 me.takefoto(
                     function () {
@@ -483,14 +484,19 @@ function onDeviceReady() {
                             me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
                             Lockr.set('appg-sets', me.sets);
                         }
-                        me.cleanset();
+                        if ( idx >=0 )
+                            me.cleanset();
+                        else {
+                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                        }
                     }
                 );
             },
 
             addvideo: function(idx) {
                 var me = this;
-                me.selectedSet = idx;
+                if ( idx >=0 )
+                    me.selectedSet = idx;
                 me.cleanset();
                 me.takevideo(
                     function(){
@@ -498,14 +504,19 @@ function onDeviceReady() {
                             me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
                             Lockr.set('appg-sets', me.sets);
                         }
-                        me.cleanset();
+                        if ( idx >=0 )
+                            me.cleanset();
+                        else {
+                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                        }
                     }
                 );
             },
 
             addaudio: function(idx) {
                 var me = this;
-                me.selectedSet = idx;
+                if ( idx >=0 )
+                    me.selectedSet = idx;
                 me.cleanset();
                 me.takeaudio(
                     function(){
@@ -513,7 +524,11 @@ function onDeviceReady() {
                             me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
                             Lockr.set('appg-sets', me.sets);
                         }
-                        me.cleanset();
+                        if ( idx >=0 )
+                            me.cleanset();
+                        else {
+                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                        }
                     }
                 );
             },
@@ -627,7 +642,7 @@ function onDeviceReady() {
             openVorgang: function(idx) {
                 var me = this;
                 me.selectedSet = idx;
-                me.set =  me.sets[me.selectedSet];
+                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
                 //me.showFotos(idx);
                 me.showMedia(idx);
             },
@@ -749,6 +764,8 @@ function onDeviceReady() {
                         dateCreated: moment().format('YYYY-MM-DD HH:mm:ss'),
                         format: '',
                         fotos: [],
+                        videos: [],
+                        audios: [],
                         formdata: {name:auftrag.name}
                     };
                     me.sets.push(s);
