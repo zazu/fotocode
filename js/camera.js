@@ -11,7 +11,7 @@ fc.camera =  {
                 function(imageUri) {
                     //console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
-                    success( { uri: imageUri, title: title, bemerkung:"" }  );
+                    success( { uri: decodeURI( imageUri), title: title, bemerkung:"" }  );
                 },
                 function(error) {
                     console.log('getPicture error');
@@ -59,7 +59,7 @@ fc.camera =  {
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                        success({uri: mediaFiles[i].fullPath,
+                        success({uri: decodeURI( mediaFiles[i].fullPath ),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
@@ -88,7 +88,7 @@ fc.camera =  {
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
                         success({
-                            uri: mediaFiles[i].fullPath,
+                            uri: decodeURI( mediaFiles[i].fullPath ),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
