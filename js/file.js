@@ -42,16 +42,13 @@ var FileIO = {
         fileEntry.moveTo(gFileSystem.root, newName, FileIO.movedImageSuccess, FileIO.errorHandler);
      },
 
-    // send the full URI of the moved image to the updateImageSrc() method which does some DOM manipulation
      movedImageSuccess : function(fileEntry) {
-          updateImageSrc(fileEntry.fullPath);
+          //updateImageSrc(fileEntry.fullPath);
      },
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
      removeDeletedImage : function(imageURI){
-         //console.log('removeDeletedImage');
-         //console.log(imageURI);
          if ( navigator.camera ) {
             window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
          }
@@ -60,7 +57,6 @@ var FileIO = {
     // delete the file
      removeFile : function(fileEntry){
          fileEntry.remove(function(){
-            //console.log('File removed');
          }, FileIO.errorHandler);
      },
 
@@ -163,7 +159,7 @@ fc.file =  {
 	    	var foto = fotostore[idx];
 	    	me.fotocount++;
             me.fotototal++;
-            myApp.showPreloader(msg + me.fotototal);
+            myApp.showPreloader(msg + me.fotocount + " / " +  me.fotototal);
 		    var fileURI = foto.uri;
 		    var serverURI = vm.baseuri + 'app/upload' ;
             if ( navigator.camera ) {

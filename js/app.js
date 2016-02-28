@@ -452,7 +452,6 @@ function onDeviceReady() {
             takeaudio: function (success) {
                 var me = this;
                 fc.camera.captureAudio(function (result) {
-alert(JSON.stringify(result));
                     me.set.audios.push(result);
                     success();
                 }, function () {
@@ -590,8 +589,6 @@ alert(JSON.stringify(result));
                             media = me.sets[me.selectedSet].audios.splice(idx, 1);
                             me.set.audios.splice(idx,1);
                         }
-alert(JSON.stringify( media[0]));
-
                         FileIO.removeDeletedImage(media[0].uri);
                         Lockr.set('appg-sets', me.sets);
                     }, function () {
@@ -689,9 +686,6 @@ alert(JSON.stringify( media[0]));
             openAudio: function(idx) {
                 var me = this;
                 var uri = me.sets[me.selectedSet].audios[idx].uri;
-
-alert(JSON.stringify(uri));
-
                 if (navigator.camera)
                     cordova.plugins.disusered.open( uri );
                 else
