@@ -452,6 +452,7 @@ function onDeviceReady() {
             takeaudio: function (success) {
                 var me = this;
                 fc.camera.captureAudio(function (result) {
+                    console.log("audios", result);
                     me.set.audios.push(result);
                     success();
                 }, function () {
@@ -589,7 +590,7 @@ function onDeviceReady() {
                             media = me.sets[me.selectedSet].audios.splice(idx, 1);
                             me.set.audios.splice(idx,1);
                         }
-
+                        console.log("playmedia", media[0]);
 
                         FileIO.removeDeletedImage(media[0].uri);
                         Lockr.set('appg-sets', me.sets);
