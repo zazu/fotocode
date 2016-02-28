@@ -865,7 +865,10 @@ function onDeviceReady() {
                         }
                         while (me.sets[idx].audios.length) {
                             medium = me.sets[idx].audios.splice(me.sets[idx].audios.length - 1, 1);
-                            FileIO.removeDeletedImage(medium[0].uri);
+                            // Versuch NO_MODIFICATION_ALLOWED_ERR zu umgehen
+                            setTimeout(function(){
+                                FileIO.removeDeletedImage(medium[0].uri);
+                            }, 200);
                         }
                         me.sets.splice(idx, 1);
                         me.lastsent = moment().format('DD.MM.YYYY HH:mm');
