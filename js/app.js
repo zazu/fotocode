@@ -219,6 +219,9 @@ function onDeviceReady() {
                 }
                 return num;
             },
+            nummedia: function() {
+                return this.numfotos() + this.numvideos() + this.numaudios();
+            },
             numcodes: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
@@ -823,7 +826,9 @@ function onDeviceReady() {
                 var me = this;
                 var idx=0;
                 // ersten set mit fotos finden
-                while ( idx < me.sets.length && !me.sets[idx].fotos.length )
+                while ( idx < me.sets.length &&
+                       (me.sets[idx].fotos.length + me.sets[idx].videos.length +me.sets[idx].audios.length)==0
+                    )
                     idx++;
                 if ( idx < me.sets.length ) {
                     var set = me.sets[idx];
@@ -852,7 +857,7 @@ function onDeviceReady() {
                 else {
                     var s = '<%= num %> Vorgänge wurden gesendet.'
                     if ( me.numsent === 0)
-                        s += '<br>Es werden nur Vorgänge mit Fotos gesendet!';
+                        s += '<br>Es werden nur Vorgänge mit mind. einem Medium gesendet!';
                     var compiled = _.template(me.numsent === 1 ? '<%= num %> Vorgang wurde gesendet.' : s);
                     myApp.addNotification({
                         title: 'Senden',
