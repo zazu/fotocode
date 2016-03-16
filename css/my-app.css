@@ -24,6 +24,24 @@ svg {
   fill: currentColor;
 }
 
+i.icon.icon-videocam-light {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_videocam_white_24px.svg");
+}
+
+i.icon.icon-cameraalt-light {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_camera_alt_white_24px.svg");
+}
+
+i.icon.icon-mic-light {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_mic_white_24px.svg");
+}
+
 
 i.icon.icon-camera-light {
   width: 24px;

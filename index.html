@@ -87,14 +87,38 @@
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner" v-cloak>
-                <div class="center">appgeordnet</div>
+                <div class="center">appgeordnet
+                    <span>&nbsp;&nbsp;{{user.name}}</span>
+                </div>
                 <div class="right">
 <!--                    <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a> -->
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                 </div>
               </div>
             </div>
-
+              <!-- Speed Dial Wrap -->
+              <div class="speed-dial">
+                  <!-- FAB inside will open Speed Dial actions -->
+                  <a href="#" class="floating-button">
+                      <!-- First icon is visible when Speed Dial actions are closed -->
+                      <i class="icon icon-plus"></i>
+                      <!-- Second icon is visible when Speed Dial actions are opened -->
+                      <i class="icon icon-close"></i>
+                  </a>
+                  <!-- Speed Dial Actions -->
+                  <div class="speed-dial-buttons">
+                      <a href="#" @click="neuerVorgangFoto()" class="close-speed-dial" >
+                          <i class="icon icon-cameraalt-light"></i>
+                      </a>
+                      <a href="#" @click="neuerVorgangVideo()" class="close-speed-dial">
+                          <i class="icon icon-videocam-light"></i>
+                      </a>
+                      <a href="#" @click="neuerVorgangAudio()" class="close-speed-dial">
+                          <i class="icon icon-mic-light"></i>
+                      </a>
+                  </div>
+              </div>
+<!--
             <div class="toolbar toolbar-bottom">
               <div class="toolbar-inner" v-cloak>
                 <span>&nbsp;&nbsp;{{user.name}}</span>
@@ -102,7 +126,7 @@
                 <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a>
               </div>
             </div>
-
+-->
             <!-- Scrollable page content-->
             <div class="page-content">
             <div class="content-block-title" v-cloak>

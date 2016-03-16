@@ -164,6 +164,7 @@ function onDeviceReady() {
         myPhotoBrowser: null,
         selectedSet: null,
         numsent: 0,
+        nextmedia:'foto',
         data: {
             appversion: window.cfg.version,
             baseuri: window.cfg.baseuri,
@@ -325,13 +326,15 @@ function onDeviceReady() {
                 Lockr.set('appg-set', me.set);
                 if (me.usecamera) {
                     vm.barcode(function () {
-                        vm.foto(vm.usefotos);
+                        //vm.foto(vm.usefotos);
+                        vm.media(vm.usefotos);
                     });
                 }
                 else {
                     me.set.format = me.codeformat;
                     me.validateBarcode(function () {
-                        vm.foto(vm.usefotos);
+                        //vm.foto(vm.usefotos);
+                        vm.media(vm.usefotos);
                     });
                 }
             },
@@ -422,6 +425,17 @@ function onDeviceReady() {
                 me.set.format = me.sets[me.selectedSet].format;
                 mainView.router.load({pageName: 'barcode'});
             },
+
+            media: function (success) {
+                var me = this;
+                if ( this.nextmedia === 'audio')
+                    me.takeaudio(success);
+                else if ( this.nextmedia === 'video')
+                    me.takevideo(success);
+                else
+                    me.takefoto(success);
+            },
+
             foto: function (success) {
                 var me = this;
                 me.takefoto(success);
@@ -934,6 +948,18 @@ function onDeviceReady() {
                     $$("#bctyp select").trigger('change');
                     $$("#bctyp div.item-after").html(me.codeformat==="all"?"":me.codeformat);
                 }
+            },
+            neuerVorgangFoto: function() {
+                this.nextmedia = 'foto';
+                mainView.router.load({pageName: 'quickscan'});
+            },
+            neuerVorgangVideo: function() {
+                this.nextmedia = 'video';
+                mainView.router.load({pageName: 'quickscan'});
+            },
+            neuerVorgangAudio: function() {
+                this.nextmedia = 'audio';
+                mainView.router.load({pageName: 'quickscan'});
             }
         }
     });
