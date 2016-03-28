@@ -850,12 +850,14 @@ function onDeviceReady() {
                 me.vorgangSenden();
             },
             roadmap: function() {
-                var ref = window.open(this.baseuri + 'app/roadmap/', '_blank', 'location=no');
+                var ref = window.open(this.baseuri + 'app/roadmap/', '_self', 'location=no');
             },
             appinfo: function() {
                 var ref = window.open(this.baseuri + 'app/info/', '_self', 'location=no');
             },
-
+            applogs: function() {
+                var ref = window.open(this.baseuri + 'app/logs/'+this.user.name, '_self', 'location=no');
+            },
             vorgangSenden: function () {
                 var me = this;
                 var idx=0;

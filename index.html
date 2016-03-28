@@ -40,7 +40,6 @@
                 </div>
               </div></a></li>
 
-
               <li v-if="loggedin" ><a @click="syncUserInfo" href="#" class="item-link close-panel">
                   <div class="item-content">
                       <div class="item-inner">
@@ -50,25 +49,36 @@
                       </div>
                   </div></a></li>
 
-              <a @click="appinfo" href="#" class="item-link close-panel">
+              <li><a @click="appinfo" href="#" class="item-link close-panel">
                   <div class="item-content">
                       <div class="item-inner">
                           <div class="item-title">
                               <i class="icon icon-info"></i>
                               Info</div>
                       </div>
-                  </div></a>
+                  </div></a></li>
 
-              <a @click="roadmap" href="#" class="item-link close-panel">
+              <li><a @click="roadmap" href="#" class="item-link close-panel">
                   <div class="item-content">
                       <div class="item-inner">
                           <div class="item-title">
                               <i class="icon icon-info"></i>
                               Roadmap</div>
                       </div>
-                  </div></a>
+                  </div></a></li>
+
+              <li v-if="loggedin"><a @click="applogs" href="#" class="item-link close-panel">
+                  <div class="item-content">
+                      <div class="item-inner">
+                          <div class="item-title">
+                              <i class="icon icon-info"></i>
+                              Logs</div>
+                      </div>
+                  </div></a></li>
+
 
             <li v-if="loggedin"><a @click="logout" href="#" class="close-panel">
+
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
