@@ -247,7 +247,7 @@ function onDeviceReady() {
                 return this.set.code.length || this.usecamera;
             },
             hasbereiche: function () {
-                return !_.isEmpty(this.user) && this.form && this.form.length >= 1;
+                return !_.isEmpty(this.user) && this.form && this.form.length > 1;
             },
             bereichkurzname: function () {
                 var me = this;
@@ -273,11 +273,11 @@ function onDeviceReady() {
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
             me.lastsent = Lockr.get('appg-lastsent', 'Es wurden keine Daten gesendet.');
+            me.syncUserInfo();
+            me.checkVersion();
             if (me.bereich > 0 && me.bereich < 0 && ( !me.hasbereiche ||
                 _.isEmpty(me.user) || !me.bereiche.bereich[me.bereich] || !me.bereiche.bereich[me.bereich].length ))
                 me.bereich = 0;
-            me.syncUserInfo();
-            me.checkVersion();
         },
         methods: {
             deviceReady: function () {
@@ -776,7 +776,7 @@ function onDeviceReady() {
                             else {
                                 me.form = data.form;
                                 me.bereiche = data.bereiche;
-                                if ( me.bereich >= me.bereiche.length )
+                                if ( me.bereich >= me.bereiche.bereich.length )
                                     me.bereich = 0;
                                 me.addAuftrag(data.auftrag);
                                 Lockr.set('appg-bereiche', me.bereiche);
