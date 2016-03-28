@@ -74,6 +74,7 @@ function onDeviceReady() {
                 */
             });
         }
+        window.open = cordova.InAppBrowser.open;
     }
 /*
     else {
@@ -848,6 +849,13 @@ function onDeviceReady() {
                 me.numsent = 0;
                 me.vorgangSenden();
             },
+            roadmap: function() {
+                var ref = window.open(this.baseuri + 'app/roadmap/', '_blank', 'location=no');
+            },
+            appinfo: function() {
+                var ref = window.open(this.baseuri + 'app/info/', '_self', 'location=no');
+            },
+
             vorgangSenden: function () {
                 var me = this;
                 var idx=0;

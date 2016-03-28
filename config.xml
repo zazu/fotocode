@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.rblumenthal.fotocode" version="2.0.21" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="de.rblumenthal.fotocode" version="2.0.22" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -53,6 +53,8 @@
     <gap:plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <gap:plugin name="cordova-plugin-fileopener" source="npm" version="1.0.4" />
     <gap:plugin name="cordova-open" source="npm" version="1.0.9" />
+
+    <gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.3.0" />
 
     <gap:plugin name="cordova-plugin-webintent2" source="npm" version="1.0.1" />
 
