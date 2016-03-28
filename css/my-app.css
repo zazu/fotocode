@@ -1,3 +1,15 @@
+.badge {
+    margin: -2px;
+}
+
+.speed-dial-buttons {
+    margin-left: -28px;
+}
+
+.speed-dial-buttons a {
+    width:56px;
+    height:56px;
+}
 
 [v-cloak] {
     display: none;

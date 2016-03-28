@@ -11,7 +11,16 @@ fc.camera =  {
                 function(imageUri) {
                     //console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
-                    success( { uri: decodeURI( imageUri), title: title, bemerkung:"" }  );
+                    window.resolveLocalFileSystemURI(imageUri, function(fileEntry) {
+                        fileEntry.file(function(fileObj) {
+                            success( {
+                                uri: decodeURI( imageUri),
+                                title: title,
+                                size: fileObj.size,
+                                bemerkung:""
+                            } );
+                        });
+                    });
                 },
                 function(error) {
                     console.log('getPicture error');
@@ -27,7 +36,7 @@ fc.camera =  {
                 });
         }
         else {
-            success( { uri: 'test.jpg', title: 'title', bemerkung: 'Bild ' + _.now() }  );
+            success( { size: 123, uri: 'test.jpg', title: 'title', bemerkung: 'Bild ' + _.now() }  );
         }
     },
 

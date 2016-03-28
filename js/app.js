@@ -284,6 +284,22 @@ function onDeviceReady() {
                 var me = this;
                 document.addEventListener("backbutton", me.backButton, false);
             },
+
+            mediasize: function( idx ) {
+                var i, j,size = 0;
+                var from = (idx==-1)?0:idx;
+                var to = (idx==-1)?this.sets.length:idx+1;
+                for (i = from; i < to; i++) {
+                    for (j = 0; j < this.sets[i].fotos.length; j++)
+                        size = size + this.sets[i].fotos[j].size;
+                    for (j = 0; j < this.sets[i].videos.length; j++)
+                        size = size + this.sets[i].videos[j].size;
+                    for (j = 0; j < this.sets[i].audios.length; j++)
+                        size = size + this.sets[i].audios[j].size;
+                }
+                return size;
+            },
+
             menuButton: function () {
                 var buttons = [{
                     text: 'appgeordnet beenden',
