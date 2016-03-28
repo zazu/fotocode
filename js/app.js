@@ -4,7 +4,8 @@ window.onload = function () {
         version: '2.0.30',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
-            'http://localhost:8080/app-geordnet/',
+            'http://test.app-geordnet.de/',
+            //'http://localhost:8080/app-geordnet/',
         device: {
             model: '',
             platform: '',
@@ -247,7 +248,7 @@ function onDeviceReady() {
                 return this.set.code.length || this.usecamera;
             },
             hasbereiche: function () {
-                return !_.isEmpty(this.user) && this.form && this.form.length > 1;
+                return !_.isEmpty(this.user) && this.form && this.form.length >= 1;
             },
             bereichkurzname: function () {
                 var me = this;
