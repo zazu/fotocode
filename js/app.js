@@ -4,8 +4,7 @@ window.onload = function () {
         version: '2.0.30',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
-            'http://test.app-geordnet.de/',
-            //'http://localhost:8080/app-geordnet/',
+            'http://localhost:8080/app-geordnet/',
         device: {
             model: '',
             platform: '',
@@ -777,6 +776,8 @@ function onDeviceReady() {
                             else {
                                 me.form = data.form;
                                 me.bereiche = data.bereiche;
+                                if ( me.bereich >= me.bereiche.length )
+                                    me.bereich = 0;
                                 me.addAuftrag(data.auftrag);
                                 Lockr.set('appg-bereiche', me.bereiche);
                                 Lockr.set('appg-form', me.form);
