@@ -461,7 +461,7 @@ function onDeviceReady() {
             // Listenhandler Barcode ändern
             setbarcode: function (idx) {
                 var me = this;
-                if ( idx = -1 )
+                if ( idx == -1 )
                     idx = me.selectedSet;
                 me.selectedSet = idx;
                 me.cleanset();
@@ -607,7 +607,7 @@ function onDeviceReady() {
 
             removeset: function (idx) {
                 var me = this;
-                if ( idx = -1 )
+                if ( idx == -1 )
                     idx = me.selectedSet;
                 myApp.confirm(
                     "Bitte bestätigen Sie das endgültige Löschen des Vorgangs.",
@@ -870,13 +870,13 @@ function onDeviceReady() {
                 me.vorgangSenden();
             },
             roadmap: function() {
-                var ref = window.open(this.baseuri + 'app/roadmap/', '_self', 'location=no');
+                mainView.router.load({url:this.baseuri + 'app/roadmap/', ignoreCache:true});
             },
             appinfo: function() {
-                var ref = window.open(this.baseuri + 'app/info/', '_self', 'location=no');
+                mainView.router.load({url:this.baseuri + 'app/info/', ignoreCache:true});
             },
             applogs: function() {
-                var ref = window.open(this.baseuri + 'app/logs/'+this.user.name, '_self', 'location=no');
+                mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name, ignoreCache:true});
             },
             vorgangSenden: function () {
                 var me = this;
@@ -954,7 +954,7 @@ function onDeviceReady() {
             },
             showForm: function (idx) {
                 var me = this;
-                if ( idx = -1 )
+                if ( idx == -1 )
                     idx = me.selectedSet;
                 var b = me.sets[idx].bereich;
                 var name = me.hasbereiche ? me.bereiche.bereich[b] : '';

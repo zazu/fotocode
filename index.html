@@ -20,7 +20,6 @@
     <!-- Left panel with reveal effect-->
     <div class="panel panel-right panel-cover">
       <div class="content-block">
-          
         <div class="list-block">
           <ul>
             <li><a href="#quickscan" class="item-link close-panel">
@@ -361,12 +360,12 @@
                     </div>
                   </a>
                 </li>
-                <li v-show="!usecamera" transition="expand">
+                <li xv-show="!usecamera" transition="expand">
                     <div class="item-content">
                         <div class="item-media"><i class="icon icon-price-tag"></i></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <input type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                <input v-bind:readonly="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
                             </div>
                         </div>
                     </div>
@@ -454,12 +453,12 @@
               <div class="list-block">
                 <ul>
                   <li>
-                    <li v-show="!usecamera" transition="expand">
+                    <li xv-show="!usecamera" transition="expand">
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-price-tag"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                    <input v-bind:readonly="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
                                 </div>
                             </div>
                         </div>
