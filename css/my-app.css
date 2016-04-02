@@ -32,6 +32,10 @@
     line-height: 1em;
 }
 
+.smalllabel {
+    font-size: 0.85em;
+}
+
 svg {
   fill: currentColor;
 }
@@ -41,6 +45,13 @@ i.icon.icon-videocam-light {
     height: 24px;
     background-image: url("../img/ic_videocam_white_24px.svg");
 }
+
+i.icon.icon-videocam {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_videocam_black_24px.svg");
+}
+
 
 i.icon.icon-cameraalt-light {
     width: 24px;
@@ -52,6 +63,12 @@ i.icon.icon-mic-light {
     width: 24px;
     height: 24px;
     background-image: url("../img/ic_mic_white_24px.svg");
+}
+
+i.icon.icon-mic {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_mic_black_24px.svg");
 }
 
 

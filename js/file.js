@@ -160,9 +160,9 @@ fc.file =  {
                 me.fotocount = 0;
                 me.uploadFoto( group.audios, 0, function(){
                     me.sendUploadDone(success);
-                }, fail, "Sende Audio " );
-            }, fail, "Sende Video " );
-        }, fail, "Sende Bild " );
+                }, fail, "Sende Audio ..." );
+            }, fail, "Sende Video ..." );
+        }, fail, "Sende Foto ..." );
     },
 
     // bilder inkl. name und kommentar hochladen
@@ -173,7 +173,7 @@ fc.file =  {
 	    	var foto = fotostore[idx];
 	    	me.fotocount++;
             me.fotototal++;
-            myApp.showPreloader(msg + me.fotocount + " / " +  me.fotototal);
+            myApp.showPreloader(msg + "<br>Gesendete Medien:" +  me.fotototal);
 		    var fileURI = foto.uri;
 		    var serverURI = vm.baseuri + 'app/upload' ;
             if ( navigator.camera ) {

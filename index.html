@@ -213,7 +213,20 @@
                         <div class="left">
                             <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
                         </div>
-                        <div class="center">{{set.code}}</div>
+                        <div class="center">{{set.code}}
+                            <span v-show="set.name.length" class="smalllabel"> - {{set.name}}</span>
+                        </div>
+                        <div class="right">
+                            <a @click.stop.prevent="removeset(-1)" class="link" >
+                                <i class="icon icon-bin-white"></i>
+                            </a>
+                            <a @click.stop.prevent="showForm(-1)" class="link" >
+                                <i class="icon icon-file-text2-white"></i>
+                            </a>
+                            <a @click.prevent="setbarcode(-1)" class="link" >
+                                <i class="icon icon-price-tag-white"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!-- Scrollable page content-->
@@ -224,8 +237,12 @@
                             <ul>
                                 <li class="list-group-title">
                                     <a @click.stop.prevent="addfotos(-1)" >
-                                        <i class="icon icon-plus-sm"></i>
-                                        &nbsp;Fotos
+                                    <div class="chip">
+                                        <div class="chip-media">
+                                            <i class="icon icon-camera"></i>
+                                        </div>
+                                        <div class="chip-label">Foto hinzufügen</div>
+                                    </div>
                                     </a>
                                 </li>
                                 <li v-for="ds in set.fotos">
@@ -254,8 +271,12 @@
                             <ul>
                                 <li class="list-group-title">
                                     <a @click.stop.prevent="addvideo(-1)" >
-                                        <i class="icon icon-plus-sm"></i>
-                                        &nbsp;Videos
+                                        <div class="chip">
+                                            <div class="chip-media">
+                                                <i class="icon icon-videocam"></i>
+                                            </div>
+                                            <div class="chip-label">Video hinzufügen</div>
+                                        </div>
                                     </a>
                                 </li>
                                 <li v-for="ds in set.videos">
@@ -279,8 +300,12 @@
                             <ul>
                                 <li class="list-group-title">
                                     <a @click.stop.prevent="addaudio(-1)" >
-                                        <i class="icon icon-plus-sm"></i>
-                                        &nbsp;Audios
+                                        <div class="chip">
+                                            <div class="chip-media">
+                                                <i class="icon icon-mic"></i>
+                                            </div>
+                                            <div class="chip-label">Audio hinzufügen</div>
+                                        </div>
                                     </a>
                                 </li>
                                 <li class="item-content" v-for="ds in set.audios">
@@ -367,9 +392,7 @@
                     <div class="item-content">
                       <div class="item-media"><i class="icon icon-list2"></i></div>
                       <div class="item-inner" style="display:flex;">
-                        <!-- Select label -->
                         <div class="item-title">Barcodeformat</div>
-                        <!-- Selected value, not required -->
                         <div class="item-after"></div>
                       </div>
                     </div>
@@ -421,7 +444,7 @@
                 <div class="left">
                     <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
                 </div>
-                <div class="center">Vorgangsname / Barcode</div>
+                <div class="center">Vorgang bearbeiten</div>
               </div>
             </div>
             <!-- Scrollable page content-->
@@ -429,30 +452,26 @@
               <div class="list-block">
                 <ul>
                   <li>
-
                     <li v-show="!usecamera" transition="expand">
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-price-tag"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input type="text" v-model="set.code" placeholder="Vorgangsname / Barcode"/>
+                                    <input type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
                                 </div>
                             </div>
                         </div>
                     </li>
-
                     <div v-show="validbarcode" class="item-content">
                       <div class="item-media"><i class="icon icon-info"></i></div>
                       <div class="item-inner">
                         <div class="item-input">
-                          <input type="text" v-model="set.name" placeholder="Vorgangsname" readonly />
+                          <input type="text" v-model="set.name" placeholder="Vorgangsinfo" />
                         </div>
                       </div>
                     </div>
                   </li>
-
-
-                <li v-show="!usecamera" transition="expand">
+                <li id="bctyp2" v-show="!usecamera" transition="expand">
                   <a href="#" class="item-link smart-select" data-back-on-select="true">
                     <select v-model="codeformat">
                       <option value="" ></option>
@@ -463,9 +482,7 @@
                     <div class="item-content">
                       <div class="item-media"><i class="icon icon-list2"></i></div>
                       <div class="item-inner" style="display:flex;">
-                        <!-- Select label -->
                         <div class="item-title">Barcodeformat</div>
-                        <!-- Selected value, not required -->
                         <div class="item-after"></div>
                       </div>
                     </div>

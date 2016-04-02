@@ -129,6 +129,9 @@ function onDeviceReady() {
             vm.cleanset();
             vm.updateQuickscanCodeformat();
         }
+        if ( page.name === 'barcode') {
+            vm.updateBarcodeCodeformat();
+        }
     });
 
     $$(document).on('pageReinit', function (e) {
@@ -142,6 +145,15 @@ function onDeviceReady() {
         }
         else if ( page.name === 'index') {
             myApp.params.swipePanel = 'right';
+        }
+        else if ( page.name === 'medien') {
+            if (page.fromPage.name === 'barcode') {
+                vm.set =  _.cloneDeep(vm.sets[vm.selectedSet]);
+                vm.codeformat = vm.sets[vm.selectedSet].format;
+            }
+        }
+        else if ( page.name === 'barcode') {
+            vm.updateBarcodeCodeformat();
         }
         else {
             myApp.params.swipePanel = false;
@@ -276,14 +288,18 @@ function onDeviceReady() {
             me.lastsent = Lockr.get('appg-lastsent', 'Es wurden keine Daten gesendet.');
             me.syncUserInfo();
             me.checkVersion();
-            if (me.bereich > 0 && me.bereich < 0 && ( !me.hasbereiche ||
-                _.isEmpty(me.user) || !me.bereiche.bereich[me.bereich] || !me.bereiche.bereich[me.bereich].length ))
-                me.bereich = 0;
         },
         methods: {
             deviceReady: function () {
                 var me = this;
                 document.addEventListener("backbutton", me.backButton, false);
+            },
+
+            ensureValidBereich: function() {
+                var me = this;
+                if (me.bereich > 0 && me.bereich < 0 && ( !me.hasbereiche ||
+                    _.isEmpty(me.user) || !me.bereiche.bereich[me.bereich] || !me.bereiche.bereich[me.bereich].length ))
+                    me.bereich = 0;
             },
 
             mediasize: function( idx ) {
@@ -349,14 +365,12 @@ function onDeviceReady() {
                 Lockr.set('appg-set', me.set);
                 if (me.usecamera) {
                     vm.barcode(function () {
-                        //vm.foto(vm.usefotos);
                         vm.media(vm.usefotos);
                     });
                 }
                 else {
                     me.set.format = me.codeformat;
                     me.validateBarcode(function () {
-                        //vm.foto(vm.usefotos);
                         vm.media(vm.usefotos);
                     });
                 }
@@ -368,6 +382,7 @@ function onDeviceReady() {
                     vm.barcode(function () {
                         me.sets[me.selectedSet].code = me.set.code;
                         me.sets[me.selectedSet].format = me.set.format;
+                        me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
                         mainView.router.back();
                     });
@@ -377,6 +392,7 @@ function onDeviceReady() {
                     me.validateBarcode(function () {
                         me.sets[me.selectedSet].code = me.set.code;
                         me.sets[me.selectedSet].format = me.set.format;
+                        me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
                         mainView.router.back();
                     });
@@ -445,12 +461,15 @@ function onDeviceReady() {
             // Listenhandler Barcode ändern
             setbarcode: function (idx) {
                 var me = this;
+                if ( idx = -1 )
+                    idx = me.selectedSet;
                 me.selectedSet = idx;
                 me.cleanset();
                 me.set.bereich = me.sets[me.selectedSet].bereich;
                 me.set.name = me.sets[me.selectedSet].name;
                 me.set.code = me.sets[me.selectedSet].code;
                 me.set.format = me.sets[me.selectedSet].format;
+                me.codeformat = me.sets[me.selectedSet].format;
                 mainView.router.load({pageName: 'barcode'});
             },
 
@@ -588,6 +607,8 @@ function onDeviceReady() {
 
             removeset: function (idx) {
                 var me = this;
+                if ( idx = -1 )
+                    idx = me.selectedSet;
                 myApp.confirm(
                     "Bitte bestätigen Sie das endgültige Löschen des Vorgangs.",
                     "Löschen?",
@@ -709,7 +730,6 @@ function onDeviceReady() {
                 var me = this;
                 me.selectedSet = idx;
                 me.set =  _.cloneDeep(me.sets[me.selectedSet]);
-                //me.showFotos(idx);
                 me.showMedia(idx);
             },
             // aus medienliste heraus öffnen
@@ -769,6 +789,7 @@ function onDeviceReady() {
                             Lockr.set('appg-user', me.user);
                             mainView.router.back();
                             myApp.hidePreloader();
+                            me.ensureValidBereich();
                         }
                     },
                     error: function() {
@@ -801,14 +822,13 @@ function onDeviceReady() {
                             else {
                                 me.form = data.form;
                                 me.bereiche = data.bereiche;
-                                if ( me.bereich >= me.bereiche.bereich.length )
-                                    me.bereich = 0;
                                 me.addAuftrag(data.auftrag);
                                 Lockr.set('appg-bereiche', me.bereiche);
                                 Lockr.set('appg-form', me.form);
                                 // Empfangsbestätigung zum Löschen vom Server
                                 $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
                                 myApp.hidePreloader();
+                                me.ensureValidBereich();
                             }
                         },
                         error: function () {
@@ -934,6 +954,8 @@ function onDeviceReady() {
             },
             showForm: function (idx) {
                 var me = this;
+                if ( idx = -1 )
+                    idx = me.selectedSet;
                 var b = me.sets[idx].bereich;
                 var name = me.hasbereiche ? me.bereiche.bereich[b] : '';
                 var form = '';
@@ -982,13 +1004,19 @@ function onDeviceReady() {
             // codeformat auf basis des gewählten bereichs einstellen
             updateQuickscanCodeformat: function() {
                 var me= this;
-                if (me.bereiche.bctyp[me.bereich].length &&
-                    me.bereiche.bctyp[me.bereich]!=="all") {
+                if ( me.bereiche.bctyp[me.bereich].length ) {
                     me.codeformat = me.bereiche.bctyp[me.bereich];
-                    $$("#bctyp select").val(me.codeformat);
-                    $$("#bctyp select").trigger('change');
-                    $$("#bctyp div.item-after").html(me.codeformat==="all"?"":me.codeformat);
+                    this.updateFormCodeformat('bctyp');
                 }
+            },
+            updateBarcodeCodeformat: function() {
+                this.updateFormCodeformat('bctyp2');
+            },
+            updateFormCodeformat: function(id) {
+                var me = this;
+                $$("#"+id+" select").val(me.codeformat);
+                $$("#"+id+" select").trigger('change');
+                $$("#"+id+" div.item-after").html(me.codeformat==="all"?"":me.codeformat);
             },
             neuerVorgangFoto: function() {
                 this.nextmedia = 'foto';
