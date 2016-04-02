@@ -213,9 +213,7 @@
                         <div class="left">
                             <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
                         </div>
-                        <div class="center">{{set.code}}
-                            <span v-show="set.name.length" class="smalllabel"> - {{set.name}}</span>
-                        </div>
+                        <div class="center">{{set.code}}</div>
                         <div class="right">
                             <a @click.stop.prevent="removeset(-1)" class="link" >
                                 <i class="icon icon-bin-white"></i>
@@ -231,6 +229,10 @@
                 </div>
                 <!-- Scrollable page content-->
                 <div class="page-content">
+                    <div class="content-block-title">
+                        {{set.code}}
+                        <span v-show="set.name.length" class="smalllabel"> - {{set.name}}</span>
+                    </div>
                     <div class="list-block">
                         <!-- Fotos-->
                         <div class="list-group">
