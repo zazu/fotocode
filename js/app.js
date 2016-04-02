@@ -252,8 +252,7 @@ function onDeviceReady() {
                 return this.user.token && this.user.token.length > 0;
             },
             validquickscan: function () {
-                // vorgangsname oder barcode muss definiert sein
-                return this.set.name.length || (this.set.code.length || this.usecamera );
+                return this.validbarcode;
             },
             validbarcode: function () {
                 // barcode muss definiert sein

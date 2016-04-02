@@ -228,7 +228,7 @@
                 </div>
                 <!-- Scrollable page content-->
                 <div class="page-content">
-                    <div class="content-block-title">
+                    <div class="content-block-title stronghead">
                         {{set.code}}
                         <span v-show="set.name.length" class="smalllabel"> - {{set.name}}</span>
                     </div>
@@ -365,7 +365,7 @@
                         <div class="item-media"><i class="icon icon-price-tag"></i></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <input v-bind:readonly="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                <input v-bind:readonly="usecamera" v-bind:disabled="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
                             </div>
                         </div>
                     </div>
@@ -458,7 +458,7 @@
                             <div class="item-media"><i class="icon icon-price-tag"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input v-bind:readonly="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                    <input v-bind:readonly="usecamera" v-bind:disabled="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
                                 </div>
                             </div>
                         </div>
