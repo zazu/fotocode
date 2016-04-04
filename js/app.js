@@ -296,7 +296,7 @@ function onDeviceReady() {
 
             ensureValidBereich: function() {
                 var me = this;
-                if (me.bereich > 0 && me.bereich < 0 && ( !me.hasbereiche ||
+                if (me.bereich > 0 && ( !me.hasbereiche ||
                     _.isEmpty(me.user) || !me.bereiche.bereich[me.bereich] || !me.bereiche.bereich[me.bereich].length ))
                     me.bereich = 0;
             },
