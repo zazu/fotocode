@@ -76,6 +76,12 @@ i.icon.icon-mic {
     background-image: url("../img/ic_mic_black_24px.svg");
 }
 
+i.icon.icon-search {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/search.svg");
+}
+
 
 i.icon.icon-camera-light {
   width: 24px;
