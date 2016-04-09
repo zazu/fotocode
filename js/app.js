@@ -877,6 +877,10 @@ function onDeviceReady() {
             applogs: function() {
                 mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name, ignoreCache:true});
             },
+            applogsfilter: function() {
+                var f = "?filter=" + $$('#logsfilter').val();
+                mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name + f, ignoreCache:true, reload:true});
+            },
             vorgangSenden: function () {
                 var me = this;
                 var idx=0;
