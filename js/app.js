@@ -1008,7 +1008,8 @@ function onDeviceReady() {
                 me.selectedSet = idx;
                 mainView.router.load({content: newPageContent, ignoreCache: true});
                 var formData = me.sets[idx].formdata;
-                myApp.formFromJSON('#bereichform', formData)
+                myApp.formFromJSON('#bereichform', formData);
+                myApp.initSmartSelects('#bereichform .smart-select');
             },
             saveForm: function () {
                 var me = this;
