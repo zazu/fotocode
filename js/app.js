@@ -269,6 +269,15 @@ function onDeviceReady() {
                 ) ? me.bereiche.bereichshort[me.bereich]
                     : '';
             },
+            bereichname: function () {
+                var me = this;
+                return (me.bereich > 0 && !_.isEmpty(me.user) &&
+                    me.bereiche &&
+                    me.bereiche.bereich[me.bereich].length
+                ) ? me.bereiche.bereich[me.bereich]
+                    : '';
+            },
+
             hasform: function () {
                 var me = this;
                 return me.bereich > 0 && me.bereiche.hasform[me.bereich] > 0;
@@ -606,13 +615,18 @@ function onDeviceReady() {
 
             removeset: function (idx) {
                 var me = this;
-                if ( idx == -1 )
+                var back = false;
+                if ( idx == -1 ) {
                     idx = me.selectedSet;
+                    back = true;
+                }
                 myApp.confirm(
                     "Bitte bestätigen Sie das endgültige Löschen des Vorgangs.",
                     "Löschen?",
                     function () {
                         me.sets.splice(idx, 1);
+                        if ( back )
+                            mainView.router.back();
                     }, function () {
                     }
                 );
