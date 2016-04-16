@@ -1,7 +1,7 @@
 
 window.onload = function () {
     window.cfg = {
-        version: '2.0.30',
+        version: '2.0.90',
         baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
             'http://test.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
