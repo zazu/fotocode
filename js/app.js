@@ -885,6 +885,9 @@ function onDeviceReady() {
             roadmap: function() {
                 mainView.router.load({url:this.baseuri + 'app/roadmap/', ignoreCache:true});
             },
+            einstellungen: function() {
+                mainView.router.load({url:this.baseuri + 'app/settings/', ignoreCache:true});
+            },
             appinfo: function() {
                 mainView.router.load({url:this.baseuri + 'app/info/', ignoreCache:true});
             },
