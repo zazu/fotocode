@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.rblumenthal.fotocode" version="2.0.31" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="de.cesart.appgeordnet" version="2.0.32" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
     </description>
-    <author email="info@rblumenthal.de" href="http://rblumenthal.de">
-        Ralf Blumenthal
+    <author email="cesar@cesart.de" href="http://www.cesart.de">
+        Cesar Fernandez
     </author>
-    <gap:platform name="android" />
+    <gap:platform name="android,ios" />
     <content src="index.html" />
     <preference name="phonegap-version" value="cli-6.0.0" />
     <preference name="permissions" value="none" />

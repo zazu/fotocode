@@ -1,4 +1,12 @@
 
+var isAndroid = Framework7.prototype.device.android === true;
+var isIos = Framework7.prototype.device.ios === true;
+
+Template7.global = {
+    android: isAndroid,
+    ios: isIos
+};
+
 window.onload = function () {
     window.cfg = {
         version: '2.0.90',
@@ -97,12 +105,25 @@ function onDeviceReady() {
     }
 */
 
+    if (isAndroid) {
+        // Change class
+        $$('.view.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
+        // And move Navbar into Page
+        $$('.view .navbar').prependTo('.view .page');
+
+        $$('body').addClass('android');
+    }
+    else {
+        $$('body').addClass('ios');
+    }
+
+
     // Initialize the app
     window.myApp = new Framework7({
         swipePanel: 'right',
         //  pushState:true,
+        material: isAndroid ? true : false,
         template7Pages: false,
-        material: true, //enable Material theme
         notificationCloseButtonText: 'Schließen',
         smartSelectPickerCloseText: 'Fertig',
         notificationHold: 5000,
@@ -113,6 +134,9 @@ function onDeviceReady() {
     // Add view
     window.mainView = myApp.addView('.view-main', {
         domCache: true
+        // Material doesn't support it but don't worry about it
+        // F7 will ignore it for Material theme
+        //,dynamicNavbar: true
     });
 
     //myApp.params.swipePanel = false;
@@ -1025,7 +1049,7 @@ function onDeviceReady() {
             // codeformat auf basis des gewählten bereichs einstellen
             updateQuickscanCodeformat: function() {
                 var me= this;
-                if ( me.bereiche.bctyp[me.bereich].length ) {
+                if ( me.bereiche.bctyp.length && me.bereiche.bctyp[me.bereich].length ) {
                     me.codeformat = me.bereiche.bctyp[me.bereich];
                     this.updateFormCodeformat('bctyp');
                 }
