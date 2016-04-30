@@ -107,10 +107,9 @@ function onDeviceReady() {
 
     if (isAndroid) {
         // Change class
-        $$('.view.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
+        //$$('.view.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
         // And move Navbar into Page
-        $$('.view .navbar').prependTo('.view .page');
-
+        //$$('.view .navbar').prependTo('.view .page');
         $$('body').addClass('android');
     }
     else {
