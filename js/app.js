@@ -319,7 +319,7 @@ function onDeviceReady() {
             me.form = Lockr.get('appg-form', []);
             me.bereiche = Lockr.get('appg-bereiche', {});
             me.codeformat = Lockr.get('appg-codeformat', '');
-            me.useserver = Lockr.get('appg-useserver', '');
+            me.useserver = Lockr.get('appg-useserver', 'production');
             me.bereich = Lockr.get('appg-bereich', 0);
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
