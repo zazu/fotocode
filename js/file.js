@@ -17,17 +17,14 @@ var fc = fc || {};
 
 var FileIO = {
 
-
-    // Medium in ein geschütztes Verzeichnis verschieben
+    // Medium in das app-data-Verzeichnis verschieben
     moveMediaFile: function(imageURI, success) {
-alert("move media " + imageURI);
         var extension = imageURI.substr(-3);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
                     window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
                         var now = new Date();
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
-alert("move to " + newName);
                         fileEntryFrom.moveTo(dirEntry, newName,
                             function(fileEntryTo) {
                                 success(fileEntryTo);

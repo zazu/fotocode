@@ -1,5 +1,4 @@
 
-
 Template7.global = {
     android: isAndroid,
     ios: isIos

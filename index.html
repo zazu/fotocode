@@ -6,30 +6,29 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>appgeordnet</title>
-
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <script>
         var isAndroid = Framework7.prototype.device.android === true;
         var isIos = Framework7.prototype.device.ios === true;
-
-        isAndroid = false;
-        isIos = !isAndroid;
-
-      (function () {
-          if (isAndroid) {
+        if ( ! navigator.camera ) {
+            isAndroid = false;
+            isIos = !isAndroid;
+        }
+        (function () {
+            if (isAndroid) {
               Dom7('head').append(
                       '<link rel="stylesheet" href="css/framework7.material.min.css">' +
                       '<link rel="stylesheet" href="css/framework7.material.colors.min.css">'
               );
-          }
-          else {
+            }
+            else {
               Dom7('head').append(
                       '<link rel="stylesheet" href="css/framework7.ios.min.css">' +
                       '<link rel="stylesheet" href="css/framework7.ios.colors.min.css">'
               );
-          }
-      })();
+            }
+        })();
     </script>
     <link rel="stylesheet" href="css/appgeordnet.css">
   </head>

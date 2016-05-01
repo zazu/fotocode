@@ -8,16 +8,19 @@ fc.camera =  {
     	if ( cam ) {
             navigator.camera.getPicture(
                 function(imageUri) {
-                    //console.log(imageUri);
                     var title = imageUri.replace(/^.*[\\\/]/, '');
                     window.resolveLocalFileSystemURI(imageUri, function(fileEntry) {
                         fileEntry.file(function(fileObj) {
-                            success( {
-                                uri: decodeURI( imageUri),
-                                title: title,
-                                size: fileObj.size,
-                                bemerkung:""
-                            } );
+                            FileIO.moveMediaFile(
+                                decodeURI( fileObj.fullPath ),
+                                function(fileEntry) {
+                                    success({
+                                        uri: fileEntry.nativeURL,
+                                        title: title,
+                                        size: fileEntry.size,
+                                        bemerkung:""
+                                });
+                            });
                         });
                     });
                 },
@@ -78,7 +81,6 @@ fc.camera =  {
                             decodeURI( mediaFiles[i].fullPath ),
                             function(fileEntry) {
                                 //vid.uri = fileEntry.fullPath;
-alert("new uri " + fileEntry.nativeURL);
                                 vid.uri = fileEntry.nativeURL;
                                 success(vid);
                         });
@@ -104,12 +106,19 @@ alert("new uri " + fileEntry.nativeURL);
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                        success({
-                            uri: decodeURI( mediaFiles[i].fullPath ),
+                        var vid = {
+                            uri: decodeURI(mediaFiles[i].fullPath),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
                             date: mediaFiles[i].lastModifiedDate
+                        };
+                        FileIO.moveMediaFile(
+                            decodeURI( mediaFiles[i].fullPath ),
+                            function(fileEntry) {
+                                //vid.uri = fileEntry.fullPath;
+                                vid.uri = fileEntry.nativeURL;
+                                success(vid);
                         });
                     }
                 },
