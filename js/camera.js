@@ -4,7 +4,6 @@ var fc = fc || {};
 fc.camera =  {
 
     getPicture: function( success, fail ) {
-        //console.log('getPicture');
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -68,12 +67,21 @@ fc.camera =  {
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                        success({uri: decodeURI( mediaFiles[i].fullPath ),
+                        var vid = {
+                            uri: decodeURI(mediaFiles[i].fullPath),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
                             date: mediaFiles[i].lastModifiedDate
-                        } );
+                        };
+                        FileIO.moveMediaFile(
+                            decodeURI( mediaFiles[i].fullPath ),
+                            function(fileEntry) {
+                                //vid.uri = fileEntry.fullPath;
+alert("new uri " + fileEntry.nativeURL);
+                                vid.uri = fileEntry.nativeURL;
+                                success(vid);
+                        });
                     }
                 },
                 function (error) {

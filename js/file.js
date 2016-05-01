@@ -1,50 +1,43 @@
+/*
+As of v1.2.0, URLs to important file-system directories are provided.
+Each URL is in the form file:///path/to/spot/, and can be converted to a
+DirectoryEntry using window.resolveLocalFileSystemURL().
+
+cordova.file.dataDirectory -
+Persistent and private data storage within the application's sandbox using internal memory
+(on Android, if you need to use external memory, use .externalDataDirectory).
+On iOS, this directory is not synced with iCloud (use .syncedDataDirectory).
+(iOS, Android, BlackBerry 10)
+*/
+
+
+
 // global namespace
 var fc = fc || {};
 
-// set some globals
-var gImageURI = '';
-var gFileSystem = {};
-
 var FileIO = {
 
-    // sets the filesystem to the global var gFileSystem
-     gotFS : function(fileSystem) {
-          gFileSystem = fileSystem;
-     },
 
-    // pickup the URI from the Camera edit and assign it to the global var gImageURI
-    // create a filesystem object called a 'file entry' based on the image URI
-    // pass that file entry over to gotImageURI()
-    updateCameraImages : function(imageURI, success) {
-            gImageURI = imageURI;
-            window.resolveLocalFileSystemURL(imageURI,
-                    function(fileEntryFrom) {
-                        window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
-                            //console.log('DestDir');
-                            //console.log(dirEntry);
-                            var now = new Date();
-                            var newName = "appg_" + (now.getTime()).toString() + ".jpg";
-                            fileEntryFrom.moveTo(dirEntry, newName,
-                                function(fileEntryTo) {
-                                    success(fileEntryTo);
-                                },
-                                FileIO.errorHandler);
-                        }, FileIO.errorHandler )
-                    },
-                    FileIO.errorHandler);
+    // Medium in ein geschütztes Verzeichnis verschieben
+    moveMediaFile: function(imageURI, success) {
+alert("move media " + imageURI);
+        var extension = imageURI.substr(-3);
+        window.resolveLocalFileSystemURL(imageURI,
+                function(fileEntryFrom) {
+                    window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
+                        var now = new Date();
+                        var newName = "appg_" + (now.getTime()).toString() + "." + extension;
+alert("move to " + newName);
+                        fileEntryFrom.moveTo(dirEntry, newName,
+                            function(fileEntryTo) {
+                                success(fileEntryTo);
+                            },
+                            FileIO.errorHandler);
+                    }, FileIO.errorHandler )
+                },
+                FileIO.errorHandler);
         },
 
-    // pickup the file entry, rename it, and move the file to the app's root directory.
-    // on success run the movedImageSuccess() method
-     gotImageURI : function(fileEntry) {
-        var now = new Date();
-        var newName = "appg_" + (now.getTime()).toString() + ".jpg";
-        fileEntry.moveTo(gFileSystem.root, newName, FileIO.movedImageSuccess, FileIO.errorHandler);
-     },
-
-     movedImageSuccess : function(fileEntry) {
-          //updateImageSrc(fileEntry.fullPath);
-     },
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
@@ -276,7 +269,6 @@ fc.file =  {
 
     removeFotoFromFileSystem: function( fileuri ) {
         if ( navigator.camera ) {
-            var me = this;
             if ( fileuri.length ) {
                 FileIO.removeDeletedImage(fileuri);
             }
@@ -291,15 +283,16 @@ fc.file =  {
     moveTo: function( uri, success ) {
         var me = this;
         var fileName = uri.substr(uri.lastIndexOf('/')+1);
-        window.resolveLocalFileSystemURI( uri, resOnSuccess, me.faillocal );
-        function resOnSuccess(entry){
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-                function(fileSys) {
-                    fileSys.root.getDirectory("appgeordnet", {create: true, exclusive: false},
-                        function(directory) {
-                            entry.moveTo(directory, fileName, success, me.faillocal );
-                        }, me.faillocal );
-                }, me.faillocal );
-        }
+        window.resolveLocalFileSystemURI( uri,
+            function(entry){
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+                    function(fileSys) {
+                        fileSys.root.getDirectory("appgeordnet", {create: true, exclusive: false},
+                            function(directory) {
+                                entry.moveTo(directory, fileName, success, me.faillocal );
+                            }, me.faillocal );
+                    }, me.faillocal );
+            },
+            me.faillocal );
     }
 };

@@ -192,7 +192,11 @@ i.icon.icon-feed {
     background-image: url("../img/feed.svg");
 }
 
-
+i.icon.icon-cog {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/cog.svg");
+}
 
 /* always present */
 .expand-transition {

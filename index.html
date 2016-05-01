@@ -10,8 +10,14 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <script>
+        var isAndroid = Framework7.prototype.device.android === true;
+        var isIos = Framework7.prototype.device.ios === true;
+
+        isAndroid = false;
+        isIos = !isAndroid;
+
       (function () {
-          if (Framework7.prototype.device.android) {
+          if (isAndroid) {
               Dom7('head').append(
                       '<link rel="stylesheet" href="css/framework7.material.min.css">' +
                       '<link rel="stylesheet" href="css/framework7.material.colors.min.css">'
@@ -37,7 +43,7 @@
       <div class="content-block">
         <div class="list-block">
           <ul>
-            <li><a href="#quickscan" class="item-link close-panel">
+              <li v-if="isandroid" ><a href="#quickscan" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner"> 
                   <div class="item-title">
@@ -45,6 +51,30 @@
                       Neuer Vorgang</div>
                 </div>
               </div></a></li>
+              <li v-if="isios"><a href="" @click="neuerVorgangFoto()" class="item-link close-panel">
+                  <div class="item-content">
+                      <div class="item-inner">
+                          <div class="item-title">
+                              <i class="icon icon-camera"></i>
+                              Foto</div>
+                      </div>
+                  </div></a></li>
+              <li v-if="isios"><a href="" @click="neuerVorgangVideo()" class="item-link close-panel">
+                  <div class="item-content">
+                      <div class="item-inner">
+                          <div class="item-title">
+                              <i class="icon icon-videocam"></i>
+                              Video</div>
+                      </div>
+                  </div></a></li>
+              <li v-if="isios"><a href="" @click="neuerVorgangAudio()" class="item-link close-panel">
+                  <div class="item-content">
+                      <div class="item-inner">
+                          <div class="item-title">
+                              <i class="icon icon-mic"></i>
+                              Audio</div>
+                      </div>
+                  </div></a></li>
             <li v-if="sets.length && loggedin" ><a @click="senden" href="#" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner">
@@ -99,9 +129,14 @@
                       </div>
                   </div></a></li>
 
-
+              <li v-if="isadmin" ><a href="#admin" class="item-link close-panel">
+                  <div class="item-content">
+                      <div class="item-inner">
+                          <div class="item-title">
+                              <i class="icon icon-cog"></i>
+                              Admin</div>
+                      </div>
             <li v-if="loggedin"><a @click="logout" href="#" class="close-panel">
-
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
@@ -168,9 +203,9 @@
                   </div>
               </div>
 
-            <div class="toolbar toolbar-bottom">
+            <div class="toolbar toolbar-bottom ">
               <div class="toolbar-inner" v-cloak>
-                <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                  <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
               </div>
             </div>
 
@@ -358,7 +393,7 @@
         </div>
 
           <!-- Quickscan page -->
-          <div class="page cached navbar-fixed" data-page="quickscan" >
+          <div class="page cached navbar-fixed" data-page="quickscan" id="quickscan" >
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
@@ -615,6 +650,50 @@
             </div>
           </div>
 
+          <div data-page="admin" class="page cached navbar-fixed">
+                <!-- Top Navbar-->
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left">
+                            <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
+                        </div>
+                        <div class="center">Admin</div>
+                    </div>
+                </div>
+                <div class="toolbar toolbar-bottom">
+                    <div class="toolbar-inner" v-cloak>
+                        <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="list-block">
+                        <ul>
+                            <li>
+                                <label class="label-radio item-content">
+                                    <input id="liveserver" type="radio" value="production" v-model="useserver">
+                                    <div class="item-media">
+                                        <i class="icon icon-form-radio"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title">Live-Server</div>
+                                    </div>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="label-radio item-content">
+                                    <input type="radio" value="test" v-model="useserver">
+                                    <div class="item-media">
+                                        <i class="icon icon-form-radio"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title">Test-Server</div>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>

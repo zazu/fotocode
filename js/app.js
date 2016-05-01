@@ -1,6 +1,4 @@
 
-var isAndroid = Framework7.prototype.device.android === true;
-var isIos = Framework7.prototype.device.ios === true;
 
 Template7.global = {
     android: isAndroid,
@@ -10,8 +8,9 @@ Template7.global = {
 window.onload = function () {
     window.cfg = {
         version: '2.0.90',
-        baseuri: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
-            'http://test.app-geordnet.de/' :
+        uritest: "http://test.app-geordnet.de/",
+        uriproduction: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
+            'http://2016.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
         device: {
             model: '',
@@ -116,7 +115,6 @@ function onDeviceReady() {
         $$('body').addClass('ios');
     }
 
-
     // Initialize the app
     window.myApp = new Framework7({
         swipePanel: 'right',
@@ -125,6 +123,7 @@ function onDeviceReady() {
         template7Pages: false,
         notificationCloseButtonText: 'Schließen',
         smartSelectPickerCloseText: 'Fertig',
+        smartSelectBackText:'Zurück',
         notificationHold: 5000,
         modalTitle: 'appgeordnet',
         modalButtonCancel: 'Abbrechen'
@@ -202,8 +201,10 @@ function onDeviceReady() {
         numsent: 0,
         nextmedia:'foto',
         data: {
+            isandroid: isAndroid,
+            isios:isIos,
+            useserver:'production',
             appversion: window.cfg.version,
-            baseuri: window.cfg.baseuri,
             lastsent: '',
             bereich: 0,
             usecamera: true,
@@ -221,7 +222,7 @@ function onDeviceReady() {
                 audios: []
             },
             login: {login: '', password: ''},
-            user: {name: '', token: ''},
+            user: {name: '', token: '', role:''},
             form: [],
             bereiche: {},
             codeformat: '',
@@ -231,6 +232,12 @@ function onDeviceReady() {
             ]
         },
         computed: {
+            baseuri: function() {
+                return this.useserver === "test"?window.cfg.uritest:window.cfg.uriproduction;
+            },
+            isadmin: function() {
+                return this.user && this.user.role >=3;
+            },
             numsets: function () {
                 return this.sets.length;
             },
@@ -313,6 +320,7 @@ function onDeviceReady() {
             me.form = Lockr.get('appg-form', []);
             me.bereiche = Lockr.get('appg-bereiche', {});
             me.codeformat = Lockr.get('appg-codeformat', '');
+            me.useserver = Lockr.get('appg-useserver', '');
             me.bereich = Lockr.get('appg-bereich', 0);
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
@@ -325,7 +333,6 @@ function onDeviceReady() {
                 var me = this;
                 document.addEventListener("backbutton", me.backButton, false);
             },
-
             ensureValidBereich: function() {
                 var me = this;
                 if (me.bereich > 0 && ( !me.hasbereiche ||
@@ -817,7 +824,7 @@ function onDeviceReady() {
                         }
                         else {
                             me.login.password = '';
-                            me.user = {name: data.name, token: data.token};
+                            me.user = {name: data.name, token: data.token, role:data.role};
                             me.form = data.form;
                             me.bereiche = data.bereiche;
                             Lockr.set('appg-bereiche', me.bereiche);
@@ -1048,7 +1055,7 @@ function onDeviceReady() {
             // codeformat auf basis des gewählten bereichs einstellen
             updateQuickscanCodeformat: function() {
                 var me= this;
-                if ( me.bereiche.bctyp.length && me.bereiche.bctyp[me.bereich].length ) {
+                if ( me.bereiche && me.bereiche.bctyp && me.bereiche.bctyp.length && me.bereiche.bctyp[me.bereich].length ) {
                     me.codeformat = me.bereiche.bctyp[me.bereich];
                     this.updateFormCodeformat('bctyp');
                 }
@@ -1061,6 +1068,7 @@ function onDeviceReady() {
                 $$("#"+id+" select").val(me.codeformat);
                 $$("#"+id+" select").trigger('change');
                 $$("#"+id+" div.item-after").html(me.codeformat==="all"?"":me.codeformat);
+                myApp.initSmartSelects('#quickscan .smart-select');
             },
             neuerVorgangFoto: function() {
                 this.nextmedia = 'foto';
@@ -1098,6 +1106,15 @@ function onDeviceReady() {
 
     vm.$watch('codeformat', function (newVal, oldVal) {
         Lockr.set('appg-codeformat', newVal);
+    });
+
+    vm.$watch('useserver', function (newVal, oldVal) {
+        Lockr.set('appg-useserver', newVal);
+    });
+
+
+    $$('body').on('click', function (e) {
+
     });
 
     /*
