@@ -309,6 +309,14 @@ function onDeviceReady() {
                 ) ? me.bereiche.bereich[me.bereich]
                     : '';
             },
+            bereichablage: function () {
+                var me = this;
+                return (me.bereich > 0 && !_.isEmpty(me.user) &&
+                    me.bereiche &&
+                    me.bereiche.bereich[me.bereich].length
+                ) ? me.bereiche.ablage[me.bereich]
+                    : '';
+            },
 
             hasform: function () {
                 var me = this;

@@ -212,3 +212,4 @@ i.icon.icon-cog {
   opacity: 0;
 }
 
+.infoli .item-content, .infoli .item-inner { min-height:auto;}
