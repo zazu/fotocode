@@ -12,7 +12,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = false;
+            isAndroid = true;
             isIos = !isAndroid;
         }
         (function () {
@@ -32,7 +32,7 @@
     </script>
     <link rel="stylesheet" href="css/appgeordnet.css">
   </head>
-  <body class="theme-teal layout-white" id="app">
+  <body class="theme-{{colortheme}} layout-white" id="app">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->

@@ -231,6 +231,9 @@ function onDeviceReady() {
             ]
         },
         computed: {
+            colortheme: function() {
+                return this.useserver==='test'?"red":"teal";
+            },
             baseuri: function() {
                 return this.useserver === "test"?window.cfg.uritest:window.cfg.uriproduction;
             },
