@@ -9,18 +9,14 @@ fc.camera =  {
             navigator.camera.getPicture(
                 function(imageUri) {
                     var title = imageUri.replace(/^.*[\\\/]/, '');
-                    window.resolveLocalFileSystemURI(imageUri, function(fileEntry) {
-                        fileEntry.file(function(fileObj) {
-                            FileIO.moveMediaFile(
-                                decodeURI( fileObj.fullPath ),
-                                function(fileEntry) {
-                                    success({
-                                        uri: fileEntry.nativeURL,
-                                        title: title,
-                                        size: fileEntry.size,
-                                        bemerkung:""
-                                });
-                            });
+                    FileIO.moveMediaFile(
+                        decodeURI( imageUri ),
+                        function(fileEntry) {
+                            success({
+                                uri: fileEntry.nativeURL,
+                                title: title,
+                                size: fileEntry.size,
+                                bemerkung:""
                         });
                     });
                 },
