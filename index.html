@@ -9,10 +9,11 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <script>
-        var isAndroid = Framework7.prototype.device.android === true;
-        var isIos = Framework7.prototype.device.ios === true;
-
-        //isAndroid = false;isIos = !isAndroid;
+        var isAndroid = (Framework7.prototype.device.android === true);
+        var isIos = (Framework7.prototype.device.ios === true);
+        if (! isAndroid && ! isIos ) {
+            isAndroid = false;
+            isIos = !isAndroid;
         }
         (function () {
             if (isAndroid) {
