@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.cesart.appgeordnet" version="2.0.34" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="de.cesart.appgeordnet"
+        version="2.0.34"
+        versionCode = "1"
+        xmlns="http://www.w3.org/ns/widgets"
+        xmlns:gap="http://phonegap.com/ns/1.0">
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
     </description>
-    <author email="cesar@cesart.de" href="http://www.cesart.de">
-        Cesar Fernandez
-    </author>
-    <gap:platform name="android" />
-    <gap:platform name="ios" />
+    <author email="cesar@cesart.de" href="http://www.cesart.de">Cesar Fernandez</author>
     <content src="index.html" />
     <preference name="phonegap-version" value="cli-6.1.0" />
     <preference name="permissions" value="none" />
@@ -39,7 +39,6 @@
     <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
 
     <!-- plugins -->
-
     <gap:plugin name="cordova-plugin-file" source="npm" version="4.1.1" />
     <gap:plugin name="cordova-plugin-device" source="npm" version="1.1.1" />
     <gap:plugin name="cordova-plugin-camera" source="npm" version="2.1.0" />
@@ -63,33 +62,41 @@
     <feature name="http://api.phonegap.com/1.0/network"/>
     <feature name="http://api.phonegap.com/1.0/notification"/>        
     
-    <icon src="icon.png" />
     <!-- Define app icon for each platform. -->
     <icon src="images/icon.png" />
-    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="ldpi" />
-    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="mdpi" />
-    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="hdpi" />
-    <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="xhdpi" />
-    <icon src="images/icon.png"         gap:platform="ios"        width="57" height="57" />
-    <icon src="images/icon.png"         gap:platform="ios"        width="72" height="72" />
-    <icon src="images/icon.png"         gap:platform="ios"        width="114" height="114" />
-    <icon src="images/icon.png"         gap:platform="ios"        width="144" height="144" />
 
     <!-- Define app splash screen for each platform. -->
-    <gap:splash src="images/screen-ldpi-landscape.png"  gap:platform="android" gap:qualifier="land-ldpi" />
-    <gap:splash src="images/screen-mdpi-landscape.png"  gap:platform="android" gap:qualifier="land-mdpi" />
-    <gap:splash src="images/screen-hdpi-landscape.png"  gap:platform="android" gap:qualifier="land-hdpi" />
-    <gap:splash src="images/screen-xhdpi-landscape.png" gap:platform="android" gap:qualifier="land-xhdpi" />
-    <gap:splash src="images/screen-ldpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="images/screen-ldpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="images/screen-mdpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="images/screen-hdpi-portrait.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="images/screen-xhdpi-portrait.png" />
-    <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="320" height="480" />
-    <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="640" height="960" />
-    <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="640" height="1136" />
-    <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="768" height="1024" />
-    <gap:splash src="images/screen-hdpi-landscape.png" gap:platform="ios"     width="1024" height="768" />
+    <platform name="android">
+        <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="ldpi" />
+        <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="mdpi" />
+        <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="hdpi" />
+        <icon src="images/iconapp1200.png" gap:platform="android"    gap:density="xhdpi" />
+        <allow-intent href="market:*" />
+        <gap:splash src="images/screen-ldpi-landscape.png"  gap:platform="android" gap:qualifier="land-ldpi" />
+        <gap:splash src="images/screen-mdpi-landscape.png"  gap:platform="android" gap:qualifier="land-mdpi" />
+        <gap:splash src="images/screen-hdpi-landscape.png"  gap:platform="android" gap:qualifier="land-hdpi" />
+        <gap:splash src="images/screen-xhdpi-landscape.png" gap:platform="android" gap:qualifier="land-xhdpi" />
+        <gap:splash src="images/screen-ldpi-portrait.png" />
+        <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="images/screen-ldpi-portrait.png" />
+        <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="images/screen-mdpi-portrait.png" />
+        <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="images/screen-hdpi-portrait.png" />
+        <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="images/screen-xhdpi-portrait.png" />
+    </platform>
+
+    <platform name="ios">
+        <icon src="images/icon.png"         gap:platform="ios"        width="57" height="57" />
+        <icon src="images/icon.png"         gap:platform="ios"        width="72" height="72" />
+        <icon src="images/icon.png"         gap:platform="ios"        width="114" height="114" />
+        <icon src="images/icon.png"         gap:platform="ios"        width="144" height="144" />
+
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="320" height="480" />
+        <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="640" height="960" />
+        <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="640" height="1136" />
+        <gap:splash src="images/screen-ldpi-portrait.png"  gap:platform="ios"     width="768" height="1024" />
+        <gap:splash src="images/screen-hdpi-landscape.png" gap:platform="ios"     width="1024" height="768" />
+    </platform>
 
     <gap:config-file platform="ios" parent="CFBundleShortVersionString">
         <string>100</string>
@@ -104,12 +111,5 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
--->    
-    <platform name="android">
-        <allow-intent href="market:*" />
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-    </platform>
+-->
 </widget>

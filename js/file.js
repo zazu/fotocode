@@ -25,8 +25,10 @@ var FileIO = {
                     window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
                         var now = new Date();
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
+                        var size = fileEntryFrom.size;
                         fileEntryFrom.moveTo(dirEntry, newName,
                             function(fileEntryTo) {
+                                fileEntryTo.size = size;
                                 success(fileEntryTo);
                             },
                             FileIO.errorHandler);
