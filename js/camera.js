@@ -1,8 +1,6 @@
 // global namespace
 var fc = fc || {};
-
 fc.camera =  {
-
     getPicture: function( success, fail ) {
     	var cam = navigator.camera;
     	if ( cam ) {
@@ -12,13 +10,15 @@ fc.camera =  {
                     FileIO.moveMediaFile(
                         decodeURI( imageUri ),
                         function(fileEntry) {
-                            success({
-                                uri: fileEntry.nativeURL,
-                                title: title,
-                                size: fileEntry.size,
-                                bemerkung:""
+                            fileEntry.file( function(file){
+                                success({
+                                    uri: fileEntry.nativeURL,
+                                    title: title,
+                                    size: file.size,
+                                    bemerkung:""
+                                });
+                            });
                         });
-                    });
                 },
                 function(error) {
                     console.log('getPicture error');
