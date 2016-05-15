@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.cesart.appgeordnet"
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:gap="http://phonegap.com/ns/1.0"
+        id="de.cesart.appgeordnet"
         version="2.0.34"
         android-versionCode="2.0.34"
-        ios-CFBundleVersion="2.0.34"
-        xmlns="http://www.w3.org/ns/widgets"
-        xmlns:gap="http://phonegap.com/ns/1.0">
+        ios-CFBundleVersion="2.0.34" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -13,40 +13,16 @@
         Cesar Fernandez
     </author>
     <content src="index.html" />
-<!--
-    <engine name="android" spec="https://github.com/apache/cordova-android.git#5.1.1" />
-    <engine name="ios" spec="^4.0.0" />
--->
     <preference name="phonegap-version" value="cli-6.1.0" />
     <preference name="permissions" value="none" />
-
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
-    <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
-    <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
-    <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
-    <preference name="ios-statusbarstyle"         value="black-opaque" />   <!-- ios: black-translucent will appear black because the PhoneGap webview doesn't go beneath the status bar -->
-    <preference name="detect-data-types"          value="true" />           <!-- ios: controls whether data types (such as phone no. and dates) are automatically turned into links by the system -->
-    <preference name="exit-on-suspend"            value="false" />          <!-- ios: if set to true, app will terminate when home button is pressed -->
-    <preference name="show-splash-screen-spinner" value="true" />           <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
-    <preference name="auto-hide-splash-screen"    value="true" />           <!-- ios: if set to false, the splash screen must be hidden using a JavaScript API -->
-    <preference name="disable-cursor"             value="false" />          <!-- blackberry: prevents a mouse-icon/cursor from being displayed on the app -->
-    <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
-    <!-- android -->
-    <preference name="android-minSdkVersion" value="14" />
-    <preference name="android-installLocation" value="auto" />
-    <preference name="AndroidPersistentFileLocation" value="Internal" />
-    <preference name="iosPersistentFileLocation" value="Library" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
-    <!-- ios -->
-    <preference name="KeyboardShrinksView" value="true"/>
-    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
-    <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
+
+    <icon src="icon.png" />
+    <splash src="splash.png" />
 
     <!-- plugins -->
-
     <plugin name="cordova-plugin-file" source="npm" version="4.2.0" />
     <plugin name="cordova-plugin-device" source="npm" version="1.1.2" />
     <plugin name="cordova-plugin-camera" source="npm" version="2.2.0" />
@@ -60,22 +36,16 @@
     <plugin name="ionic-plugin-keyboard" source="npm" version="2.2.0" />
     <plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <plugin name="cordova-open" source="npm" version="1.0.9" />
-<!--
-    <plugin name="cordova-plugin-webintent2" source="npm" version="1.0.1" />
--->
-
-    <!-- to enable individual permissions use the following examples -->
-    <feature name="http://api.phonegap.com/1.0/file"/>
-    <feature name="http://api.phonegap.com/1.0/media"/>
-    <feature name="http://api.phonegap.com/1.0/camera"/>
-    <feature name="http://api.phonegap.com/1.0/network"/>
-    <feature name="http://api.phonegap.com/1.0/notification"/>        
-    
-    <icon src="icon.png" />
-    <icon src="images/icon.png" />
-    <splash src="images/screen-ldpi-portrait.png" />
 
     <platform name="android" >
+        <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
+        <preference name="android-minSdkVersion" value="14" />
+        <preference name="android-installLocation" value="auto" />
+        <preference name="AndroidPersistentFileLocation" value="Internal" />
+        <preference name="iosPersistentFileLocation" value="Library" />
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
+
         <icon src="images/iconapp1200.png" platform="android"    density="ldpi" />
         <icon src="images/iconapp1200.png" platform="android"    density="mdpi" />
         <icon src="images/iconapp1200.png" platform="android"    density="hdpi" />
@@ -89,9 +59,33 @@
         <splash platform="android" qualifier="port-hdpi" src="images/screen-hdpi-portrait.png" />
         <splash platform="android" qualifier="port-xhdpi" src="images/screen-xhdpi-portrait.png" />
         <plugin name="cordova-plugin-whitelist" source="npm" version="1.2.2" />
+
+        <allow-intent href="http://*/*" />
+        <allow-intent href="https://*/*" />
+        <!--
+            <allow-intent href="tel:*" />
+            <allow-intent href="sms:*" />
+            <allow-intent href="mailto:*" />
+            <allow-intent href="geo:*" />
+        -->
+        <allow-intent href="market:*" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
     </platform>
 
     <platform name="ios" >
+        <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
+        <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
+        <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
+        <preference name="ios-statusbarstyle"         value="black-opaque" />   <!-- ios: black-translucent will appear black because the PhoneGap webview doesn't go beneath the status bar -->
+        <preference name="detect-data-types"          value="true" />           <!-- ios: controls whether data types (such as phone no. and dates) are automatically turned into links by the system -->
+        <preference name="exit-on-suspend"            value="false" />          <!-- ios: if set to true, app will terminate when home button is pressed -->
+        <preference name="show-splash-screen-spinner" value="true" />           <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
+        <preference name="auto-hide-splash-screen"    value="true" />           <!-- ios: if set to false, the splash screen must be hidden using a JavaScript API -->
+        <preference name="KeyboardShrinksView" value="true"/>
+        <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+        <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
+
         <icon src="images/icon.png"         platform="ios"        width="57" height="57" />
         <icon src="images/icon.png"         platform="ios"        width="72" height="72" />
         <icon src="images/icon.png"         platform="ios"        width="114" height="114" />
@@ -103,17 +97,6 @@
         <splash src="images/screen-hdpi-landscape.png" platform="ios"     width="1024" height="768" />
 
     </platform>
-
     <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-<!--    
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
--->
-    <allow-intent href="market:*" />
-    <allow-intent href="itms:*" />
-    <allow-intent href="itms-apps:*" />
+
 </widget>
