@@ -80,7 +80,7 @@ function onDeviceReady() {
                 */
             });
         }
-        window.open = cordova.InAppBrowser.open;
+        //window.open = cordova.InAppBrowser.open;
     }
 /*
     else {
