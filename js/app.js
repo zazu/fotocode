@@ -4,6 +4,10 @@ Template7.global = {
     ios: isIos
 };
 
+window.onerror = function (errorMsg, url, lineNumber) {
+    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+};
+
 window.onload = function () {
     window.cfg = {
         version: '2.0.90',
@@ -447,13 +451,13 @@ function onDeviceReady() {
                 }
             },
             validateBarcode: function (success) {
-                success();
-                return true;
-
+                alert('validateBarcode start');
                 var me = this;
                 var msg = [];
                 var compiled;
+                alert('vor checkbarcode');
                 var err = me.checkBarcode();
+                alert('nach checkbarcode');
                 if (err & 1) {
                     compiled = _.template('Die Barcodelänge (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
                     msg.push(compiled({'ist': me.set.code.length, 'soll': me.bereiche.bclen[me.set.bereich]}));
@@ -502,6 +506,7 @@ function onDeviceReady() {
                     if (!result.cancelled) {
                         me.set.code = result.text;
                         me.set.format = result.format;
+                        alert('vor validateBarcode');
                         me.validateBarcode(success);
                     }
                 }, function (error) {
@@ -525,6 +530,7 @@ function onDeviceReady() {
             },
 
             media: function (success) {
+                alert('media start');
                 var me = this;
                 if ( this.nextmedia === 'audio')
                     me.takeaudio(success);
@@ -539,6 +545,7 @@ function onDeviceReady() {
                 me.takefoto(success);
             },
             takefoto: function (success) {
+                alert('takefoto start');
                 var me = this;
                 fc.camera.getPicture(function (result) {
                     me.set.fotos.push(result);
@@ -572,6 +579,7 @@ function onDeviceReady() {
             },
 
             usefotos: function () {
+                alert('usefotos start');
                 var me = this;
                 // Vorgang auch ohne Fotos anlegen (me.set.fotos.length)
                 var s = JSON.parse(JSON.stringify(me.set));
