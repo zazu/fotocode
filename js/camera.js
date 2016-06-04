@@ -48,7 +48,7 @@ fc.camera =  {
                     }
                     else if (result.cancelled )  {
                         //fail( 'cancel' );
-                        fail( 'Abbruch' );
+                        fail( 'Abbruch' + JSON.stringify(result) );
                     }
                     else {
                         fail( 'Kein Ergebnis: ' + JSON.stringify(result) );
