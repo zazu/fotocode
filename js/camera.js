@@ -55,6 +55,13 @@ fc.camera =  {
                 },
                 function(error) {
                     fail( error );
+                },
+                {
+                    "preferFrontCamera" : true, // iOS and Android
+                    "showFlipCameraButton" : false, // iOS and Android
+                    "prompt" : "Barcode im Bereich platzieren." // supported on Android only
+                    //,"formats" : "" // default: all but PDF_417 and RSS_EXPANDED
+                    //,"orientation" : "portrait" // Android only (portrait|landscape), default unset so it rotates with the device
                 });
     	}
         else {
