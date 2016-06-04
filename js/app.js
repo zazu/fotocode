@@ -491,7 +491,6 @@ function onDeviceReady() {
                             err=0;
                     }
                 }
-
                 return err;
             },
             barcode: function (success) {
@@ -502,8 +501,9 @@ function onDeviceReady() {
                         me.set.format = result.format;
                         me.validateBarcode(success);
                     }
-                }, function () {
-                    myApp.alert("Fehler beim Erfassen des Barcodes");
+                }, function (error) {
+                    if ( error !== 'cancel' )
+                        myApp.alert("Fehler beim Erfassen des Barcodes: " + error);
                 });
             },
             // Listenhandler Barcode ändern
