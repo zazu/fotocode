@@ -7,6 +7,32 @@ Template7.global = {
 window.onerror = function (errorMsg, url, lineNumber) {
     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 };
+function takeOverConsole(){
+    var console = window.console;
+    if (!console) return;
+    function intercept(method){
+        var original = console[method];
+        console[method] = function(){
+            var message = Array.prototype.slice.apply(arguments).join(' ');
+            alert(message);
+/*
+            // do sneaky stuff
+            if (original.apply){
+                // Do this for normal browsers
+                original.apply(console, arguments)
+            }else{
+                // Do this for IE
+                var message = Array.prototype.slice.apply(arguments).join(' ')
+                original(message);
+            }
+*/
+        }
+    }
+    var methods = ['log', 'warn', 'error'];
+    for (var i = 0; i < methods.length; i++)
+        intercept(methods[i]);
+};
+takeOverConsole();
 
 window.onload = function () {
     window.cfg = {
@@ -451,13 +477,10 @@ function onDeviceReady() {
                 }
             },
             validateBarcode: function (success) {
-                alert('validateBarcode start');
                 var me = this;
                 var msg = [];
                 var compiled;
-                alert('vor checkbarcode');
                 var err = me.checkBarcode();
-                alert('nach checkbarcode');
                 if (err & 1) {
                     compiled = _.template('Die Barcodelänge (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
                     msg.push(compiled({'ist': me.set.code.length, 'soll': me.bereiche.bclen[me.set.bereich]}));
@@ -506,7 +529,6 @@ function onDeviceReady() {
                     if (!result.cancelled) {
                         me.set.code = result.text;
                         me.set.format = result.format;
-                        alert('vor validateBarcode');
                         me.validateBarcode(success);
                     }
                 }, function (error) {
@@ -530,7 +552,6 @@ function onDeviceReady() {
             },
 
             media: function (success) {
-                alert('media start');
                 var me = this;
                 if ( this.nextmedia === 'audio')
                     me.takeaudio(success);
@@ -545,7 +566,6 @@ function onDeviceReady() {
                 me.takefoto(success);
             },
             takefoto: function (success) {
-                alert('takefoto start');
                 var me = this;
                 fc.camera.getPicture(function (result) {
                     me.set.fotos.push(result);
@@ -579,7 +599,6 @@ function onDeviceReady() {
             },
 
             usefotos: function () {
-                alert('usefotos start');
                 var me = this;
                 // Vorgang auch ohne Fotos anlegen (me.set.fotos.length)
                 var s = JSON.parse(JSON.stringify(me.set));
