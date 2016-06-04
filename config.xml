@@ -36,20 +36,19 @@
     <plugin name="cordova-open" source="npm" version="1.0.9" />
 
     <platform name="android" >
-<!--
         <preference name="phonegap-version" value="cli-6.1.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.0" />
-        <preference name="android-minSdkVersion" value="15" />
--->
+        <preference name="android-minSdkVersion" value="16" />
 <!--
         <preference name="phonegap-version" value="cli-5.2.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
         <preference name="android-minSdkVersion" value="15" />
 -->
+<!--
         <preference name="phonegap-version" value="cli-5.1.1" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
         <preference name="android-minSdkVersion" value="7" />
-
+-->
 
         <preference name="android-installLocation" value="auto" />  <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
         <preference name="AndroidPersistentFileLocation" value="Internal" />
