@@ -36,8 +36,7 @@
     <plugin name="cordova-open" source="npm" version="1.0.9" />
 
     <platform name="android" >
-
-        <preference name="phonegap-version" value="cli-6.2.0" />
+        <preference name="phonegap-version" value="cli-6.1.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.0" />
 
 <!--        <preference name="phonegap-version" value="cli-5.4.1" />
