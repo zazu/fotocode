@@ -44,7 +44,7 @@
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
 
         <preference name="android-installLocation" value="auto" />  <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
-        <preference name="android-minSdkVersion" value="14" />
+        <preference name="android-minSdkVersion" value="15" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
         <preference name="AutoHideSplashScreen" value="true" />
         <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
