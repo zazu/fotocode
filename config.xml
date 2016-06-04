@@ -66,6 +66,9 @@
         <allow-intent href="market:*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+
+        <uses-permission name="android.permission.CAMERA" />
+        <uses-feature name="android.hardware.camera" />
     </platform>
 
     <platform name="ios" >
@@ -110,6 +113,5 @@
     <plugin name="ionic-plugin-keyboard" source="npm" version="2.2.0" />
     <plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <plugin name="cordova-open" source="npm" version="1.0.9" />
-
 
 </widget>
