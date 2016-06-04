@@ -3,7 +3,7 @@ Template7.global = {
     android: isAndroid,
     ios: isIos
 };
-
+/*
 window.onerror = function (errorMsg, url, lineNumber) {
     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 };
@@ -13,10 +13,9 @@ function takeOverConsole(){
     function intercept(method){
         var original = console[method];
         console[method] = function(){
+            // do sneaky stuff
             var message = Array.prototype.slice.apply(arguments).join(' ');
             alert(message);
-/*
-            // do sneaky stuff
             if (original.apply){
                 // Do this for normal browsers
                 original.apply(console, arguments)
@@ -25,7 +24,6 @@ function takeOverConsole(){
                 var message = Array.prototype.slice.apply(arguments).join(' ')
                 original(message);
             }
-*/
         }
     }
     var methods = ['log', 'warn', 'error'];
@@ -33,6 +31,7 @@ function takeOverConsole(){
         intercept(methods[i]);
 };
 takeOverConsole();
+*/
 
 window.onload = function () {
     window.cfg = {
