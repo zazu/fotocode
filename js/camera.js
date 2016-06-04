@@ -43,11 +43,15 @@ fc.camera =  {
     	if ( cam ) {
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
-                    if ( ! result.cancelled && result.format.length && result.text.length) {
+                    if ( result.format.length && result.text.length) {
                         success( result );
                     }
+                    else if (result.cancelled )  {
+                        //fail( 'cancel' );
+                        fail( 'Abbruch' );
+                    }
                     else {
-                        fail( 'cancel' );
+                        fail( 'Kein Ergebnis: ' + JSON.stringify(result) );
                     }
                 },
                 function(error) {
@@ -59,27 +63,31 @@ fc.camera =  {
         }
     },
 
+    moveMediaFile: function(vid,success) {
+        FileIO.moveMediaFile(vid.uri,
+            function(fileEntry) {
+                //vid.uri = fileEntry.fullPath;
+                vid.uri = fileEntry.nativeURL;
+                success(vid);
+        });
+    },
+
     captureVideo: function(success, fail ) {
+        var me=this;
         if (navigator.camera) {
             navigator.device.capture.captureVideo(
                 function (mediaFiles) {
-                    var i, len;
+                    var i, len, vid, title;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                        var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-                        var vid = {
+                        title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+                        vid = {
                             uri: decodeURI(mediaFiles[i].fullPath),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
                             date: mediaFiles[i].lastModifiedDate
                         };
-                        FileIO.moveMediaFile(
-                            decodeURI( mediaFiles[i].fullPath ),
-                            function(fileEntry) {
-                                //vid.uri = fileEntry.fullPath;
-                                vid.uri = fileEntry.nativeURL;
-                                success(vid);
-                        });
+                        me.moveMediaFile(vid,success);
                     }
                 },
                 function (error) {
@@ -96,6 +104,7 @@ fc.camera =  {
     },
 
     captureAudio: function(success, fail ) {
+        var me=this;
         if (navigator.camera) {
             navigator.device.capture.captureAudio(
                 function(mediaFiles) {
@@ -109,13 +118,8 @@ fc.camera =  {
                             type: mediaFiles[i].type,
                             date: mediaFiles[i].lastModifiedDate
                         };
-                        FileIO.moveMediaFile(
-                            decodeURI( mediaFiles[i].fullPath ),
-                            function(fileEntry) {
-                                //vid.uri = fileEntry.fullPath;
-                                vid.uri = fileEntry.nativeURL;
-                                success(vid);
-                        });
+                        me.moveMediaFile(vid,success);
+
                     }
                 },
                 function (error) {
