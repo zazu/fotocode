@@ -447,6 +447,9 @@ function onDeviceReady() {
                 }
             },
             validateBarcode: function (success) {
+                success();
+                return true;
+
                 var me = this;
                 var msg = [];
                 var compiled;
@@ -499,8 +502,7 @@ function onDeviceReady() {
                     if (!result.cancelled) {
                         me.set.code = result.text;
                         me.set.format = result.format;
-                        success();
-                        //me.validateBarcode(success);
+                        me.validateBarcode(success);
                     }
                 }, function (error) {
                     if ( error !== 'cancel' )
