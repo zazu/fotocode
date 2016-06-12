@@ -70,7 +70,8 @@ fc.camera =  {
     },
 
     moveMediaFile: function(vid,success) {
-        FileIO.moveMediaFile(vid.uri,
+        FileIO.moveMediaFile(
+            decodeURI( vid.uri),
             function(fileEntry) {
                 //vid.uri = fileEntry.fullPath;
                 vid.uri = fileEntry.nativeURL;
