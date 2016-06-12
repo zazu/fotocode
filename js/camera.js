@@ -71,7 +71,7 @@ fc.camera =  {
 
     moveMediaFile: function(vid,success) {
         FileIO.moveMediaFile(
-            decodeURI( vid.uri),
+            vid.uri,
             function(fileEntry) {
                 //vid.uri = fileEntry.fullPath;
                 vid.uri = fileEntry.nativeURL;
@@ -88,7 +88,8 @@ fc.camera =  {
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
                         vid = {
-                            uri: decodeURI(mediaFiles[i].fullPath),
+                            //uri: decodeURI(mediaFiles[i].fullPath),
+                            uri: decodeURI(mediaFiles[i].nativeURL),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
@@ -119,7 +120,8 @@ fc.camera =  {
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
                         var vid = {
-                            uri: decodeURI(mediaFiles[i].fullPath),
+                            //uri: decodeURI(mediaFiles[i].fullPath),
+                            uri: decodeURI(mediaFiles[i].nativeURL),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
