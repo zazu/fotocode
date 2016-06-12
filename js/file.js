@@ -10,10 +10,10 @@ On iOS, this directory is not synced with iCloud (use .syncedDataDirectory).
 (iOS, Android, BlackBerry 10)
 */
 
-
-
 // global namespace
 var fc = fc || {};
+
+//
 
 var FileIO = {
 
@@ -22,7 +22,9 @@ var FileIO = {
         var extension = imageURI.substr(-3);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
-                    window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, function(dirEntry){
+                    var directory = (device.platform === "Android")
+                        ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
+                    window.resolveLocalFileSystemURL( directory, function(dirEntry){
                         var now = new Date();
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
                         fileEntryFrom.moveTo(dirEntry, newName,
@@ -34,7 +36,6 @@ var FileIO = {
                 },
                 FileIO.errorHandler);
         },
-
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
