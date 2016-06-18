@@ -20,7 +20,6 @@ var FileIO = {
     // Medium in das app-data-Verzeichnis verschieben
     moveMediaFile: function(imageURI, success) {
         var extension = imageURI.substr(-3);
-myApp.alert(imageURI);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
                     var directory = (device.platform === "Android")

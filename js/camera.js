@@ -88,8 +88,9 @@ fc.camera =  {
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
                         vid = {
-                            uri: decodeURI(mediaFiles[i].fullPath),
-                            //uri: decodeURI(mediaFiles[i].nativeURL),
+                            uri: decodeURI(
+                                (device.platform === "Android")?mediaFiles[i].fullPath:mediaFiles[i].localURL
+                            ),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
@@ -119,15 +120,10 @@ fc.camera =  {
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
-
-myApp.alert(decodeURI(mediaFiles[i].fullPath));
-myApp.alert(mediaFiles[i].fullPath);
-myApp.alert(mediaFiles[i].localURL);
-
-
                         var vid = {
-                            //uri: decodeURI(mediaFiles[i].fullPath),
-                            uri: decodeURI(mediaFiles[i].localURL),
+                            uri: decodeURI(
+                                (device.platform === "Android")?mediaFiles[i].fullPath:mediaFiles[i].localURL
+                            ),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
