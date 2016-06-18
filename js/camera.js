@@ -122,12 +122,12 @@ fc.camera =  {
 
 myApp.alert(decodeURI(mediaFiles[i].fullPath));
 myApp.alert(mediaFiles[i].fullPath);
-myApp.alert(mediaFiles[i].nativeURL);
 myApp.alert(mediaFiles[i].localURL);
 
 
                         var vid = {
-                            uri: decodeURI(mediaFiles[i].fullPath),
+                            //uri: decodeURI(mediaFiles[i].fullPath),
+                            uri: decodeURI(mediaFiles[i].localURL),
                             title: title,
                             size: mediaFiles[i].size,
                             type: mediaFiles[i].type,
