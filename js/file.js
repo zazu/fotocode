@@ -25,9 +25,7 @@ myApp.alert(imageURI);
                 function(fileEntryFrom) {
                     var directory = (device.platform === "Android")
                         ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-myApp.alert('Pos 1');
                     window.resolveLocalFileSystemURL( directory, function(dirEntry){
-myApp.alert('Pos 2');
                         var now = new Date();
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
                         fileEntryFrom.moveTo(dirEntry, newName,

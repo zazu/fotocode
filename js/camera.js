@@ -119,6 +119,12 @@ fc.camera =  {
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var title = mediaFiles[i].name.replace(/^.*[\\\/]/, '');
+
+myApp.alert(decodeURI(mediaFiles[i].fullPath));
+myApp.alert(mediaFiles[i].fullPath);
+myApp.alert(mediaFiles[i].nativeURL);
+
+
                         var vid = {
                             uri: decodeURI(mediaFiles[i].fullPath),
                             //uri: decodeURI(mediaFiles[i].nativeURL),
