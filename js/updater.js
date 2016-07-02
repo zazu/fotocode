@@ -72,6 +72,8 @@ fc.updater =  {
             fileTransfer.download(encodeURI(androidUrl),
                 "cdvfile://localhost/temporary/app.apk",
                 function (entry) {
+                    myApp.hidePreloader();
+                    myApp.showPreloader('Die neue App wird installiert...');
                     window.plugins.webintent.startActivity({
                         action: window.plugins.webintent.ACTION_VIEW,
                         url: entry.toURL(),
@@ -92,7 +94,7 @@ fc.updater =  {
                 }, true);
         }
         else {
-            // einfach mit zur ipa browsen?
+            // einfach ipa browsen
             window.open(encodeURI(androidUrl), "_self", "hidden=yes");
         }
     }

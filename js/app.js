@@ -901,6 +901,7 @@ function onDeviceReady() {
                         success: function (data) {
                             data = JSON.parse(data);
                             if (!data.success) {
+                                me.logout();
                                 myApp.hidePreloader();
                                 myApp.addNotification({'title': data.msg});
                             }
