@@ -69,7 +69,8 @@ fc.updater =  {
         if ( window.cfg.device.platform == "Android") {
             var fileTransfer = new FileTransfer();
             fileTransfer.download(encodeURI(androidUrl),
-                "cdvfile://localhost/persistent/app.apk",
+                "cdvfile://localhost/temporary/app.apk",
+                //"cdvfile://localhost/persistant/app.apk",
                 function (entry) {
                     myApp.hidePreloader();
                     myApp.showPreloader('Die neue App wird installiert...');
