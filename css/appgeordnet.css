@@ -68,6 +68,13 @@ i.icon.icon-cameraalt-light {
     background-image: url("../img/ic_camera_alt_white_24px.svg");
 }
 
+i.icon.icon-camera {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic_camera_alt_black_24px.svg");
+}
+
+
 i.icon.icon-mic-light {
     width: 24px;
     height: 24px;

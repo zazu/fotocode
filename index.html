@@ -175,6 +175,15 @@
                 <div class="center">appgeordnet</div>
                 <div class="right">
 <!--                    <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a> -->
+                    <a v-if="isios" href="#" @click="neuerVorgangFoto()" class="link icon-only">
+                        <i class="icon icon-camera"></i>
+                    </a>
+                    <a v-if="isios" href="#" @click="neuerVorgangVideo()" class="link icon-only">
+                        <i class="icon icon-videocam"></i>
+                    </a>
+                    <a v-if="isios" href="#" @click="neuerVorgangAudio()" class="link icon-only">
+                        <i class="icon icon-mic"></i>
+                    </a>
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                 </div>
               </div>
