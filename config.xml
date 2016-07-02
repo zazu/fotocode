@@ -58,6 +58,7 @@
 
         <allow-intent href="http://*/*" />
         <allow-intent href="https://*/*" />
+        <allow-intent href="cdvfile://*/*" />
         <!--
             <allow-intent href="tel:*" />
             <allow-intent href="sms:*" />
@@ -70,6 +71,8 @@
 
         <uses-permission name="android.permission.CAMERA" />
         <uses-feature name="android.hardware.camera" />
+
+        <access origin="cdvfile://*" />
     </platform>
 
     <platform name="ios" >
