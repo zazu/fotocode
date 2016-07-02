@@ -153,6 +153,10 @@ function onDeviceReady() {
         material: isAndroid ? true : false,
         template7Pages: false,
         notificationCloseButtonText: 'Schließen',
+        smartSelectPopupCloseText:'Schließen',
+        backLinkText:'Schließen',
+        popupCloseText:'Schließen',
+        toolbarCloseText:'Fertig',
         smartSelectPickerCloseText: 'Fertig',
         smartSelectBackText:'Zurück',
         notificationHold: 5000,
@@ -786,6 +790,7 @@ function onDeviceReady() {
                             photos: photos,
                             initialSlide: initialSlide,
                             ofText: 'von',
+                            backLinkText: 'Schließen',
                             toolbarTemplate: '\
                         <div class="toolbar tabbar"> \
                             <div class="toolbar-inner">\

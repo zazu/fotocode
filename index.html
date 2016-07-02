@@ -12,7 +12,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = false;
+            isAndroid = true;
             isIos = !isAndroid;
         }
         (function () {
@@ -24,7 +24,7 @@
             }
             else {
               Dom7('head').append(
-                      '<link rel="stylesheet" href="css/framework7.ios.min.css">' +
+                      '<link rel="stylesheet" href="css/framework7.ios.css">' +
                       '<link rel="stylesheet" href="css/framework7.ios.colors.min.css">'
               );
             }
