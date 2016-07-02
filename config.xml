@@ -74,6 +74,8 @@
     <platform name="ios" >
         <preference name="phonegap-version" value="cli-5.4.1" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.0" />
+        <plugin name="cordova-plugin-inappbrowser" source="npm" version="1.4.0" />
+
 <!--        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="2.0.1" /> -->
         <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
         <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->

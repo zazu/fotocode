@@ -7,7 +7,7 @@ fc.updater =  {
         try {
             myApp.showPreloader('Updateprüfung');
             $$.ajax({
-                url: serveruri + 'app/version?' + _.now(),
+                url: serveruri + 'app/version?platform=' + window.cfg.device.platform+'&' + _.now(),
                 method: 'GET',
                 data: { version:version },
                 success: function (data) {
@@ -31,7 +31,7 @@ fc.updater =  {
                         });
                     }
                 },
-                error: function() {
+                error: function(e) {
                     myApp.hidePreloader();
                     myApp.addNotification({
                         title: 'Update',
@@ -42,6 +42,7 @@ fc.updater =  {
             });
         }
         catch(e){
+            myApp.hidePreloader();
             myApp.addNotification({
                 title: 'Update',
                 message: 'Bei der Updatepürfung ist ein Fehler aufgetreten.',
@@ -66,27 +67,34 @@ fc.updater =  {
     updateApp: function( androidUrl, onSuccess, onError  ) {
         var fileTransfer = new FileTransfer();
         myApp.showPreloader('Die neue App wird geladen...');
-        fileTransfer.download(encodeURI(androidUrl),
-            "cdvfile://localhost/temporary/app.apk",
-            function (entry) {
-                window.plugins.webintent.startActivity({
-                    action: window.plugins.webintent.ACTION_VIEW,
-                    url: entry.toURL(),
-                    type: 'application/vnd.android.package-archive'
-                }, function () {
+
+        if ( window.cfg.device.platform == "Android") {
+            fileTransfer.download(encodeURI(androidUrl),
+                "cdvfile://localhost/temporary/app.apk",
+                function (entry) {
+                    window.plugins.webintent.startActivity({
+                        action: window.plugins.webintent.ACTION_VIEW,
+                        url: entry.toURL(),
+                        type: 'application/vnd.android.package-archive'
+                    }, function () {
+                        myApp.hidePreloader();
+                        onSuccess();
+                    }, function () {
+                        myApp.hidePreloader();
+                        onError("Failed to open URL via Android Intent. URL: " + entry.fullPath);
+                    });
+                }, function (error) {
                     myApp.hidePreloader();
-                    onSuccess();
-                }, function () {
-                    myApp.hidePreloader();
-                    onError("Failed to open URL via Android Intent. URL: " + entry.fullPath);
-                });
-            }, function (error) {
-                myApp.hidePreloader();
-                onError(
-                    "error source " + error.source +
-                    ", error target " + error.target +
-                    ", error code" + error.code);
-            }, true);
+                    onError(
+                        "error source " + error.source +
+                        ", error target " + error.target +
+                        ", error code" + error.code);
+                }, true);
+        }
+        else {
+            // einfach mit zur ipa browsen?
+            window.open(encodeURI(androidUrl), "_self", "hidden=yes");
+        }
     }
 
 };

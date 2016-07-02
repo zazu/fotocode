@@ -34,10 +34,12 @@ takeOverConsole();
 */
 
 window.onload = function () {
+    var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
         version: '2.0.90',
-        uritest: "http://test.app-geordnet.de/",
-        uriproduction: (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ?
+        uritest: mobiledevice ? "http://test.app-geordnet.de/":
+                                'http://localhost:8080/app-geordnet/',
+        uriproduction: mobiledevice ?
             'http://2016.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
         device: {
@@ -70,7 +72,7 @@ function onDeviceReady() {
         // https://github.com/vitohe/ionic-plugins-keyboard/tree/f94842fec1bacf72107083d2e44735e417e8439d
         // http://visionmedia.github.io/move.js/
         // not tested on iOS so implementation is for Android only
-        if (device.platform === "Android") {
+        if (window.cfg.device.platform === "Android") {
             // device is running Android
             // attach showkeyboard event listener
             // which is triggered when the native keyboard is opened
@@ -109,7 +111,8 @@ function onDeviceReady() {
                 */
             });
         }
-        //window.open = cordova.InAppBrowser.open;
+        if ( cordova.InAppBrowser )
+            window.open = cordova.InAppBrowser.open;
     }
 /*
     else {
@@ -914,6 +917,7 @@ function onDeviceReady() {
                             }
                         },
                         error: function () {
+                            me.logout();
                             myApp.hidePreloader();
                             myApp.addNotification({'title': 'Beim Synchronisieren ist ein Fehler aufgetreten.'});
                         }
@@ -938,7 +942,7 @@ function onDeviceReady() {
                 });
             },
             checkVersion: function() {
-                fc.updater.checkVersion( this.baseuri + 'app/version?'+_.now(), this.appversion );
+                fc.updater.checkVersion( this.baseuri, this.appversion );
             },
             logout: function () {
                 var me = this;
@@ -1149,6 +1153,8 @@ function onDeviceReady() {
 
     vm.$watch('useserver', function (newVal, oldVal) {
         Lockr.set('appg-useserver', newVal);
+        if ( newVal != oldVal )
+            this.logout();
     });
 
 
