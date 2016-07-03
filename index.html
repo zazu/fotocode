@@ -76,7 +76,7 @@
                               Audio</div>
                       </div>
                   </div></a></li>
-            <li v-if="sets.length && loggedin" ><a @click="senden" href="#" class="item-link close-panel">
+            <li v-if="sets.length && loggedin" ><a @click="senden()" href="#" class="item-link close-panel">
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
@@ -245,7 +245,7 @@
                           <div class="item-title-row">
                             <div class="item-title">{{ds.code}}</div>
                             <div class="item-after">
-                                <span class="badge bg-green">
+                                <span class="badge bg-{{colortheme}}">
                                     {{ds.fotos.length}} / {{ds.videos.length}} / {{ds.audios.length}}
                                     <br>
                                     {{ mediasize($index) |b2MB }} MB
@@ -274,22 +274,25 @@
             </div>
           </div>
           <!-- Medien Liste -->
-            <div class="page cached navbar-fixed" data-page="medien" >
+          <div class="page cached navbar-fixed medien" data-page="medien" >
                 <!-- Top Navbar-->
                 <div class="navbar">
                     <div class="navbar-inner">
                         <div class="left">
-                            <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
+                            <a href="#" class="back link"> <i class="icon icon-back"></i><span>Schließen</span></a>
                         </div>
                         <div class="center">{{set.code}}</div>
                         <div class="right">
-                            <a @click.stop.prevent="removeset(-1)" class="link" >
+                            <a v-show="loggedin" @click.prevent="senden(-1)" class="link icon-only" >
+                                <i class="icon icon-cloud-upload"></i>
+                            </a>
+                            <a @click.stop.prevent="removeset(-1)" class="link icon-only" >
                                 <i class="icon icon-bin-white"></i>
                             </a>
-                            <a @click.stop.prevent="showForm(-1)" class="link" >
+                            <a @click.stop.prevent="showForm(-1)" class="link icon-only" >
                                 <i class="icon icon-file-text2-white"></i>
                             </a>
-                            <a @click.prevent="setbarcode(-1)" class="link" >
+                            <a @click.prevent="setbarcode(-1)" class="link icon-only" >
                                 <i class="icon icon-price-tag-white"></i>
                             </a>
                         </div>
@@ -316,8 +319,8 @@
                                     <div class="chip">
                                         <div class="chip-media">
                                             <i class="icon icon-camera"></i>
+                                            Foto hinzufügen
                                         </div>
-                                        <div class="chip-label">Foto hinzufügen</div>
                                     </div>
                                     </a>
                                 </li>
@@ -350,8 +353,8 @@
                                         <div class="chip">
                                             <div class="chip-media">
                                                 <i class="icon icon-videocam"></i>
+                                                Video hinzufügen
                                             </div>
-                                            <div class="chip-label">Video hinzufügen</div>
                                         </div>
                                     </a>
                                 </li>
@@ -379,8 +382,8 @@
                                         <div class="chip">
                                             <div class="chip-media">
                                                 <i class="icon icon-mic"></i>
+                                                Audio hinzufügen
                                             </div>
-                                            <div class="chip-label">Audio hinzufügen</div>
                                         </div>
                                     </a>
                                 </li>
@@ -408,7 +411,7 @@
             <div class="navbar">
               <div class="navbar-inner">
                 <div class="left">
-                    <a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a>
+                    <a href="#" class="back link"> <i class="icon icon-back"></i><span>Abbrechen</span></a>
                 </div>
                 <div class="center">Neuer Vorgang</div>
               </div>
@@ -518,7 +521,7 @@
                     <input v-show="validquickscan"
                            @click.stop.prevent="scanfoto"
                            type="submit"
-                           value="Weiter" class="button button-big button-fill color-green"/>
+                           value="Weiter" class="button button-big button-fill color-{{colortheme}}"/>
                   </div>
                   <div class="col-25"></div>
                 </div>
@@ -602,7 +605,7 @@
                   <div class="col-50">
                     <input v-show="validbarcode"
                            @click.stop.prevent="scanbarcode"
-                           type="submit" value="Weiter" class="button button-big button-fill color-green"/>
+                           type="submit" value="Weiter" class="button button-big button-fill color-{{colortheme}}"/>
                   </div>
                   <div class="col-25"></div>
                 </div>
@@ -661,7 +664,7 @@
                     <input v-show="validlogin"
                            @click.stop.prevent="submitlogin"
                            type="submit"
-                           value="Anmelden" class="button button-big button-fill color-green"/>
+                           value="Anmelden" class="button button-big button-fill color-{{colortheme}}"/>
                   </div>
                   <div class="col-25"></div>
                 </div>

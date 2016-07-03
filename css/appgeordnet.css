@@ -65,3 +65,9 @@ svg {
 }
 
 .infoli .item-content, .infoli .item-inner { min-height:auto;}
+
+
+.medien li.list-group-title {
+    padding-top:1em;
+    padding-bottom:1em;
+}

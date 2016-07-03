@@ -268,7 +268,7 @@ function onDeviceReady() {
         },
         computed: {
             colortheme: function() {
-                return this.useserver==='test'?"red":"teal";
+                return this.useserver==='test'?"red": (this.isios?"blue":"teal");
             },
             baseuri: function() {
                 return this.useserver === "test"?window.cfg.uritest:window.cfg.uriproduction;
@@ -955,11 +955,12 @@ function onDeviceReady() {
                 me.user = {};
                 Lockr.set('appg-user', me.user);
             },
-            senden: function () {
+            senden: function (idx) {
                 var me = this;
+                idx = ( idx === -1 )?me.selectedSet:-1;
                 fc.file.init();
                 me.numsent = 0;
-                me.vorgangSenden();
+                me.vorgangSenden(idx);
             },
             roadmap: function() {
                 mainView.router.load({url:this.baseuri + 'app/roadmap/', ignoreCache:true});
@@ -977,14 +978,20 @@ function onDeviceReady() {
                 var f = "?filter=" + $$('#logsfilter').val();
                 mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name + f, ignoreCache:true, reload:true});
             },
-            vorgangSenden: function () {
+            vorgangSenden: function (idx) {
                 var me = this;
-                var idx=0;
-                // ersten set mit fotos finden
-                while ( idx < me.sets.length &&
-                       (me.sets[idx].fotos.length + me.sets[idx].videos.length +me.sets[idx].audios.length)==0
-                    )
-                    idx++;
+                var singleUpload = idx >=0;
+                if ( ! singleUpload ) {
+                    idx=0;
+                    // ersten set mit fotos finden
+                    while (idx < me.sets.length &&
+                    (me.sets[idx].fotos.length + me.sets[idx].videos.length + me.sets[idx].audios.length) == 0
+                        )
+                        idx++;
+                }
+                else
+                    mainView.router.back({force: true, pageName: 'index'});
+
                 if ( idx < me.sets.length ) {
                     var set = me.sets[idx];
                     var bereich = me.bereiche.bereichshort[set.bereich];
@@ -1002,7 +1009,10 @@ function onDeviceReady() {
                     fc.file.uploadGroup(group,
                         function () {
                             me.removeSended();
-                            me.vorgangSenden();
+                            if (! singleUpload )
+                                me.vorgangSenden(-1);
+                            else
+                                me.notifySended();
                         },
                         function (msg) {
                             myApp.alert(msg);
@@ -1010,18 +1020,21 @@ function onDeviceReady() {
                     );
                 }
                 else {
-                    var s = '<%= num %> Vorgänge wurden gesendet.'
-                    if ( me.numsent === 0)
-                        s += '<br>Es werden nur Vorgänge mit mind. einem Medium gesendet!';
-                    var compiled = _.template(me.numsent === 1 ? '<%= num %> Vorgang wurde gesendet.' : s);
-                    myApp.addNotification({
-                        title: 'Senden',
-                        message: compiled({'num': me.numsent}),
-                        hold: 0
-                    });
+                    me.notifySended();
                 }
             },
-
+            notifySended: function() {
+                var me = this;
+                var s = '<%= num %> Vorgänge wurden gesendet.'
+                if ( me.numsent === 0)
+                    s += '<br>Es werden nur Vorgänge mit mind. einem Medium gesendet!';
+                var compiled = _.template(me.numsent === 1 ? '<%= num %> Vorgang wurde gesendet.' : s);
+                myApp.addNotification({
+                    title: 'Senden',
+                    message: compiled({'num': me.numsent}),
+                    hold: 0
+                });
+            },
             removeSended: function () {
                 var me = this;
                 var idx = me.sets.length;
@@ -1074,7 +1087,7 @@ function onDeviceReady() {
                         '<div class="col-50">' +
                         '<input ' +
                         'onClick="vm.saveForm();"' +
-                        'type="submit" value="Speichern" class="button button-big button-fill color-green"/>' +
+                        'type="submit" value="Speichern" class="button button-big button-fill color-"'+this.colortheme+'/>' +
                         '</div>' +
                         '<div class="col-25"></div>' +
                         '</div></div>';
