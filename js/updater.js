@@ -17,13 +17,15 @@ fc.updater =  {
                     var neu = fc.updater.version(data.version);
                     if ( neu > alt ) {
                         var msg = 'Ein Update auf die Version ' + data.version +
-                            ' ist verfügbar. Soll das Update jetzt geladen werden?' +
+                            ' ist verfügbar. ' +
                             data.msg;
-                        if ( (window.vm.isios && window.vm.numsets>0 ) ) {
+
+                        if (0&& window.vm.isios && window.vm.numsets>0 ) {
                             msg += '<br>Das Update kann erst nach dem Versand aller Vorgänge und einem Neustart der Anwendung installiert werden.';
                             myApp.alert(msg);
                         }
                         else {
+                            msg += '<br>Soll das Update jetzt geladen werden?';
                             myApp.confirm(msg, function () {
                                 fc.updater.updateApp(data.url, function () {
                                     },
@@ -73,14 +75,12 @@ fc.updater =  {
 
     updateApp: function( androidUrl, onSuccess, onError  ) {
         myApp.showPreloader('Die neue App wird geladen...');
-        if ( window.cfg.device.platform == "Android") {
+        if (0&& window.cfg.device.platform == "Android") {
             var fileTransfer = new FileTransfer();
             fileTransfer.download(encodeURI(androidUrl),
                 "cdvfile://localhost/temporary/app.apk",
                 //"cdvfile://localhost/persistant/app.apk",
                 function (entry) {
-                    myApp.hidePreloader();
-                    myApp.showPreloader('Die neue App wird installiert...');
                     window.plugins.webintent.startActivity({
                         action: window.plugins.webintent.ACTION_VIEW,
                         url: entry.toURL(),
