@@ -20,7 +20,7 @@ fc.updater =  {
                             ' ist verfügbar. ' +
                             data.msg;
 
-                        if (0&& window.vm.isios && window.vm.numsets>0 ) {
+                        if (window.vm.isios && window.vm.numsets>0 ) {
                             msg += '<br>Das Update kann erst nach dem Versand aller Vorgänge und einem Neustart der Anwendung installiert werden.';
                             myApp.alert(msg);
                         }
@@ -101,8 +101,10 @@ fc.updater =  {
                 }, true);
         }
         else {
-            // einfach ipa browsen
-            window.open(encodeURI(androidUrl), "_self", "hidden=yes");
+            // einfach apk/ipa browsen
+            if ( window.open(encodeURI(androidUrl), "_self", "hidden=yes") ) {
+                navigator.app.exitApp();
+            }
         }
     }
 

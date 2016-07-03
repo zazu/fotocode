@@ -24,8 +24,8 @@ var FileIO = {
                 function(fileEntryFrom) {
                     var directory = (device.platform === "Android")
                         ? cordova.file.externalDataDirectory :
-                        //cordova.file.dataDirectory
-                        cordova.file.documentsDirectory
+                        cordova.file.dataDirectory
+                        //cordova.file.documentsDirectory
                         ;
                     window.resolveLocalFileSystemURL( directory, function(dirEntry){
                         var now = new Date();
