@@ -17,18 +17,25 @@ fc.updater =  {
                     var neu = fc.updater.version(data.version);
                     if ( neu > alt ) {
                         var msg = 'Ein Update auf die Version ' + data.version +
-                                ' ist verfügbar. Soll das Update jetzt geladen werden?' +
-                                data.msg;
-                        myApp.confirm(msg, function () {
-                            fc.updater.updateApp( data.url, function(){},
-                                function(err){
-                                myApp.addNotification({
-                                    title: 'Updatefehler',
-                                    message: err,
-                                    hold: 0
-                                });
+                            ' ist verfügbar. Soll das Update jetzt geladen werden?' +
+                            data.msg;
+                        if ( (window.vm.isios && window.vm.numsets>0 ) ) {
+                            msg += '<br>Das Update kann erst nach dem Versand aller Vorgänge und einem Neustart der Anwendung installiert werden.';
+                            myApp.alert(msg);
+                        }
+                        else {
+                            myApp.confirm(msg, function () {
+                                fc.updater.updateApp(data.url, function () {
+                                    },
+                                    function (err) {
+                                        myApp.addNotification({
+                                            title: 'Updatefehler',
+                                            message: err,
+                                            hold: 0
+                                        });
+                                    });
                             });
-                        });
+                        }
                     }
                 },
                 error: function(e) {
