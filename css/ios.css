@@ -163,6 +163,12 @@ i.icon.icon-prev {
     -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2015%2015'%3E%3Cg%3E%3Cpath%20fill%3D'%23007aff'%20d%3D'M14%2C1.6v11.8L2.2%2C7.6L14%2C1.6%20M15%2C0L0%2C7.6L15%2C15V0L15%2C0z'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 }
 
+i.icon.icon-form-password {
+    background-image: none;
+    mask-image: url("../img/i-form-password-material.svg");
+    -webkit-mask-image: url("../img/i-form-password-material.svg");
+}
+
 i.icon {
     width: 24px;
     height: 24px;

@@ -23,7 +23,10 @@ var FileIO = {
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
                     var directory = (device.platform === "Android")
-                        ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
+                        ? cordova.file.externalDataDirectory :
+                        //cordova.file.dataDirectory
+                        cordova.file.documentsDirectory
+                        ;
                     window.resolveLocalFileSystemURL( directory, function(dirEntry){
                         var now = new Date();
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
