@@ -22,9 +22,9 @@
     <splash src="splash.png" />
 
     <platform name="android" >
-        <preference name="phonegap-version" value="cli-6.1.0" />
+        <preference name="phonegap-version" value="cli-6.2.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.0" />
-        <preference name="android-minSdkVersion" value="16" />
+        <preference name="android-minSdkVersion" value="14" />
 <!--
         <preference name="phonegap-version" value="cli-5.2.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
