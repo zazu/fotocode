@@ -20,6 +20,7 @@
               Dom7('head').append(
                       '<link rel="stylesheet" href="css/framework7.material.min.css">' +
                       '<link rel="stylesheet" href="css/framework7.material.colors.min.css">' +
+                      '<link rel="stylesheet" href="css/appgeordnet.css">'+
                       '<link rel="stylesheet" href="css/android.css">'
               );
             }
@@ -27,12 +28,12 @@
               Dom7('head').append(
                       '<link rel="stylesheet" href="css/framework7.ios.css">' +
                       '<link rel="stylesheet" href="css/framework7.ios.colors.min.css">'+
+                      '<link rel="stylesheet" href="css/appgeordnet.css">'+
                       '<link rel="stylesheet" href="css/ios.css">'
               );
             }
         })();
     </script>
-    <link rel="stylesheet" href="css/appgeordnet.css">
   </head>
   <body class="theme-{{colortheme}} layout-white" id="app" v-cloak>
     <!-- Status bar overlay for fullscreen mode-->
@@ -169,7 +170,7 @@
         <!-- Pages -->
         <div class="pages ">
           <!-- Index page -->
-          <div data-page="index" class="page toolbar-fixed navbar-fixed">
+          <div data-page="index" class="page page-index toolbar-fixed navbar-fixed">
               
             <!-- Top Navbar-->
             <div class="navbar">
@@ -191,7 +192,7 @@
               </div>
             </div>
               <!-- Speed Dial Wrap -->
-              <div class="speed-dial">
+              <div v-if="isandroid" class="speed-dial">
                   <!-- FAB inside will open Speed Dial actions -->
                   <a href="#" class="floating-button">
                       <!-- First icon is visible when Speed Dial actions are closed -->
@@ -216,20 +217,64 @@
             <div class="toolbar toolbar-bottom ">
               <div class="toolbar-inner" v-cloak>
                   <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                  <a v-if="isios && loggedin" class="link" @click="logout">
+                      <i class="icon icon-cross"></i>&nbsp;Logout&nbsp;&nbsp;
+                  </a>
               </div>
             </div>
 
             <!-- Scrollable page content-->
             <div class="page-content">
-            <div class="content-block-title" v-cloak>
-                <div><span class="infocollabel">Letzter Versand:</span>{{lastsent}}</div>
-                <div><span class="infocollabel">Lokale Daten:</span>{{numsets}}
-                    <span v-if="numsets==1"> Vorgang</span>
-                    <span v-else> Vorgänge</span>
-                    / {{numfotos}}
-                    / {{numvideos}}
-                    / {{numaudios}}
-                    <span v-else> Medien</span>
+            <div class="content-block-title infosection" v-cloak>
+
+                <div class="row">
+                    <div class="col-50">
+                        <div class="row">
+                            <div class="col-50">
+                                Letzter Versand:
+                            </div>
+                            <div class="col-50">
+                                {{lastsent}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-50">
+                                Lokale Daten:
+                            </div>
+                            <div class="col-50">
+                                {{numsets}}
+                                <span v-if="numsets==1"> Vorgang</span>
+                                <span v-else> Vorgänge</span>
+                                <span class="smallscreen">
+                                    <span>
+                                    / {{numfotos}}
+                                    / {{numvideos}}
+                                    / {{numaudios}}
+                                    </span>
+                                    <span> Medien</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-50">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-33">
+                                <span class="numnum">{{numfotos}}</span>
+                                <br>
+                                <span class="numtext">Fotos</span>
+                            </div>
+                            <div class="col-33">
+                                <span class="numnum">{{numvideos}}</span>
+                                <br>
+                                <span class="numtext">Videos</span>
+                            </div>
+                            <div class="col-33">
+                                <span class="numnum">{{numaudios}}</span>
+                                <br>
+                                <span class="numtext">Sounds</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -245,7 +290,7 @@
                           <div class="item-title-row">
                             <div class="item-title">{{ds.code}}</div>
                             <div class="item-after">
-                                <span class="badge bg-{{colortheme}}">
+                                <span class="badge badge-media bg-{{colortheme}}">
                                     {{ds.fotos.length}} / {{ds.videos.length}} / {{ds.audios.length}}
                                     <br>
                                     {{ mediasize($index) |b2MB }} MB

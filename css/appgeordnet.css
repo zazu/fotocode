@@ -1,3 +1,23 @@
+
+.smallscreen {
+    display: inherit;
+}
+
+.bigscreen {
+    display: none;
+}
+
+@media (min-device-width: 768px) {
+    .smallscreen {
+        display: none;
+    }
+    .bigscreen {
+        display: inherit;
+    }
+}
+
+
+
 .badge {
     margin: -2px;
 }
@@ -28,10 +48,6 @@
     display:inline-block;
     width:7.7em;
     line-height:1.3em;
-}
-
-body.ios .infocollabel {
-    width:10.5em;
 }
 
 .infoby {

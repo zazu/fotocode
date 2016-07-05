@@ -161,7 +161,8 @@ function onDeviceReady() {
         smartSelectBackText:'Zurück',
         notificationHold: 5000,
         modalTitle: 'appgeordnet',
-        modalButtonCancel: 'Abbrechen'
+        modalButtonCancel: 'Abbrechen',
+        smartSelectOpenIn: isAndroid ? 'page': 'picker'
     });
 
     // Add view
