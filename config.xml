@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.0.44"
-        android-versionCode="2.0.44"
-        ios-CFBundleVersion="2.0.44" >
+        version="2.0.45"
+        android-versionCode="2.0.45"
+        ios-CFBundleVersion="2.0.45" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -75,7 +75,7 @@
 
     <platform name="ios" >
         <preference name="phonegap-version" value="cli-5.4.1" />
-        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.0" />
+        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="5.0.1" />
 
 <!--        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="2.0.1" /> -->
         <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
