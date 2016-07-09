@@ -371,7 +371,7 @@ function onDeviceReady() {
             me.bereich = Lockr.get('appg-bereich', 0);
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
-            me.lastsent = Lockr.get('appg-lastsent', 'Es wurden keine Daten gesendet.');
+            me.lastsent = Lockr.get('appg-lastsent', '-');
             me.syncUserInfo();
             me.checkVersion();
         },

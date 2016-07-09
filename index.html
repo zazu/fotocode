@@ -232,16 +232,9 @@
                         <div class="row" style="text-align: center;">
                             <div class="col-50">
                                 <span class="numdate">{{lastsent}}</span>
-                                <br>
-                                <span class="numtext">letzter Versand</span>
                             </div>
                             <div class="col-50">
                                 <span class="numnum">{{numsets}}</span>
-                                <br>
-                                <span class="numtext">
-                                    <span v-if="numsets==1">Datensatz</span>
-                                    <span v-else>Datensätze</span>
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -249,24 +242,46 @@
                         <div class="row" style="text-align: center;">
                             <div class="col-33">
                                 <span class="numnum">{{numfotos}}</span>
-                                <br>
-                                <span class="numtext">Fotos</span>
                             </div>
                             <div class="col-33">
                                 <span class="numnum">{{numvideos}}</span>
-                                <br>
-                                <span class="numtext">Videos</span>
                             </div>
                             <div class="col-33">
                                 <span class="numnum">{{numaudios}}</span>
-                                <br>
-                                <span class="numtext">Sounds</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-50">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-50">
+                                <span class="numtext">letzter Versand</span>
+                            </div>
+                            <div class="col-50">
+                                <span class="numtext">
+                                    <span v-if="numsets==1">Vorgang</span>
+                                    <span v-else>Vorgänge</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-50">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-33">
+                                <span class="numtext">Foto<span v-show="numfotos!=1">s</span></span>
+                            </div>
+                            <div class="col-33">
+                                <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
+                            </div>
+                            <div class="col-33">
+                                <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
             <div class="list-block media-list" v-cloak>
               <ul>
                   <li class="swipeout" v-for="ds in sets">

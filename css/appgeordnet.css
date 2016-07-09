@@ -77,3 +77,8 @@ svg {
     font-weight: bold;
     text-transform: none;
 }
+
+.numnum {
+    font-size:1.5em;
+    line-height: 1em;
+}
