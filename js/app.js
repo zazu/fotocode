@@ -990,8 +990,9 @@ function onDeviceReady() {
                         )
                         idx++;
                 }
-                else
+                else {
                     mainView.router.back({force: true, pageName: 'index'});
+                }
 
                 if ( idx < me.sets.length ) {
                     var set = me.sets[idx];
@@ -1035,6 +1036,7 @@ function onDeviceReady() {
                     message: compiled({'num': me.numsent}),
                     hold: 0
                 });
+                me.checkVersion();
             },
             removeSended: function () {
                 var me = this;
