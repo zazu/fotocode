@@ -323,7 +323,7 @@
             </div>
           </div>
           <!-- Medien Liste -->
-          <div class="page cached navbar-fixed medien" data-page="medien" >
+          <div id="page-medien" class="page cached navbar-fixed medien" data-page="medien" >
                 <!-- Top Navbar-->
                 <div class="navbar">
                     <div class="navbar-inner">
@@ -333,7 +333,7 @@
                         <div class="center">{{set.code}}</div>
                         <div class="right">
                             <a v-show="loggedin" @click.prevent="senden(-1)" class="link icon-only" >
-                                <i class="icon icon-cloud-upload"></i>
+                                <i class="icon icon-cloud-upload-white"></i>
                             </a>
                             <a @click.stop.prevent="removeset(-1)" class="link icon-only" >
                                 <i class="icon icon-bin-white"></i>
@@ -371,6 +371,7 @@
                                             Foto hinzufügen
                                         </div>
                                     </div>
+
                                     </a>
                                 </li>
                                 <li v-for="ds in set.fotos">

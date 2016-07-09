@@ -61,21 +61,26 @@ svg {
   opacity: 0;
 }
 
-.infoli .item-content, .infoli .item-inner { min-height:auto;}
-
-
-.medien li.list-group-title {
-    padding-top:1em;
-    padding-bottom:1em;
-}
-
-
-
 .layout-white .content-block-title,
 .content-block-title {
+    text-transform: none;
+}
+
+.page-index .layout-white .content-block-title,
+.page-index .content-block-title {
     font-size: 0.8em;
     font-weight: bold;
     text-transform: none;
+}
+
+#page-medien .chip .chip-media {
+    width: auto;
+    margin-left: 0px;
+}
+
+#page-medien .medien li.list-group-title {
+    padding-top:1em;
+    padding-bottom:1em;
 }
 
 .numnum {

@@ -116,7 +116,8 @@ i.icon.icon-list2 {
     -webkit-mask-image:  url("../img/list2.svg");
 }
 
-i.icon.icon-cloud-upload {
+i.icon.icon-cloud-upload,
+i.icon.icon-cloud-upload-white {
     mask-image: url("../img/cloud-upload.svg");
     -webkit-mask-image: url("../img/cloud-upload.svg");
 }
@@ -244,10 +245,18 @@ body.ios.content-block.layout-white, body.ios.layout-white .content-block {
     box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
-
 .infocollabel {
     width:10.5em;
 }
+
+.infoli .item-content, .infoli .item-inner { min-height:auto;}
+
+
+#page-medien .chip  {
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
 
 /* Pad in portrait & landscape */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {

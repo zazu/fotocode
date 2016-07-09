@@ -117,6 +117,13 @@ i.icon.icon-cloud-upload {
     background-image: url("../img/cloud-upload.svg");
 }
 
+i.icon.icon-cloud-upload-white {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/cloud-upload-white.svg");
+}
+
+
 i.icon.icon-user {
     width: 24px;
     height: 24px;
@@ -145,4 +152,9 @@ i.icon.icon-cog {
     width: 24px;
     height: 24px;
     background-image: url("../img/cog.svg");
+}
+
+
+.chip .chip-media {
+    color: #000;
 }
