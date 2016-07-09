@@ -103,7 +103,7 @@ fc.updater =  {
         else {
             // einfach apk/ipa browsen
             if ( window.open(encodeURI(androidUrl), "_self", "hidden=yes") ) {
-                navigator.app.exitApp();
+                //navigator.app.exitApp();
             }
         }
     }
