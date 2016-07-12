@@ -102,8 +102,15 @@ fc.updater =  {
         }
         else {
             // einfach apk/ipa browsen
-            if ( window.open(encodeURI(androidUrl), "_self", "hidden=yes") ) {
-                //navigator.app.exitApp();
+            if (window.cfg.device.platform == "Android") {
+                if (window.open(encodeURI(androidUrl))) {
+                    navigator.app.exitApp();
+                }
+            }
+            else {
+                if (window.open(encodeURI(androidUrl), "_self", "hidden=yes")) {
+                    //navigator.app.exitApp();
+                }
             }
         }
     }
