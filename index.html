@@ -568,10 +568,9 @@
                 <div class="row">
                   <div class="col-25"></div>
                   <div class="col-50">
-                    <input v-show="validquickscan"
+                    <a v-show="validquickscan"
                            @click.stop.prevent="scanfoto"
-                           type="submit"
-                           value="Weiter" class="button button-big button-fill color-{{colortheme}}"/>
+                           class="button button-big button-fill color-{{colortheme}}">Weiter</a>
                   </div>
                   <div class="col-25"></div>
                 </div>
@@ -653,9 +652,9 @@
                 <div class="row">
                   <div class="col-25"></div>
                   <div class="col-50">
-                    <input v-show="validbarcode"
+                    <a v-show="validbarcode"
                            @click.stop.prevent="scanbarcode"
-                           type="submit" value="Weiter" class="button button-big button-fill color-{{colortheme}}"/>
+                           value="Weiter" class="button button-big button-fill color-{{colortheme}}">Weiter</a>
                   </div>
                   <div class="col-25"></div>
                 </div>

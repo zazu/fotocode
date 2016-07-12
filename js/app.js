@@ -111,8 +111,8 @@ function onDeviceReady() {
                 */
             });
         }
-        if ( cordova.InAppBrowser )
-            window.open = cordova.InAppBrowser.open;
+        // android update bleibt hängen
+        //if ( cordova.InAppBrowser )window.open = cordova.InAppBrowser.open;
     }
 /*
     else {
@@ -1180,9 +1180,7 @@ function onDeviceReady() {
     });
 
 
-    $$('body').on('click', function (e) {
-
-    });
+    //$$('body').on('click', function (e) {});
 
     /*
      function updateIndicator() {
