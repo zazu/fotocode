@@ -303,3 +303,36 @@ body.ios.content-block.layout-white, body.ios.layout-white .content-block {
     }
 
 }
+
+/* iPhone 5 und 5s */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 568px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .navbar a.icon-only, .toolbar a.icon-only, .subnavbar a.icon-only {
+        min-width: unset;
+    }
+}
+
+/* iPhone 6 */
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .navbar a.icon-only, .toolbar a.icon-only, .subnavbar a.icon-only {
+        min-width: unset;
+    }
+}
+
+/* ----------- iPhone 6+ ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .navbar a.icon-only, .toolbar a.icon-only, .subnavbar a.icon-only {
+        min-width: unset;
+    }
+}
+
