@@ -78,8 +78,9 @@ fc.updater =  {
         if (window.cfg.device.platform == "Android") {
             var fileTransfer = new FileTransfer();
             fileTransfer.download(encodeURI(androidUrl),
-                "cdvfile://localhost/temporary/app.apk",
+                //"cdvfile://localhost/temporary/app.apk",
                 //"cdvfile://localhost/persistant/app.apk",
+                cordova.file.externalDataDirectory + 'app.apk',
                 function (entry) {
                     window.plugins.webintent.startActivity({
                         action: window.plugins.webintent.ACTION_VIEW,
