@@ -312,6 +312,16 @@ and (-webkit-min-device-pixel-ratio: 2) {
     .navbar a.icon-only, .toolbar a.icon-only, .subnavbar a.icon-only {
         min-width: unset;
     }
+    .toolbar.toolbar-bottom {
+        font-size: 0.8em;
+    }
+
+    .page-index .layout-white .content-block-title, .page-index .content-block-title {
+        font-size: 0.7em;
+        margin: 5px;
+        line-height: 1.25;
+    }
+
 }
 
 /* iPhone 6 */
@@ -334,5 +344,15 @@ and (-webkit-min-device-pixel-ratio: 3) {
     .navbar a.icon-only, .toolbar a.icon-only, .subnavbar a.icon-only {
         min-width: unset;
     }
+    .toolbar.toolbar-bottom {
+        font-size: 0.85em;
+    }
+
+    .page-index .layout-white .content-block-title, .page-index .content-block-title {
+        font-size: 0.8em;
+        margin: 10px;
+        line-height: 1.25;
+    }
+
 }
 

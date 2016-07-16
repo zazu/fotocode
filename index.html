@@ -569,7 +569,7 @@
                   <div class="col-25"></div>
                   <div class="col-50">
                     <a v-show="validquickscan"
-                           @click.stop.prevent="scanfoto"
+                           @click="scanfoto"
                            class="button button-big button-fill color-{{colortheme}}">Weiter</a>
                   </div>
                   <div class="col-25"></div>
@@ -653,8 +653,8 @@
                   <div class="col-25"></div>
                   <div class="col-50">
                     <a v-show="validbarcode"
-                           @click.stop.prevent="scanbarcode"
-                           value="Weiter" class="button button-big button-fill color-{{colortheme}}">Weiter</a>
+                           @click="scanbarcode"
+                           class="button button-big button-fill color-{{colortheme}}">Weiter</a>
                   </div>
                   <div class="col-25"></div>
                 </div>
