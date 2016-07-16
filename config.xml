@@ -24,7 +24,7 @@
 
     <platform name="android" >
         <!-- see https://developer.android.com/guide/topics/manifest/uses-sdk-element.html -->
-        <preference name="android-minSdkVersion" value="14" />
+        <preference name="android-minSdkVersion" value="16" />
         <!-- <preference name="android-targetSdkVersion" value="16" /> -->
 
         <preference name="phonegap-version" value="cli-6.1.0" />
