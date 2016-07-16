@@ -25,8 +25,8 @@
         <preference name="phonegap-version" value="cli-6.1.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.0" />
         <!-- 4.4, 5.0 see https://developer.android.com/guide/topics/manifest/uses-sdk-element.html -->
-        <preference name="android-minSdkVersion" value="19" />
-        <preference name="android-targetSdkVersion" value="21" />
+        <preference name="android-minSdkVersion" value="16" />
+        <preference name="android-targetSdkVersion" value="16" />
 <!--
         <preference name="phonegap-version" value="cli-5.2.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
