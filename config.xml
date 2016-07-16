@@ -59,8 +59,9 @@
         <splash platform="android" qualifier="port-hdpi" src="images/screen-hdpi-portrait.png" />
         <splash platform="android" qualifier="port-xhdpi" src="images/screen-xhdpi-portrait.png" />
         <plugin name="cordova-plugin-whitelist" source="npm" version="1.2.2" />
+<!--
         <plugin name="cordova-plugin-webintent2" source="npm" version="1.0.1" value="com.borismus.webintent.WebIntent" />
-
+-->
         <allow-intent href="http://*/*" />
         <allow-intent href="https://*/*" />
         <allow-intent href="market:*" />
