@@ -41,6 +41,7 @@ fc.camera =  {
     captureBarcode: function( success, fail ) {
     	var cam = navigator.camera;
     	if ( cam ) {
+            var orientation = (window.orientation == -90 || window.orientation == 90) ? "landscape": "portrait";
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
                     if ( result.format.length && result.text.length) {
@@ -55,13 +56,12 @@ fc.camera =  {
                 },
                 function(error) {
                     fail( error );
-                },
-                {
+                },{
                     "preferFrontCamera" : false, // iOS and Android
                     "showFlipCameraButton" : true, // iOS and Android
                     "prompt" : "Barcode im Bereich platzieren." // supported on Android only
                     //,"formats" : "" // default: all but PDF_417 and RSS_EXPANDED
-                    //,"orientation" : "portrait" // Android only (portrait|landscape), default unset so it rotates with the device
+                    ,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device
                 });
     	}
         else {
