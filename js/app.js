@@ -634,6 +634,7 @@ function onDeviceReady() {
                             me.cleanset();
                         else {
                             me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                            me.codeformat = me.sets[me.selectedSet].format;
                         }
                     }
                 );
@@ -654,6 +655,7 @@ function onDeviceReady() {
                             me.cleanset();
                         else {
                             me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                            me.codeformat = me.sets[me.selectedSet].format;
                         }
                     }
                 );
@@ -674,6 +676,7 @@ function onDeviceReady() {
                             me.cleanset();
                         else {
                             me.set = _.cloneDeep(me.sets[me.selectedSet]);
+                            me.codeformat = me.sets[me.selectedSet].format;
                         }
                     }
                 );
@@ -821,6 +824,7 @@ function onDeviceReady() {
                 var me = this;
                 me.selectedSet = idx;
                 me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                me.codeformat = me.sets[me.selectedSet].format;
                 me.showMedia(idx);
             },
             // aus medienliste heraus öffnen
@@ -1077,7 +1081,7 @@ function onDeviceReady() {
                 var button = '';
 
                 var navbar = '<div class="navbar"><div class="navbar-inner">' +
-                    '<div class="left"><a href="#index" class="back link"> <i class="icon icon-back"></i><span></span></a></div>' +
+                    '<div class="left"><a href="#index" class="back link"> <i class="icon icon-back"></i><span>Zurück</span></a></div>' +
                     '<div class="center">' + name + '</div>' +
                     '<div class="right"> </div>' +
                     '</div></div>';

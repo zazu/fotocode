@@ -43,7 +43,7 @@ fc.camera =  {
     	if ( cam ) {
             var orientation = (window.orientation == -90 || window.orientation == 90) ? "landscape": "portrait";
             if (window.cfg.device.platform !== "Android")
-                window.screen.lockOrientation(orientation);
+                window.screen.lockOrientation(window.screen.orientation);
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
                     if (window.cfg.device.platform !== "Android")

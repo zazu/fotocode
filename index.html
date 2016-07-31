@@ -170,6 +170,7 @@
           
         <!-- Pages -->
         <div class="pages ">
+
           <!-- Index page -->
           <div data-page="index" class="page page-index toolbar-fixed navbar-fixed">
               
@@ -323,6 +324,7 @@
             </div>
             </div>
           </div>
+
           <!-- Medien Liste -->
           <div id="page-medien" class="page cached navbar-fixed medien" data-page="medien" >
                 <!-- Top Navbar-->
@@ -722,6 +724,7 @@
             </div>
           </div>
 
+          <!--Admin Page -->
           <div data-page="admin" class="page cached navbar-fixed">
                 <!-- Top Navbar-->
                 <div class="navbar">
@@ -743,7 +746,7 @@
                             <li>
                                 <label class="label-radio item-content">
                                     <input id="liveserver" type="radio" value="production" v-model="useserver">
-                                    <div class="item-media">
+                                    <div v-if="isandroid" class="item-media">
                                         <i class="icon icon-form-radio"></i>
                                     </div>
                                     <div class="item-inner">
@@ -754,7 +757,7 @@
                             <li>
                                 <label class="label-radio item-content">
                                     <input type="radio" value="test" v-model="useserver">
-                                    <div class="item-media">
+                                    <div v-if="isandroid" class="item-media">
                                         <i class="icon icon-form-radio"></i>
                                     </div>
                                     <div class="item-inner">
