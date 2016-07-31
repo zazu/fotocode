@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.0.52"
-        android-versionCode="2.0.52"
-        ios-CFBundleVersion="2.0.52" >
+        version="2.0.53"
+        android-versionCode="2.0.53"
+        ios-CFBundleVersion="2.0.53" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -30,16 +30,6 @@
         <preference name="phonegap-version" value="cli-6.1.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.0" />
 
-<!--
-        <preference name="phonegap-version" value="cli-5.2.0" />
-        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
--->
-
-<!--
-        <preference name="phonegap-version" value="cli-5.1.1" />
-        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="4.1.0" />
-        <preference name="android-minSdkVersion" value="7" />
--->
         <preference name="android-build-tool" value="gradle" />
         <preference name="android-installLocation" value="auto" />  <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
         <preference name="AndroidPersistentFileLocation" value="Internal" />
@@ -82,8 +72,9 @@
         <preference name="phonegap-version" value="cli-5.4.1" />
         <!-- 5.0.1 -->
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.0" />
+        <!-- ios und Android; wir aber nur für ios barcode benutzt -->
+        <plugin name="cordova-plugin-screen-orientation" source="npm" version="1.4.2" />
 
-<!--        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="2.0.1" /> -->
         <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
         <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
         <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
