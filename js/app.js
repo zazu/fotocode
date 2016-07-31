@@ -206,8 +206,7 @@ function onDeviceReady() {
         }
         else if ( page.name === 'medien') {
             if (page.fromPage.name === 'barcode') {
-                vm.set =  _.cloneDeep(vm.sets[vm.selectedSet]);
-                vm.codeformat = vm.sets[vm.selectedSet].format;
+                vm.cloneset();
             }
         }
         else if ( page.name === 'barcode') {
@@ -362,7 +361,7 @@ function onDeviceReady() {
         },
         created: function () {
             var me = this;
-            me.sets = Lockr.get('appg-sets', []);
+            _.forEach(Lockr.get('appg-sets', []), function(set){me.sets.push(set);});
             me.user = Lockr.get('appg-user', {});
             me.form = Lockr.get('appg-form', []);
             me.bereiche = Lockr.get('appg-bereiche', {});
@@ -429,6 +428,12 @@ function onDeviceReady() {
                     mainView.router.back();
                 else if ( $$('.actions-modal.modal-in').length === 0 )
                     me.menuButton();
+            },
+            cloneset: function () {
+                var me = this;
+                me.cleanset();
+                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                me.codeformat = vm.sets[me.selectedSet].format;
             },
             cleanset: function () {
                 var me = this;
@@ -633,9 +638,8 @@ function onDeviceReady() {
                         if ( idx >=0 )
                             me.cleanset();
                         else {
-                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
-                            me.codeformat = me.sets[me.selectedSet].format;
-                        }
+                            me.cloneset();
+                       }
                     }
                 );
             },
@@ -654,8 +658,7 @@ function onDeviceReady() {
                         if ( idx >=0 )
                             me.cleanset();
                         else {
-                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
-                            me.codeformat = me.sets[me.selectedSet].format;
+                            me.cloneset();
                         }
                     }
                 );
@@ -675,8 +678,7 @@ function onDeviceReady() {
                         if ( idx >=0 )
                             me.cleanset();
                         else {
-                            me.set = _.cloneDeep(me.sets[me.selectedSet]);
-                            me.codeformat = me.sets[me.selectedSet].format;
+                            me.cloneset();
                         }
                     }
                 );
@@ -823,8 +825,7 @@ function onDeviceReady() {
             openVorgang: function(idx) {
                 var me = this;
                 me.selectedSet = idx;
-                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
-                me.codeformat = me.sets[me.selectedSet].format;
+                me.cloneset();
                 me.showMedia(idx);
             },
             // aus medienliste heraus öffnen
