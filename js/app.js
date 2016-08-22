@@ -247,8 +247,8 @@ function onDeviceReady() {
             sets: [],
             set: {
                 name: '',
-                dateCreated: '',
                 code: '',
+                dateCreated: '',
                 format: '',
                 fotos: [],
                 formdata: [],
@@ -432,7 +432,16 @@ function onDeviceReady() {
             cloneset: function () {
                 var me = this;
                 me.cleanset();
-                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                //me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                me.set.fotos.concat(me.sets[me.selectedSet].fotos);
+                me.set.name = me.sets[me.selectedSet].name;
+                me.set.code = me.sets[me.selectedSet].code;
+                me.set.format = me.sets[me.selectedSet].format;
+                me.set.bereich = me.sets[me.selectedSet].bereich;
+                me.set.dateCreated = me.sets[me.selectedSet].dateCreated;
+                me.set.formdata.concat(me.sets[me.selectedSet].formdata);
+                me.set.videos.concat(me.sets[me.selectedSet].videos);
+                me.set.audios.concat(me.sets[me.selectedSet].audios);
                 me.codeformat = vm.sets[me.selectedSet].format;
             },
             cleanset: function () {
@@ -539,7 +548,7 @@ function onDeviceReady() {
                 var me = this;
                 fc.camera.captureBarcode(function (result) {
                     if (!result.cancelled) {
-                        me.set.code = result.text;
+                        me.set.code = _.clone(result.text);
                         me.set.format = result.format;
                         me.validateBarcode(success);
                     }
