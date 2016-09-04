@@ -1,4 +1,13 @@
 
+.list-block .item-link {
+    -webkit-transition:none;
+    transition:none;
+    -webkit-transition-duration: 0ms;
+    transition-duration: 0ms;
+    color: #007aff;
+}
+
+
 .speed-dial {
     display:none;
 }
