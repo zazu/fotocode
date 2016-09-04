@@ -456,7 +456,8 @@ function onDeviceReady() {
             cloneset: function () {
                 var me = this;
                 me.cleanset();
-                //me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
+                /*
                 me.set.fotos = _.clone(me.sets[me.selectedSet].fotos);
                 me.set.name = me.sets[me.selectedSet].name;
                 me.set.code = me.sets[me.selectedSet].code;
@@ -466,6 +467,7 @@ function onDeviceReady() {
                 me.set.formdata = _.clone(me.sets[me.selectedSet].formdata);
                 me.set.videos=_.clone(me.sets[me.selectedSet].videos);
                 me.set.audios=_.clone(me.sets[me.selectedSet].audios);
+                */
                 me.codeformat = vm.sets[me.selectedSet].format;
             },
             cleanset: function () {
