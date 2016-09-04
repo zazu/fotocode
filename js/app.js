@@ -251,7 +251,7 @@ function onDeviceReady() {
                 dateCreated: '',
                 format: '',
                 fotos: [],
-                formdata: [],
+                formdata: {name:''},
                 bereich: 0,
                 videos: [],
                 audios: []
@@ -478,7 +478,7 @@ function onDeviceReady() {
                 me.set.format = "";
                 me.set.bereich = 0;
                 me.set.dateCreated = '';
-                me.set.formdata = me.set.formdata.splice(0, me.set.formdata.length);;
+                me.set.formdata = {name:''};
                 me.set.videos = me.set.videos.splice(0, me.set.videos.length);;
                 me.set.audios=me.set.audios.splice(0, me.set.audios.length);;
             },
