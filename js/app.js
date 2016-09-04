@@ -267,6 +267,27 @@ function onDeviceReady() {
             ]
         },
         computed: {
+            classtheme: function() {
+                return {
+                    'theme-red': this.colortheme == 'red',
+                    'theme-blue': this.colortheme == 'blue',
+                    'theme-teal': this.colortheme == 'teal'
+                }
+            },
+            classbg: function() {
+                return {
+                    'bg-red': this.colortheme == 'red',
+                    'bg-blue': this.colortheme == 'blue',
+                    'bg-teal': this.colortheme == 'teal'
+                }
+            },
+            classcolor: function() {
+                return {
+                    'color-red': this.colortheme == 'red',
+                    'color-blue': this.colortheme == 'blue',
+                    'color-teal': this.colortheme == 'teal'
+                }
+            },
             colortheme: function() {
                 return this.useserver==='test'?"red": (this.isios?"blue":"teal");
             },
@@ -432,16 +453,7 @@ function onDeviceReady() {
             cloneset: function () {
                 var me = this;
                 me.cleanset();
-                //me.set =  _.cloneDeep(me.sets[me.selectedSet]);
-                me.set.fotos.concat(me.sets[me.selectedSet].fotos);
-                me.set.name = me.sets[me.selectedSet].name;
-                me.set.code = me.sets[me.selectedSet].code;
-                me.set.format = me.sets[me.selectedSet].format;
-                me.set.bereich = me.sets[me.selectedSet].bereich;
-                me.set.dateCreated = me.sets[me.selectedSet].dateCreated;
-                me.set.formdata.concat(me.sets[me.selectedSet].formdata);
-                me.set.videos.concat(me.sets[me.selectedSet].videos);
-                me.set.audios.concat(me.sets[me.selectedSet].audios);
+                me.set =  _.cloneDeep(me.sets[me.selectedSet]);
                 me.codeformat = vm.sets[me.selectedSet].format;
             },
             cleanset: function () {

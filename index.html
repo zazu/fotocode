@@ -35,7 +35,7 @@
         })();
     </script>
   </head>
-  <body class="theme-{{colortheme}} layout-white" id="app" v-cloak>
+  <body class="layout-white" :class="classtheme" id="app" v-cloak>
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -297,11 +297,10 @@
                           <div class="item-title-row">
                             <div class="item-title">{{ds.code}}</div>
                             <div class="item-after">
-                                <span class="badge badge-media bg-{{colortheme}}">
+                                <span class="badge badge-media" :class="classbg">
                                     {{ds.fotos.length}} / {{ds.videos.length}} / {{ds.audios.length}}
                                     <br>
                                     {{ mediasize($index) |b2MB }} MB
-
                                 </span>
                             </div>
                           </div>
@@ -574,7 +573,7 @@
                   <div class="col-50">
                     <a v-show="validquickscan"
                            @click="scanfoto"
-                           class="button button-big button-fill color-{{colortheme}}">Weiter</a>
+                           class="button button-big button-fill" :class="classcolor">Weiter</a>
                   </div>
                   <div class="col-25"></div>
                 </div>
@@ -658,7 +657,7 @@
                   <div class="col-50">
                     <a v-show="validbarcode"
                            @click="scanbarcode"
-                           class="button button-big button-fill color-{{colortheme}}">Weiter</a>
+                           class="button button-big button-fill" :class="classcolor">Weiter</a>
                   </div>
                   <div class="col-25"></div>
                 </div>
@@ -717,7 +716,7 @@
                     <input v-show="validlogin"
                            @click.stop.prevent="submitlogin"
                            type="submit"
-                           value="Anmelden" class="button button-big button-fill color-{{colortheme}}"/>
+                           value="Anmelden" class="button button-big button-fill" :class="classcolor"/>
                   </div>
                   <div class="col-25"></div>
                 </div>
