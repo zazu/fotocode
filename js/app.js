@@ -267,9 +267,6 @@ function onDeviceReady() {
             ]
         },
         computed: {
-            setcode: function() {
-                return this.set.code;
-            },
             classtheme: function() {
                 return {
                     'theme-red': this.colortheme == 'red',
@@ -472,15 +469,15 @@ function onDeviceReady() {
             },
             cleanset: function () {
                 var me = this;
-                me.set.fotos = me.set.fotos.splice(0, me.set.fotos.length);
+                me.set.fotos = [];//me.set.fotos.splice(0, me.set.fotos.length);
                 me.set.name = "";
                 me.set.code = "";
                 me.set.format = "";
                 me.set.bereich = 0;
                 me.set.dateCreated = '';
                 me.set.formdata = {name:''};
-                me.set.videos = me.set.videos.splice(0, me.set.videos.length);;
-                me.set.audios=me.set.audios.splice(0, me.set.audios.length);;
+                me.set.videos = [];//me.set.videos.splice(0, me.set.videos.length);;
+                me.set.audios = [];//me.set.audios.splice(0, me.set.audios.length);;
             },
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {

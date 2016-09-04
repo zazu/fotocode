@@ -333,7 +333,7 @@
                         <div class="left">
                             <a href="#" class="back link"> <i class="icon icon-back"></i><span>Schließen</span></a>
                         </div>
-                        <div class="center">{{setcode}}</div>
+                        <div class="center">{{set.code}}</div>
                         <div class="right">
                             <a v-show="loggedin" @click.prevent="senden(-1)" class="link icon-only" >
                                 <i class="icon icon-cloud-upload-white"></i>
@@ -510,7 +510,8 @@
                         <div class="item-media"><i class="icon icon-price-tag"></i></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <input v-bind:readonly="usecamera" v-bind:disabled="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                <input :readonly="usecamera" :disabled="usecamera" type="text"
+                                       xv-model="set.code" placeholder="Vorgangsname / Info"/>
                             </div>
                         </div>
                     </div>
@@ -606,7 +607,8 @@
                             <div class="item-media"><i class="icon icon-price-tag"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input v-bind:readonly="usecamera" v-bind:disabled="usecamera" type="text" v-model="set.code" placeholder="Vorgangsname / Info"/>
+                                    <input :readonly="usecamera" :disabled="usecamera" type="text"
+                                           xv-model="set.code" placeholder="Vorgangsname / Info"/>
                                 </div>
                             </div>
                         </div>
