@@ -465,7 +465,9 @@ function onDeviceReady() {
                 Lockr.set('appg-set', me.set);
                 if (me.usecamera) {
                     vm.barcode(function () {
-                        vm.media(vm.usefotos);
+                        Vue.nextTick(function () {
+                            vm.media(vm.usefotos);
+                        });
                     });
                 }
                 else {
@@ -553,9 +555,11 @@ function onDeviceReady() {
                 var me = this;
                 fc.camera.captureBarcode(function (result) {
                     if (!result.cancelled) {
-                        me.set.code = _.clone(result.text);
+                        me.set.code = result.text;
                         me.set.format = result.format;
-                        me.validateBarcode(success);
+                        Vue.nextTick(function () {
+                            me.validateBarcode(success);
+                        });
                     }
                 }, function (error) {
                     if ( error !== 'cancel' )
