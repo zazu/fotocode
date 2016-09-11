@@ -645,15 +645,18 @@ function onDeviceReady() {
                     });
                 }
             },
-            addfotos: function (idx) {
+            addfotos: function (idx, src) {
                 var me = this;
                 if ( idx >=0 )
                     me.selectedSet = idx;
 
+                src = src || '';
+
                 me.cleanset();
                 Vue.nextTick(function () {
 
-                    mainView.router.back();
+                    if ( src==='medien')
+                        mainView.router.back();
 
                     me.takefoto(
                         function () {
@@ -666,11 +669,8 @@ function onDeviceReady() {
                             else {
                                 me.cloneset();
                             }
-
-                            Vue.nextTick(function () {
-                                mainView.router.load({pageName: 'medien'});
-                            });
-
+                            if ( src==='medien')
+                                Vue.nextTick(function () {mainView.router.load({pageName: 'medien'});});
                         }
                     );
 
