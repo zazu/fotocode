@@ -482,7 +482,7 @@ function onDeviceReady() {
                 var me = this;
                 if (me.usecamera) {
                     vm.barcode(function () {
-                        me.sets[me.selectedSet].code = me.set.code;
+                        me.sets[me.selectedSet].code = me.set.code+'';
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
@@ -494,7 +494,7 @@ function onDeviceReady() {
                 else {
                     me.set.format = me.codeformat;
                     me.validateBarcode(function () {
-                        me.sets[me.selectedSet].code = me.set.code;
+                        me.sets[me.selectedSet].code = me.set.code+'';
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
@@ -532,11 +532,7 @@ function onDeviceReady() {
                 var soll, err = 0;
                 var me = this;
                 var bereich = me.set.bereich;
-alert('--'+me.set.code+'--');
-                me.set.code = _.trim(me.set.code);
-
-alert('--'+me.set.code+'--');
-
+                me.set.code = _.trim(me.set.code)+'';
                 if (bereich >= 0 && !_.isEmpty(me.bereiche)) {
                     if (me.bereiche.bclen[bereich].length) {
                         soll = _.parseInt(me.bereiche.bclen[bereich]);
@@ -559,7 +555,7 @@ alert('--'+me.set.code+'--');
                 var me = this;
                 fc.camera.captureBarcode(function (result) {
                     if (!result.cancelled) {
-                        me.set.code = result.text;
+                        me.set.code = result.text+'';
                         me.set.format = result.format;
                         Vue.nextTick(function () {
                             me.validateBarcode(success);
@@ -579,7 +575,7 @@ alert('--'+me.set.code+'--');
                 me.cleanset();
                 me.set.bereich = me.sets[me.selectedSet].bereich;
                 me.set.name = me.sets[me.selectedSet].name;
-                me.set.code = me.sets[me.selectedSet].code;
+                me.set.code = me.sets[me.selectedSet].code+'';
                 me.set.format = me.sets[me.selectedSet].format;
                 me.codeformat = me.sets[me.selectedSet].format;
                 Vue.nextTick(function () {
@@ -1055,7 +1051,7 @@ alert('--'+me.set.code+'--');
                     var group = {
                         idx: 0,
                         name: set.name,
-                        code: set.code,
+                        code: set.code+'',
                         format: set.format,
                         fotos: set.fotos,
                         videos: _.isUndefined(set.videos)?[]:set.videos,
