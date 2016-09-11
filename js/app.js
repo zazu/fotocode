@@ -422,7 +422,7 @@ function onDeviceReady() {
                     myApp.closeModal(".popup-comment");
                 else if (mainView.activePage.name !== "index") {
                     Vue.nextTick(function () {
-                        mainView.router.back();
+                        mainView.router.back({reload:true});
                     });
                 }
                 else if ( $$('.actions-modal.modal-in').length === 0 )
@@ -641,23 +641,16 @@ function onDeviceReady() {
                 }
                 else {
                     Vue.nextTick(function () {
-                        mainView.router.back();
+                        mainView.router.back( { reload:me.isios } );
                     });
                 }
             },
-            addfotos: function (idx, src) {
+            addfotos: function (idx) {
                 var me = this;
                 if ( idx >=0 )
                     me.selectedSet = idx;
-
-                src = src || '';
-
                 me.cleanset();
                 Vue.nextTick(function () {
-
-                    if ( src==='medien')
-                        mainView.router.back();
-
                     me.takefoto(
                         function () {
                             if (me.set.fotos.length) {
@@ -669,11 +662,8 @@ function onDeviceReady() {
                             else {
                                 me.cloneset();
                             }
-                            if ( src==='medien')
-                                Vue.nextTick(function () {mainView.router.load({pageName: 'medien'});});
                         }
                     );
-
                 });
             },
 
