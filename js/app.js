@@ -532,7 +532,11 @@ function onDeviceReady() {
                 var soll, err = 0;
                 var me = this;
                 var bereich = me.set.bereich;
+alert('--'+me.set.code+'--');
                 me.set.code = _.trim(me.set.code);
+
+alert('--'+me.set.code+'--');
+
                 if (bereich >= 0 && !_.isEmpty(me.bereiche)) {
                     if (me.bereiche.bclen[bereich].length) {
                         soll = _.parseInt(me.bereiche.bclen[bereich]);
