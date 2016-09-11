@@ -200,9 +200,14 @@ function onDeviceReady() {
         }) : [];
     });
 
+    Vue.filter('astext', function (value) {
+        return value+'';
+    });
+
+
     Vue.filter('b2MB', function (value) {
         return (value / 1024 / 1024).toFixed(2);
-    })
+    });
 
     window.vm = new Vue({
         el: '#app',

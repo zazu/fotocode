@@ -285,7 +285,7 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">{{ds.code}}</div>
+                            <div class="item-title">{{ds.code | astext}}</div>
                             <div class="item-after">
                                 <span class="badge badge-media" :class="classbg">
                                     {{ds.fotos.length}} / {{ds.videos.length}} / {{ds.audios.length}}
@@ -333,7 +333,7 @@
                         <div class="left">
                             <a href="#" class="back link"> <i class="icon icon-back"></i><span>Schließen</span></a>
                         </div>
-                        <div class="center">{{set.code}}</div>
+                        <div class="center">{{set.code | astext}}</div>
                         <div class="right">
                             <a v-show="loggedin" @click.prevent="senden(-1)" class="link icon-only" >
                                 <i class="icon icon-cloud-upload-white"></i>
@@ -353,7 +353,7 @@
                 <!-- Scrollable page content-->
                 <div class="page-content">
                     <div class="content-block-title stronghead">
-                        <span>{{set.code}}</span>
+                        <span>{{set.code | astext}}</span>
                         <span v-show="set.name.length" class="smalllabel"> - {{set.name}}</span>
                         <span v-show="bereichname.length" class="smalllabel"> - {{bereichname}}</span>
                     </div>

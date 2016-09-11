@@ -218,6 +218,10 @@ body.ios .list-block.media-list .item-link .item-title-row {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%2060%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'm60%2061.5-38.25%2038.25-9.75-9.75%2029.25-28.5-29.25-28.5%209.75-9.75z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
 }
 
+body.ios .list-block.media-list .item-content {
+    min-height: 64px;
+}
+
 body.ios .list-block .item-link .item-inner {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%2060%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'm60%2061.5-38.25%2038.25-9.75-9.75%2029.25-28.5-29.25-28.5%209.75-9.75z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
     padding-right: 35px;
