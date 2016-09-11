@@ -112,6 +112,8 @@ fc.updater =  {
                 if (window.open(encodeURI(androidUrl), "_self", "hidden=yes")) {
                     //navigator.app.exitApp();
                 }
+                else
+                    myApp.hidePreloader();
             }
         }
     }

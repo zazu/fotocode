@@ -175,46 +175,50 @@ function onDeviceReady() {
 
     //myApp.params.swipePanel = false;
 
+
     $$(document).on('pageInit', function (e) {
         var page = e.detail.page;
+        Vue.nextTick(function () {
+            if (page.name !== 'index')
+                myApp.params.swipePanel = false;
+            else
+                myApp.params.swipePanel = 'right';
 
-        if ( page.name !== 'index')
-            myApp.params.swipePanel = false;
-        else
-            myApp.params.swipePanel = 'right';
-
-        if ( page.name === 'quickscan') {
-            vm.cleanset();
-            vm.updateQuickscanCodeformat();
-        }
-        if ( page.name === 'barcode') {
-            vm.updateBarcodeCodeformat();
-        }
+            if (page.name === 'quickscan') {
+                vm.cleanset();
+                vm.updateQuickscanCodeformat();
+            }
+            if (page.name === 'barcode') {
+                vm.updateBarcodeCodeformat();
+            }
+        });
     });
 
     $$(document).on('pageReinit', function (e) {
         var page = e.detail.page;
-        if ( page.name === 'quickscan') {
-            if (page.fromPage.name === 'index') {
-                vm.cleanset();
-                vm.updateQuickscanCodeformat();
+        Vue.nextTick(function () {
+            if (page.name === 'quickscan') {
+                if (page.fromPage.name === 'index') {
+                    vm.cleanset();
+                    vm.updateQuickscanCodeformat();
+                    myApp.params.swipePanel = false;
+                }
+            }
+            else if (page.name === 'index') {
+                myApp.params.swipePanel = 'right';
+            }
+            else if (page.name === 'medien') {
+                if (page.fromPage.name === 'barcode') {
+                    vm.cloneset();
+                }
+            }
+            else if (page.name === 'barcode') {
+                vm.updateBarcodeCodeformat();
+            }
+            else {
                 myApp.params.swipePanel = false;
             }
-        }
-        else if ( page.name === 'index') {
-            myApp.params.swipePanel = 'right';
-        }
-        else if ( page.name === 'medien') {
-            if (page.fromPage.name === 'barcode') {
-                vm.cloneset();
-            }
-        }
-        else if ( page.name === 'barcode') {
-            vm.updateBarcodeCodeformat();
-        }
-        else {
-            myApp.params.swipePanel = false;
-        }
+        });
     });
 
     Vue.config.debug = !navigator.camera;
@@ -685,7 +689,9 @@ function onDeviceReady() {
                             if (idx >= 0)
                                 me.cleanset();
                             else {
-                                me.cloneset();
+                                Vue.nextTick(function () {
+                                    me.cloneset();
+                                });
                             }
                         }
                     );

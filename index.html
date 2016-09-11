@@ -215,16 +215,6 @@
                       </a>
                   </div>
               </div>
-
-            <div class="toolbar toolbar-bottom ">
-              <div class="toolbar-inner" v-cloak>
-                  <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
-                  <a v-if="isios && loggedin" class="link" @click="logout">
-                      <i class="icon icon-cross"></i>&nbsp;Logout&nbsp;&nbsp;
-                  </a>
-              </div>
-            </div>
-
             <!-- Scrollable page content-->
             <div class="page-content">
             <div class="content-block-title infosection" v-cloak>
@@ -323,10 +313,20 @@
               </ul>
             </div>
             </div>
+
+              <div class="toolbar toolbar-bottom ">
+                  <div class="toolbar-inner" v-cloak>
+                      <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                      <a v-if="isios && loggedin" class="link" @click="logout">
+                          <i class="icon icon-cross"></i>&nbsp;Logout&nbsp;&nbsp;
+                      </a>
+                  </div>
+              </div>
+
           </div>
 
           <!-- Medien Liste -->
-          <div id="page-medien" class="page cached navbar-fixed medien" data-page="medien" >
+          <div id="page-medien" class="page cached navbar-fixed toolbar-fixed medien" data-page="medien" >
                 <!-- Top Navbar-->
                 <div class="navbar">
                     <div class="navbar-inner">
@@ -348,11 +348,6 @@
                                 <i class="icon icon-price-tag-white"></i>
                             </a>
                         </div>
-                    </div>
-                </div>
-                <div class="toolbar toolbar-bottom">
-                    <div class="toolbar-inner" v-cloak>
-                        <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
                     </div>
                 </div>
                 <!-- Scrollable page content-->
@@ -456,10 +451,16 @@
                         </div>
                     </div>
                 </div>
-        </div>
+                  <div class="toolbar toolbar-bottom">
+                      <div class="toolbar-inner" v-cloak>
+                          <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                      </div>
+                  </div>
+
+          </div>
 
           <!-- Quickscan page -->
-          <div class="page cached navbar-fixed" data-page="quickscan" id="quickscan" >
+          <div class="page cached navbar-fixed toolbar-fixed" data-page="quickscan" id="quickscan" >
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
@@ -583,7 +584,7 @@
           </div>
 
           <!-- Barcode page -->
-          <div class="page cached navbar-fixed" data-page="barcode" >
+          <div class="page cached navbar-fixed toolbar-fixed" data-page="barcode" >
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
@@ -668,7 +669,7 @@
           </div>
 
           <!--Login Page -->
-          <div data-page="login" class="page cached navbar-fixed">
+          <div data-page="login" class="page cached navbar-fixed toolbar-fixed">
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner">
@@ -727,7 +728,7 @@
           </div>
 
           <!--Admin Page -->
-          <div data-page="admin" class="page cached navbar-fixed">
+          <div data-page="admin" class="page cached navbar-fixed toolbar-fixed">
                 <!-- Top Navbar-->
                 <div class="navbar">
                     <div class="navbar-inner">
