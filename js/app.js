@@ -3,35 +3,6 @@ Template7.global = {
     android: isAndroid,
     ios: isIos
 };
-/*
-window.onerror = function (errorMsg, url, lineNumber) {
-    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
-};
-function takeOverConsole(){
-    var console = window.console;
-    if (!console) return;
-    function intercept(method){
-        var original = console[method];
-        console[method] = function(){
-            // do sneaky stuff
-            var message = Array.prototype.slice.apply(arguments).join(' ');
-            alert(message);
-            if (original.apply){
-                // Do this for normal browsers
-                original.apply(console, arguments)
-            }else{
-                // Do this for IE
-                var message = Array.prototype.slice.apply(arguments).join(' ')
-                original(message);
-            }
-        }
-    }
-    var methods = ['log', 'warn', 'error'];
-    for (var i = 0; i < methods.length; i++)
-        intercept(methods[i]);
-};
-takeOverConsole();
-*/
 
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
@@ -678,8 +649,12 @@ function onDeviceReady() {
                 var me = this;
                 if ( idx >=0 )
                     me.selectedSet = idx;
+
                 me.cleanset();
                 Vue.nextTick(function () {
+
+                    mainView.router.back();
+
                     me.takefoto(
                         function () {
                             if (me.set.fotos.length) {
@@ -689,12 +664,16 @@ function onDeviceReady() {
                             if (idx >= 0)
                                 me.cleanset();
                             else {
-                                Vue.nextTick(function () {
-                                    me.cloneset();
-                                });
+                                me.cloneset();
                             }
+
+                            Vue.nextTick(function () {
+                                mainView.router.load({pageName: 'medien'});
+                            });
+
                         }
                     );
+
                 });
             },
 
