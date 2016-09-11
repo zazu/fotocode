@@ -430,7 +430,7 @@ function onDeviceReady() {
             },
             cloneset: function () {
                 var me = this;
-                me.cleanset();
+                //me.cleanset();
                 me.set =  _.cloneDeep(me.sets[me.selectedSet]);
                 /*
                 me.set.fotos = _.clone(me.sets[me.selectedSet].fotos);
@@ -641,7 +641,7 @@ function onDeviceReady() {
                 }
                 else {
                     Vue.nextTick(function () {
-                        mainView.router.back( { reload:me.isios } );
+                        mainView.router.back();
                     });
                 }
             },
