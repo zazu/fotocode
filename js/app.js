@@ -675,19 +675,21 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                me.takefoto(
-                    function () {
-                        if (me.set.fotos.length) {
-                            me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
-                            Lockr.set('appg-sets', me.sets);
+                Vue.nextTick(function () {
+                    me.takefoto(
+                        function () {
+                            if (me.set.fotos.length) {
+                                me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
+                                Lockr.set('appg-sets', me.sets);
+                            }
+                            if (idx >= 0)
+                                me.cleanset();
+                            else {
+                                me.cloneset();
+                            }
                         }
-                        if ( idx >=0 )
-                            me.cleanset();
-                        else {
-                            me.cloneset();
-                       }
-                    }
-                );
+                    );
+                });
             },
 
             addvideo: function(idx) {
@@ -695,19 +697,21 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                me.takevideo(
-                    function(){
-                        if (me.set.videos.length) {
-                            me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
-                            Lockr.set('appg-sets', me.sets);
+                Vue.nextTick(function () {
+                    me.takevideo(
+                        function () {
+                            if (me.set.videos.length) {
+                                me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
+                                Lockr.set('appg-sets', me.sets);
+                            }
+                            if (idx >= 0)
+                                me.cleanset();
+                            else {
+                                me.cloneset();
+                            }
                         }
-                        if ( idx >=0 )
-                            me.cleanset();
-                        else {
-                            me.cloneset();
-                        }
-                    }
-                );
+                    );
+                });
             },
 
             addaudio: function(idx) {
@@ -715,19 +719,21 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                me.takeaudio(
-                    function(){
-                        if (me.set.audios.length) {
-                            me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
-                            Lockr.set('appg-sets', me.sets);
+                Vue.nextTick(function () {
+                    me.takeaudio(
+                        function () {
+                            if (me.set.audios.length) {
+                                me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
+                                Lockr.set('appg-sets', me.sets);
+                            }
+                            if (idx >= 0)
+                                me.cleanset();
+                            else {
+                                me.cloneset();
+                            }
                         }
-                        if ( idx >=0 )
-                            me.cleanset();
-                        else {
-                            me.cloneset();
-                        }
-                    }
-                );
+                    );
+                });
             },
 
             addmedia: function(idx) {
