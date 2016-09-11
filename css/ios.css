@@ -219,7 +219,7 @@ body.ios .list-block.media-list .item-link .item-title-row {
 }
 
 body.ios .list-block.media-list .item-content {
-    min-height: 64px;
+    min-height: 70px;
 }
 
 body.ios .list-block .item-link .item-inner {
