@@ -196,7 +196,7 @@ function onDeviceReady() {
 
     Vue.filter('notEmpty', function (values) {
         return values ? values.filter(function (val) {
-            return val.length;
+            return (val+'').length;
         }) : [];
     });
 
@@ -302,12 +302,12 @@ function onDeviceReady() {
             numcodes: function () {
                 var num = 0;
                 for (var i = 0; i < this.sets.length; i++) {
-                    num = num + (this.sets[i].code.length ? 1 : 0);
+                    num = num + ((this.sets[i].code+'').length ? 1 : 0);
                 }
                 return num;
             },
             emptycode: function () {
-                return this.set.code.length == 0;
+                return (this.set.code+'').length == 0;
             },
             validlogin: function () {
                 return this.login.login.length && this.login.password.length;
@@ -320,7 +320,7 @@ function onDeviceReady() {
             },
             validbarcode: function () {
                 // barcode muss definiert sein
-                return this.set.code.length || this.usecamera;
+                return (this.set.code+'').length || this.usecamera;
             },
             hasbereiche: function () {
                 return !_.isEmpty(this.user) && this.form && this.form.length > 1;
@@ -460,22 +460,24 @@ function onDeviceReady() {
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {
                 var me = this;
-                me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
-                me.set.bereich = me.bereich;
-                Lockr.set('appg-set', me.set);
-                if (me.usecamera) {
-                    vm.barcode(function () {
-                        Vue.nextTick(function () {
+                Vue.nextTick(function () {
+                    me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
+                    me.set.bereich = me.bereich;
+                    Lockr.set('appg-set', me.set);
+                    if (me.usecamera) {
+                        vm.barcode(function () {
+                            Vue.nextTick(function () {
+                                vm.media(vm.usefotos);
+                            });
+                        });
+                    }
+                    else {
+                        me.set.format = me.codeformat;
+                        me.validateBarcode(function () {
                             vm.media(vm.usefotos);
                         });
-                    });
-                }
-                else {
-                    me.set.format = me.codeformat;
-                    me.validateBarcode(function () {
-                        vm.media(vm.usefotos);
-                    });
-                }
+                    }
+                });
             },
             // Weiter Button im Barcodeformular
             scanbarcode: function (event) {
@@ -511,7 +513,7 @@ function onDeviceReady() {
                 var err = me.checkBarcode();
                 if (err & 1) {
                     compiled = _.template('Die Barcodelänge (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
-                    msg.push(compiled({'ist': me.set.code.length, 'soll': me.bereiche.bclen[me.set.bereich]}));
+                    msg.push(compiled({'ist': (me.set.code+'').length, 'soll': me.bereiche.bclen[me.set.bereich]}));
                 }
                 if (err & 2) {
                     compiled = _.template('Der Barcodetyp (<%= ist %>) stimmt nicht mit der Vorgabe (<%= soll %>) überein!');
@@ -536,7 +538,7 @@ function onDeviceReady() {
                 if (bereich >= 0 && !_.isEmpty(me.bereiche)) {
                     if (me.bereiche.bclen[bereich].length) {
                         soll = _.parseInt(me.bereiche.bclen[bereich]);
-                        if (soll > 0 && soll != me.set.code.length)
+                        if (soll > 0 && soll != (me.set.code+'').length)
                             err += 1;
                     }
                     if (me.bereiche.bctyp[bereich].length) {
