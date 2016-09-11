@@ -149,47 +149,43 @@ function onDeviceReady() {
 
     $$(document).on('pageInit', function (e) {
         var page = e.detail.page;
-        Vue.nextTick(function () {
-            if (page.name !== 'index')
-                myApp.params.swipePanel = false;
-            else
-                myApp.params.swipePanel = 'right';
+        if (page.name !== 'index')
+            myApp.params.swipePanel = false;
+        else
+            myApp.params.swipePanel = 'right';
 
-            if (page.name === 'quickscan') {
-                vm.cleanset();
-                vm.updateQuickscanCodeformat();
-            }
-            if (page.name === 'barcode') {
-                vm.updateBarcodeCodeformat();
-            }
-        });
+        if (page.name === 'quickscan') {
+            vm.cleanset();
+            vm.updateQuickscanCodeformat();
+        }
+        if (page.name === 'barcode') {
+            vm.updateBarcodeCodeformat();
+        }
     });
 
     $$(document).on('pageReinit', function (e) {
         var page = e.detail.page;
-        Vue.nextTick(function () {
-            if (page.name === 'quickscan') {
-                if (page.fromPage.name === 'index') {
-                    vm.cleanset();
-                    vm.updateQuickscanCodeformat();
-                    myApp.params.swipePanel = false;
-                }
-            }
-            else if (page.name === 'index') {
-                myApp.params.swipePanel = 'right';
-            }
-            else if (page.name === 'medien') {
-                if (page.fromPage.name === 'barcode') {
-                    vm.cloneset();
-                }
-            }
-            else if (page.name === 'barcode') {
-                vm.updateBarcodeCodeformat();
-            }
-            else {
+        if (page.name === 'quickscan') {
+            if (page.fromPage.name === 'index') {
+                vm.cleanset();
+                vm.updateQuickscanCodeformat();
                 myApp.params.swipePanel = false;
             }
-        });
+        }
+        else if (page.name === 'index') {
+            myApp.params.swipePanel = 'right';
+        }
+        else if (page.name === 'medien') {
+            if (page.fromPage.name === 'barcode') {
+                vm.cloneset();
+            }
+        }
+        else if (page.name === 'barcode') {
+            vm.updateBarcodeCodeformat();
+        }
+        else {
+            myApp.params.swipePanel = false;
+        }
     });
 
     Vue.config.debug = !navigator.camera;
@@ -426,9 +422,7 @@ function onDeviceReady() {
                 else if ($$(".popup-comment").length)
                     myApp.closeModal(".popup-comment");
                 else if (mainView.activePage.name !== "index") {
-                    Vue.nextTick(function () {
-                        mainView.router.back({reload:true});
-                    });
+                    mainView.router.back({reload:true});
                 }
                 else if ( $$('.actions-modal.modal-in').length === 0 )
                     me.menuButton();
@@ -465,24 +459,22 @@ function onDeviceReady() {
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {
                 var me = this;
-                Vue.nextTick(function () {
-                    me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
-                    me.set.bereich = me.bereich;
-                    Lockr.set('appg-set', me.set);
-                    if (me.usecamera) {
-                        vm.barcode(function () {
-                            Vue.nextTick(function () {
-                                vm.media(vm.usefotos);
-                            });
-                        });
-                    }
-                    else {
-                        me.set.format = me.codeformat;
-                        me.validateBarcode(function () {
+                me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
+                me.set.bereich = me.bereich;
+                Lockr.set('appg-set', me.set);
+                if (me.usecamera) {
+                    vm.barcode(function () {
+                        Vue.nextTick(function () {
                             vm.media(vm.usefotos);
                         });
-                    }
-                });
+                    });
+                }
+                else {
+                    me.set.format = me.codeformat;
+                    me.validateBarcode(function () {
+                        vm.media(vm.usefotos);
+                    });
+                }
             },
             // Weiter Button im Barcodeformular
             scanbarcode: function (event) {
@@ -493,9 +485,7 @@ function onDeviceReady() {
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
-                        Vue.nextTick(function () {
-                            mainView.router.back();
-                        });
+                        mainView.router.back();
                     });
                 }
                 else {
@@ -505,9 +495,7 @@ function onDeviceReady() {
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
                         Lockr.set('appg-sets', me.sets);
-                        Vue.nextTick(function () {
-                            mainView.router.back();
-                        });
+                        mainView.router.back();
                     });
                 }
             },
@@ -539,11 +527,11 @@ function onDeviceReady() {
                 var soll, err = 0;
                 var me = this;
                 var bereich = me.set.bereich;
-                var code = _.trim(me.set.code+'');
+                me.set.code = _.trim(me.set.code);
                 if (bereich >= 0 && !_.isEmpty(me.bereiche)) {
                     if (me.bereiche.bclen[bereich].length) {
                         soll = _.parseInt(me.bereiche.bclen[bereich]);
-                        if (soll > 0 && soll != (code+'').length)
+                        if (soll > 0 && soll != (me.set.code+'').length)
                             err += 1;
                     }
                     if (me.bereiche.bctyp[bereich].length) {
@@ -564,9 +552,7 @@ function onDeviceReady() {
                     if (!result.cancelled) {
                         me.set.code = result.text+'';
                         me.set.format = result.format;
-                        Vue.nextTick(function () {
-                            me.validateBarcode(success);
-                        });
+                        me.validateBarcode(success);
                     }
                 }, function (error) {
                     if ( error !== 'cancel' )
@@ -585,9 +571,7 @@ function onDeviceReady() {
                 me.set.code = me.sets[me.selectedSet].code+'';
                 me.set.format = me.sets[me.selectedSet].format;
                 me.codeformat = me.sets[me.selectedSet].format;
-                Vue.nextTick(function () {
-                    mainView.router.load({pageName: 'barcode'});
-                });
+                mainView.router.load({pageName: 'barcode'});
             },
 
             media: function (success) {
@@ -645,15 +629,11 @@ function onDeviceReady() {
                 me.sets.push(s);
                 me.cleanset();
                 if (me.hasform && me.showform) {
-                    Vue.nextTick(function () {
-                        mainView.router.back({animatePages: false});
-                        me.showForm(me.sets.length - 1);
-                    });
+                    mainView.router.back({animatePages: false});
+                    me.showForm(me.sets.length - 1);
                 }
                 else {
-                    Vue.nextTick(function () {
-                        mainView.router.back();
-                    });
+                    mainView.router.back();
                 }
             },
             addfotos: function (idx) {
@@ -661,21 +641,19 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                Vue.nextTick(function () {
-                    me.takefoto(
-                        function () {
-                            if (me.set.fotos.length) {
-                                me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
-                                Lockr.set('appg-sets', me.sets);
-                            }
-                            if (idx >= 0)
-                                me.cleanset();
-                            else {
-                                me.cloneset();
-                            }
+                me.takefoto(
+                    function () {
+                        if (me.set.fotos.length) {
+                            me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
+                            Lockr.set('appg-sets', me.sets);
                         }
-                    );
-                });
+                        if (idx >= 0)
+                            me.cleanset();
+                        else {
+                            me.cloneset();
+                        }
+                    }
+                );
             },
 
             addvideo: function(idx) {
@@ -683,21 +661,19 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                Vue.nextTick(function () {
-                    me.takevideo(
-                        function () {
-                            if (me.set.videos.length) {
-                                me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
-                                Lockr.set('appg-sets', me.sets);
-                            }
-                            if (idx >= 0)
-                                me.cleanset();
-                            else {
-                                me.cloneset();
-                            }
+                me.takevideo(
+                    function () {
+                        if (me.set.videos.length) {
+                            me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
+                            Lockr.set('appg-sets', me.sets);
                         }
-                    );
-                });
+                        if (idx >= 0)
+                            me.cleanset();
+                        else {
+                            me.cloneset();
+                        }
+                    }
+                );
             },
 
             addaudio: function(idx) {
@@ -705,21 +681,19 @@ function onDeviceReady() {
                 if ( idx >=0 )
                     me.selectedSet = idx;
                 me.cleanset();
-                Vue.nextTick(function () {
-                    me.takeaudio(
-                        function () {
-                            if (me.set.audios.length) {
-                                me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
-                                Lockr.set('appg-sets', me.sets);
-                            }
-                            if (idx >= 0)
-                                me.cleanset();
-                            else {
-                                me.cloneset();
-                            }
+                me.takeaudio(
+                    function () {
+                        if (me.set.audios.length) {
+                            me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
+                            Lockr.set('appg-sets', me.sets);
                         }
-                    );
-                });
+                        if (idx >= 0)
+                            me.cleanset();
+                        else {
+                            me.cloneset();
+                        }
+                    }
+                );
             },
 
             addmedia: function(idx) {
@@ -746,9 +720,7 @@ function onDeviceReady() {
                     function () {
                         me.sets.splice(idx, 1);
                         if ( back ) {
-                            Vue.nextTick(function () {
-                                mainView.router.back();
-                            });
+                            mainView.router.back();
                         }
                     }, function () {
                     }
@@ -891,9 +863,7 @@ function onDeviceReady() {
                     alert(uri);
             },
             showMedia: function(idx) {
-                Vue.nextTick(function () {
-                    mainView.router.load({pageName: 'medien'});
-                });
+                mainView.router.load({pageName: 'medien'});
             },
             submitlogin: function () {
                 var me = this;
@@ -926,11 +896,9 @@ function onDeviceReady() {
                             Lockr.set('appg-bereiche', me.bereiche);
                             Lockr.set('appg-form', me.form);
                             Lockr.set('appg-user', me.user);
-                            Vue.nextTick(function () {
-                                mainView.router.back();
-                                myApp.hidePreloader();
-                                me.ensureValidBereich();
-                            });
+                            mainView.router.back();
+                            myApp.hidePreloader();
+                            me.ensureValidBereich();
                         }
                     },
                     error: function() {
@@ -1026,13 +994,11 @@ function onDeviceReady() {
                 mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name, ignoreCache:true});
             },
             applogsfilter: function() {
-                Vue.nextTick(function () {
-                    var f = "?filter=" + $$('#logsfilter').val();
-                    mainView.router.load({
-                        url: this.baseuri + 'app/logs/' + this.user.name + f,
-                        ignoreCache: true,
-                        reload: true
-                    });
+                var f = "?filter=" + $$('#logsfilter').val();
+                mainView.router.load({
+                    url: this.baseuri + 'app/logs/' + this.user.name + f,
+                    ignoreCache: true,
+                    reload: true
                 });
             },
             vorgangSenden: function (idx) {
@@ -1047,9 +1013,7 @@ function onDeviceReady() {
                         idx++;
                 }
                 else {
-                    Vue.nextTick(function () {
-                        mainView.router.back({force: true, pageName: 'index'});
-                    });
+                    mainView.router.back({force: true, pageName: 'index'});
                 }
 
                 if ( idx < me.sets.length ) {
@@ -1162,12 +1126,10 @@ function onDeviceReady() {
                     '</div>';
 
                 me.selectedSet = idx;
-                Vue.nextTick(function () {
-                    mainView.router.load({content: newPageContent, ignoreCache: true});
-                    var formData = me.sets[idx].formdata;
-                    myApp.formFromJSON('#bereichform', formData);
-                    myApp.initSmartSelects('#bereichform .smart-select');
-                });
+                mainView.router.load({content: newPageContent, ignoreCache: true});
+                var formData = me.sets[idx].formdata;
+                myApp.formFromJSON('#bereichform', formData);
+                myApp.initSmartSelects('#bereichform .smart-select');
             },
             saveForm: function () {
                 var me = this;
@@ -1175,9 +1137,7 @@ function onDeviceReady() {
                 var formData = myApp.formToJSON('#bereichform');
                 me.sets[idx].formdata = formData;
                 Lockr.set('appg-sets', me.sets);
-                Vue.nextTick(function () {
-                    mainView.router.back({force: true, pageName: 'index'});
-                });
+                mainView.router.back({force: true, pageName: 'index'});
             },
             // codeformat auf basis des gewählten bereichs einstellen
             updateQuickscanCodeformat: function() {
@@ -1199,21 +1159,15 @@ function onDeviceReady() {
             },
             neuerVorgangFoto: function() {
                 this.nextmedia = 'foto';
-                Vue.nextTick(function () {
-                    mainView.router.load({pageName: 'quickscan'});
-                });
+                mainView.router.load({pageName: 'quickscan'});
             },
             neuerVorgangVideo: function() {
                 this.nextmedia = 'video';
-                Vue.nextTick(function () {
-                    mainView.router.load({pageName: 'quickscan'});
-                });
+                mainView.router.load({pageName: 'quickscan'});
             },
             neuerVorgangAudio: function() {
                 this.nextmedia = 'audio';
-                Vue.nextTick(function () {
-                    mainView.router.load({pageName: 'quickscan'});
-                });
+                mainView.router.load({pageName: 'quickscan'});
             }
         }
     });
