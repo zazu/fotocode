@@ -511,7 +511,8 @@
                         <div class="item-media"><i class="icon icon-price-tag"></i></div>
                         <div class="item-inner">
                             <div class="item-input">
-                                <input :readonly="usecamera" :disabled="usecamera" type="text"
+                                <input :readonly="usecamera && isandroid" :disabled="usecamera && isandroid"
+                                       type="text"
                                        v-model="set.code" placeholder="Vorgangsname / Info"/>
                             </div>
                         </div>
@@ -608,7 +609,8 @@
                             <div class="item-media"><i class="icon icon-price-tag"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input :readonly="usecamera" :disabled="usecamera" type="text"
+                                    <input :readonly="usecamera && isandroid" :disabled="usecamera && isandroid"
+                                           type="text"
                                            v-model="set.code" placeholder="Vorgangsname / Info"/>
                                 </div>
                             </div>
