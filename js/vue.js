@@ -412,6 +412,9 @@
   // detecting iOS UIWebView by indexedDB
   var hasMutationObserverBug = iosVersion && Number(iosVersion[0]) >= 9 && Number(iosVersion[1]) >= 3 && !window.indexedDB;
 
+
+  alert(iosVersion + hasMutationObserverBug?' yes':' no');
+
   var transitionProp = undefined;
   var transitionEndEvent = undefined;
   var animationProp = undefined;
