@@ -42,11 +42,12 @@ fc.camera =  {
     	var cam = navigator.camera;
     	if ( cam ) {
             var orientation = (window.orientation == -90 || window.orientation == 90) ? "landscape": "portrait";
-            if (window.cfg.device.platform !== "Android")
+            var lockori = window.cfg.lockorientation && window.cfg.device.platform !== "Android";
+            if (lockori)
                 window.screen.lockOrientation(window.screen.orientation);
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
-                    if (window.cfg.device.platform !== "Android")
+                    if (lockori)
                         window.screen.unlockOrientation();
                     if ( result.format.length && result.text.length) {
                         success( result );
@@ -59,7 +60,7 @@ fc.camera =  {
                     }
                 },
                 function(error) {
-                    if (window.cfg.device.platform !== "Android")
+                    if (lockori)
                         window.screen.unlockOrientation();
                     fail( error );
                 },{
