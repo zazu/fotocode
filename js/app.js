@@ -1207,8 +1207,7 @@ function onDeviceReady() {
 
     vm.$watch('lockori', function (newVal, oldVal) {
         Lockr.set('appg-lockori', newVal ? 'true' : 'false' );
-        if ( newVal != oldVal )
-            window.cfg.lockorientation = newval;
+        window.cfg.lockorientation = !!newval;
     });
 
     //$$('body').on('click', function (e) {});
