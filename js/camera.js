@@ -39,6 +39,13 @@ fc.camera =  {
     },
 
     captureBarcode: function( success, fail ) {
+        if (cloudSky)
+            this.captureBarcodeZBar( success, fail );
+        else
+            this.captureBarcodeCordova( success, fail );
+    },
+
+    captureBarcodeCordova: function( success, fail ) {
     	var cam = navigator.camera;
     	if ( cam ) {
             var orientation = (window.orientation && (window.orientation == -90 || window.orientation == 90)) ? "landscape": "portrait";
@@ -72,6 +79,34 @@ fc.camera =  {
             success( { 'text':'1234567890123','format':'EAN_13' } );
         }
     },
+
+    captureBarcodeZBar: function( success, fail ) {
+        var cam = navigator.camera;
+        if (cam) {
+            cloudSky.zBar.scan({
+                text_title: 'Scan QR Code', // Android only
+                text_instructions: "Barcode im Bereich platzieren." // Android only
+            }, function(result) {
+                //if (lockori)window.screen.unlockOrientation();
+                if ( result.length ) {
+                    success( { 'text':result,'format':'' } );
+                }
+                else if (result.cancelled )  {
+                    fail( 'cancel' );
+                }
+                else {
+                    fail( 'Kein Ergebnis: ' + JSON.stringify(result) );
+                }
+            }, function(error) {
+                //if (lockori)window.screen.unlockOrientation();
+                fail( error );
+            });
+        }
+        else {
+            success( { 'text':'1234567890123','format':'EAN_13' } );
+        }
+    },
+
 
     moveMediaFile: function(vid,success) {
         FileIO.moveMediaFile(
