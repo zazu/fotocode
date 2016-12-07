@@ -39,7 +39,7 @@ fc.camera =  {
     },
 
     captureBarcode: function( success, fail ) {
-        if (cloudSky)
+        if (0)
             this.captureBarcodeZBar( success, fail );
         else
             this.captureBarcodeCordova( success, fail );
@@ -70,6 +70,8 @@ fc.camera =  {
                 },{
                     "preferFrontCamera" : false, // iOS and Android
                     "showFlipCameraButton" : true, // iOS and Android
+                    "showTorchButton" : true, // iOS and Android
+                    "disableAnimations" : true, // iOS
                     "prompt" : "Barcode im Bereich platzieren." // supported on Android only
                     //,"formats" : "" // default: all but PDF_417 and RSS_EXPANDED
                     ,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device

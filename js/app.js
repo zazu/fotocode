@@ -13,7 +13,6 @@ window.onload = function () {
         uriproduction: mobiledevice ?
             'http://2016.app-geordnet.de/' :
             'http://localhost:8080/app-geordnet/',
-        lockorientation: true,
         device: {
             model: '',
             platform: '',
@@ -217,7 +216,6 @@ function onDeviceReady() {
             isios:isIos,
             useserver:'production',
             appversion: window.cfg.version,
-            lockori: window.cfg.lockorientation,
             lastsent: '',
             bereich: 0,
             usecamera: true,
@@ -370,8 +368,6 @@ function onDeviceReady() {
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
             me.lastsent = Lockr.get('appg-lastsent', '-');
-            me.lockori = (Lockr.get('appg-lockori', 'true') !== 'false');
-            window.cfg.lockorientation = me.lockori;
             me.syncUserInfo();
             me.checkVersion();
         },
@@ -1203,11 +1199,6 @@ function onDeviceReady() {
         Lockr.set('appg-useserver', newVal);
         if ( newVal != oldVal )
             this.logout();
-    });
-
-    vm.$watch('lockori', function (newVal, oldVal) {
-        Lockr.set('appg-lockori', newVal ? 'true' : 'false' );
-        window.cfg.lockorientation = !!newval;
     });
 
     //$$('body').on('click', function (e) {});
