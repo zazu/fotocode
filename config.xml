@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.0.68"
-        android-versionCode="2.0.68"
-        ios-CFBundleVersion="2.0.68" >
+        version="2.0.69"
+        android-versionCode="2.0.69"
+        ios-CFBundleVersion="2.0.69" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -28,7 +28,7 @@
         <preference name="android-minSdkVersion" value="16" />
         <!-- <preference name="android-targetSdkVersion" value="16" /> -->
 
-        <preference name="phonegap-version" value="cli-6.3.0" /> <!-- 6.1.0 -->
+        <preference name="phonegap-version" value="cli-6.4.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.4" />
 <!--
         <plugin name="cordova-plugin-cszbar" source="npm" version="1.3.1" />
@@ -72,7 +72,7 @@
     </platform>
 
     <platform name="ios" >
-        <preference name="phonegap-version" value="cli-6.3.0" />
+        <preference name="phonegap-version" value="cli-6.4.0" />
         <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.4" />
         <!-- ios und Android; wird aber nur für ios barcode benutzt -->
         <plugin name="cordova-plugin-screen-orientation" source="npm" version="1.4.2" />
