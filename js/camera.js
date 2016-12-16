@@ -49,11 +49,11 @@ fc.camera =  {
     	var cam = navigator.camera;
     	if ( cam ) {
             var orientation = (window.orientation && (window.orientation == -90 || window.orientation == 90)) ? "landscape": "portrait";
-            var lockori = window.cfg.lockorientation && (window.cfg.device.platform !== "Android");
-            if (lockori) window.screen.lockOrientation(window.screen.orientation);
+            //var lockori = window.cfg.lockorientation && (window.cfg.device.platform !== "Android");
+            //if (lockori) window.screen.lockOrientation(window.screen.orientation);
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
-                    if (lockori)window.screen.unlockOrientation();
+                    //if (lockori)window.screen.unlockOrientation();
                     if ( result.format.length && result.text.length) {
                         success( result );
                     }
@@ -65,7 +65,7 @@ fc.camera =  {
                     }
                 },
                 function(error) {
-                    if (lockori)window.screen.unlockOrientation();
+                    //if (lockori)window.screen.unlockOrientation();
                     fail( error );
                 },{
                     "preferFrontCamera" : false, // iOS and Android
@@ -73,8 +73,8 @@ fc.camera =  {
                     "showTorchButton" : true, // iOS and Android
                     "disableAnimations" : true, // iOS
                     "prompt" : "Barcode im Bereich platzieren." // supported on Android only
-                    ,"formats": format // default: all but PDF_417 and RSS_EXPANDED
-                    ,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device
+                    //,"formats": format // default: all but PDF_417 and RSS_EXPANDED
+                    //,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device
                 });
     	}
         else {
