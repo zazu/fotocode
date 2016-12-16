@@ -39,7 +39,7 @@ fc.camera =  {
     },
 
     captureBarcode: function( success, fail, format ) {
-        if (0)
+        if (cloudSky && cloudSky.zBar)
             this.captureBarcodeZBar( success, fail );
         else
             this.captureBarcodeCordova( success, fail, format );
@@ -89,7 +89,6 @@ fc.camera =  {
                 text_title: 'Scan QR Code', // Android only
                 text_instructions: "Barcode im Bereich platzieren." // Android only
             }, function(result) {
-                //if (lockori)window.screen.unlockOrientation();
                 if ( result.length ) {
                     success( { 'text':result,'format':'' } );
                 }
@@ -100,7 +99,6 @@ fc.camera =  {
                     fail( 'Kein Ergebnis: ' + JSON.stringify(result) );
                 }
             }, function(error) {
-                //if (lockori)window.screen.unlockOrientation();
                 fail( error );
             });
         }
