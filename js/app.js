@@ -557,7 +557,7 @@ function onDeviceReady() {
                 }, function (error) {
                         if ( error !== 'cancel' && error.indexOf('progress') === -1 )
                             myApp.alert("Fehler beim Erfassen des Barcodes: " + error);
-                });
+                }, me.codeformat);
             },
             // Listenhandler Barcode ändern
             setbarcode: function (idx) {

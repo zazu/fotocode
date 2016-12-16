@@ -38,22 +38,22 @@ fc.camera =  {
         }
     },
 
-    captureBarcode: function( success, fail ) {
+    captureBarcode: function( success, fail, format ) {
         if (0)
             this.captureBarcodeZBar( success, fail );
         else
-            this.captureBarcodeCordova( success, fail );
+            this.captureBarcodeCordova( success, fail, format );
     },
 
-    captureBarcodeCordova: function( success, fail ) {
+    captureBarcodeCordova: function( success, fail, format ) {
     	var cam = navigator.camera;
     	if ( cam ) {
             var orientation = (window.orientation && (window.orientation == -90 || window.orientation == 90)) ? "landscape": "portrait";
-            //var lockori = window.cfg.lockorientation && (window.cfg.device.platform !== "Android");
-            //if (lockori) window.screen.lockOrientation(window.screen.orientation);
+            var lockori = window.cfg.lockorientation && (window.cfg.device.platform !== "Android");
+            if (lockori) window.screen.lockOrientation(window.screen.orientation);
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
-                    //if (lockori)window.screen.unlockOrientation();
+                    if (lockori)window.screen.unlockOrientation();
                     if ( result.format.length && result.text.length) {
                         success( result );
                     }
@@ -65,7 +65,7 @@ fc.camera =  {
                     }
                 },
                 function(error) {
-                    //if (lockori)window.screen.unlockOrientation();
+                    if (lockori)window.screen.unlockOrientation();
                     fail( error );
                 },{
                     "preferFrontCamera" : false, // iOS and Android
@@ -73,7 +73,7 @@ fc.camera =  {
                     "showTorchButton" : true, // iOS and Android
                     "disableAnimations" : true, // iOS
                     "prompt" : "Barcode im Bereich platzieren." // supported on Android only
-                    //,"formats" : "" // default: all but PDF_417 and RSS_EXPANDED
+                    ,"formats": format // default: all but PDF_417 and RSS_EXPANDED
                     ,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device
                 });
     	}
