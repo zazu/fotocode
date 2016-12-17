@@ -39,8 +39,8 @@ fc.camera =  {
     },
 
     captureBarcode: function( success, fail, format ) {
-        if (cloudSky && cloudSky.zBar)
-            this.captureBarcodeZBar( success, fail );
+        if (cloudSky && cloudSky.zBar && format === 'ITF')
+            this.captureBarcodeZBar( success, fail, format );
         else
             this.captureBarcodeCordova( success, fail, format );
     },
@@ -82,7 +82,7 @@ fc.camera =  {
         }
     },
 
-    captureBarcodeZBar: function( success, fail ) {
+    captureBarcodeZBar: function( success, fail, format ) {
         var cam = navigator.camera;
         if (cam) {
             cloudSky.zBar.scan({
@@ -90,7 +90,7 @@ fc.camera =  {
                 text_instructions: "Barcode im Bereich platzieren." // Android only
             }, function(result) {
                 if ( result.length ) {
-                    success( { 'text':result,'format':'' } );
+                    success( { 'text': result,'format': format } );
                 }
                 else if (result.cancelled )  {
                     fail( 'cancel' );

@@ -539,7 +539,7 @@ function onDeviceReady() {
                         if (soll != 'all' && soll != me.set.format)
                             err += 2;
                         // Wenn der Typ explizit vom User auf "leer" gesetzt wurde wird nichts geprüft
-                        // Wenn der Typ in der nicht gesetzt wurde aber die Länge wird die Lände geprüft
+                        // Wenn der Typ in der nicht gesetzt wurde aber die Länge wird die Länge geprüft
                         if ( soll !== 'all' && me.set.format === "" )
                             err=0;
                     }
