@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.0.78"
-        android-versionCode="2.0.78"
-        ios-CFBundleVersion="2.0.78" >
+        version="2.0.79"
+        android-versionCode="2.0.79"
+        ios-CFBundleVersion="2.0.79" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -109,7 +109,9 @@
         <icon platform="ios" src="images/ios/icon-72.png" width="72" height="72" />
         <icon platform="ios" src="images/ios/icon-72-2x.png" width="144" height="144" />
         <icon platform="ios" src="images/ios/icon-76.png" width="76" height="76" />
-        <icon platform="ios" src="images/ios/icon-76-2x.png" width="152" height="152" />        
+        <icon platform="ios" src="images/ios/icon-76-2x.png" width="152" height="152" />
+
+<!--        <icon platform="ios" src="images/ios/icon-835-2x.png" width="167" height="167" /> -->
         
         <splash src="images/screen-1024x768.png"  platform="ios"     width="1024" height="768" />
         <splash src="images/screen-768x1024.png"  platform="ios"     width="768" height="1024" />

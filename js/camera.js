@@ -39,6 +39,7 @@ fc.camera =  {
     },
 
     captureBarcode: function( success, fail, format ) {
+        var cloudSky = cloudSky || false;
         if (cloudSky && cloudSky.zBar && format === 'ITF')
             this.captureBarcodeZBar( success, fail, format );
         else
