@@ -74,7 +74,7 @@ fc.camera =  {
                     "showTorchButton" : true, // iOS and Android
                     "disableAnimations" : true, // iOS
                     "prompt" : "Barcode im Bereich platzieren." // supported on Android only
-                    ,"formats": format // default: all but PDF_417 and RSS_EXPANDED
+//                    ,"formats": format // default: all but PDF_417 and RSS_EXPANDED
                     ,"orientation" : orientation // Android only (portrait|landscape), default unset so it rotates with the device
                 });
     	}
