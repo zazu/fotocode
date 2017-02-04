@@ -624,11 +624,12 @@ function onDeviceReady() {
 
             takefile: function(success) {
                 var me = this;
-                filechooser.open({"mime": "application/pdf"},function (result) {
+                filechooser.open({"mime": "image/jpeg"},function (result) {
                         alert(result.url);
                         me.set.files.push(result);
                         success();
-                    }, function () {
+                    }, function (msg) {
+                        alert( msg );
                         success();
                     });
             },
