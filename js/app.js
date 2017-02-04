@@ -298,8 +298,15 @@ function onDeviceReady() {
                 }
                 return num;
             },
+            numfiles: function () {
+                var num = 0;
+                for (var i = 0; i < this.sets.length; i++) {
+                    num = num + (!_.isUndefined(this.sets[i].files)?this.sets[i].files.length:0);
+                }
+                return num;
+            },
             nummedia: function() {
-                return this.numfotos + this.numvideos + this.numaudios;
+                return this.numfotos + this.numvideos + this.numaudios + this.numfiles;
             },
             numcodes: function () {
                 var num = 0;
