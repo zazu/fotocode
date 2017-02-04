@@ -682,6 +682,26 @@ function onDeviceReady() {
                 );
             },
 
+            addfiles: function (idx) {
+                var me = this;
+                if ( idx >=0 )
+                    me.selectedSet = idx;
+                me.cleanset();
+                me.takefile(
+                    function () {
+                        if (me.set.files.length) {
+                            me.sets[me.selectedSet].files.push.apply(me.sets[me.selectedSet].files, me.set.files);
+                            Lockr.set('appg-sets', me.sets);
+                        }
+                        if (idx >= 0)
+                            me.cleanset();
+                        else {
+                            me.cloneset();
+                        }
+                    }
+                );
+            },
+
             addvideo: function(idx) {
                 var me = this;
                 if ( idx >=0 )
@@ -728,6 +748,7 @@ function onDeviceReady() {
                     {text: 'Foto',onClick: function () {me.addfotos(idx);}},
                     {text: 'Video',onClick: function () {me.addvideo(idx);}},
                     {text: 'Audio',onClick: function () {me.addaudio(idx);}},
+                    {text: 'Datei',onClick: function () {me.addfiles(idx);}},
                     {text: 'Abbrechen',color: 'red'},
                 ];
                 myApp.actions(buttons);
@@ -788,7 +809,6 @@ function onDeviceReady() {
                             me.set.audios.splice(idx,1);
                         }
                         else if ( type === 'file' ) {
-                            idx -= me.sets[me.selectedSet].fotos.length;
                             media = me.sets[me.selectedSet].files.splice(idx, 1);
                             me.set.files.splice(idx,1);
                         }

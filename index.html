@@ -289,6 +289,7 @@
                       <a @click.stop.prevent="openVorgang($index)" class="item-link item-content">
                         <div class="item-media">
                             <img v-if="ds.fotos.length" :src="ds.fotos[0].uri" width="80">
+                            <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].uri" width="80">
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
@@ -387,7 +388,7 @@
                                             </a>
                                         </div>
                                         <div class="item-inner">
-                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                            <a @click.stop.prevent="openFotos($index,'fotos')" class="item-link">
                                                 <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
                                             </a>
                                             <a @click.stop.prevent="removeMedia('foto',$index)" class="" >
@@ -398,7 +399,21 @@
                                         </div>
                                     </div>
                                 </li>
+                            </ul>
+                        </div>
+                        <div class="list-group">
+                            <ul>
+                                <li class="list-group-title">
+                                    <a @click.stop.prevent="addfiles(-1)" >
+                                        <div class="chip">
+                                            <div class="chip-media">
+                                                <i class="icon icon-folder"></i>
+                                                Fotodatei hinzufügen
+                                            </div>
+                                        </div>
 
+                                    </a>
+                                </li>
                                 <li v-for="ds in set.files">
                                     <div class="item-content">
                                         <div class="item-media">
@@ -418,7 +433,6 @@
                                         </div>
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
 
