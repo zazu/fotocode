@@ -624,9 +624,9 @@ function onDeviceReady() {
 
             takefile: function(success) {
                 var me = this;
-                filechooser.open({"mime": "image/jpeg"},function (result) {
-                        alert(result.url);
-                        me.set.files.push(result);
+                window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
+                        alert(uri);
+                        me.set.files.push(uri);
                         success();
                     }, function (msg) {
                         alert( msg );

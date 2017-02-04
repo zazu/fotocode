@@ -55,7 +55,7 @@
         <plugin name="cordova-plugin-whitelist" source="npm" version="1.3.0" />
         <plugin name="cordova-plugin-webintent2" source="npm" version="1.0.1" value="com.borismus.webintent.WebIntent" />
 
-        <plugin name="cordova-plugin-file-chooser" source="npm" version="1.0.0" />
+        <plugin name="cordova-plugin-dotneet-mfilechooser" source="npm" version="1.0.7" />
 
 
         <allow-intent href="http://*/*" />
