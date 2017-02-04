@@ -624,6 +624,7 @@ function onDeviceReady() {
 
             takefile: function(success) {
                 var me = this;
+                alert('takefile');
                 window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
                         alert(uri);
                         me.set.files.push(uri);
