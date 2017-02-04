@@ -623,7 +623,6 @@ function onDeviceReady() {
             takefile: function(success) {
                 var me = this;
                 window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
-                        alert(uri);
                         var result = {
                             uri: uri,
                             title: uri.substr(uri.lastIndexOf('/')+1),
