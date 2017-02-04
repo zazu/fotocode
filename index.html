@@ -13,7 +13,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = false;
+            isAndroid = true;
             isIos = !isAndroid;
         }
         (function () {
@@ -213,6 +213,9 @@
                       </a>
                       <a href="#" @click="neuerVorgangAudio()" class="close-speed-dial">
                           <i class="icon icon-mic-light"></i>
+                      </a>
+                      <a href="#" @click="neuerVorgangFile()" class="close-speed-dial">
+                          <i class="icon icon-folder"></i>
                       </a>
                   </div>
               </div>

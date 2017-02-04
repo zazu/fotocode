@@ -154,6 +154,11 @@ i.icon.icon-cog {
     background-image: url("../img/cog.svg");
 }
 
+i.icon.icon-folder {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/folder.svg");
+}
 
 .chip .chip-media {
     color: #000;

@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.0.90',
+        version: '2.1.99',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -230,7 +230,8 @@ function onDeviceReady() {
                 formdata: {name:''},
                 bereich: 0,
                 videos: [],
-                audios: []
+                audios: [],
+                files:[]
             },
             login: {login: '', password: ''},
             user: {name: '', token: '', role:''},
@@ -455,6 +456,7 @@ function onDeviceReady() {
                 me.set.formdata = {name:''};
                 me.set.videos = [];//me.set.videos.splice(0, me.set.videos.length);;
                 me.set.audios = [];//me.set.audios.splice(0, me.set.audios.length);;
+                me.set.files = [];
             },
             // Weiter Button im Quickscan-Formular
             scanfoto: function (event) {
@@ -580,6 +582,8 @@ function onDeviceReady() {
                     me.takeaudio(success);
                 else if ( this.nextmedia === 'video')
                     me.takevideo(success);
+                else if ( this.nextmedia === 'file')
+                    me.takefile(success);
                 else
                     me.takefoto(success);
             },
@@ -609,6 +613,17 @@ function onDeviceReady() {
                 }, function () {
                     success();
                 });
+            },
+
+            takefile: function(success) {
+                var me = this;
+                filechooser.open({"mime": "application/pdf"},function (result) {
+                        alert(result.url);
+                        me.set.files.push(result);
+                        success();
+                    }, function () {
+                        success();
+                    });
             },
 
             takeaudio: function (success) {
@@ -961,6 +976,7 @@ function onDeviceReady() {
                         fotos: [],
                         videos: [],
                         audios: [],
+                        files:[],
                         formdata: {name:auftrag.name}
                     };
                     me.sets.push(s);
@@ -1027,6 +1043,7 @@ function onDeviceReady() {
                         fotos: set.fotos,
                         videos: _.isUndefined(set.videos)?[]:set.videos,
                         audios: _.isUndefined(set.audios)?[]:set.audios,
+                        files: _.isUndefined(set.files)?[]:set.files,
                         formdata: set.formdata,
                         bereich: bereich
                     };
@@ -1167,6 +1184,10 @@ function onDeviceReady() {
             },
             neuerVorgangAudio: function() {
                 this.nextmedia = 'audio';
+                mainView.router.load({pageName: 'quickscan'});
+            },
+            neuerVorgangFile: function() {
+                this.nextmedia = 'file';
                 mainView.router.load({pageName: 'quickscan'});
             }
         }

@@ -161,6 +161,12 @@ i.icon.icon-bars {
     -webkit-mask-image: url("../img/hamburger.svg");
 }
 
+i.icon.icon-folder {
+    mask-image: url("../img/hamburger.svg");
+    -webkit-mask-image: url("../img/folder.svg");
+}
+
+
 i.icon.icon-back {
     width: 12px;
     height: 20px;
