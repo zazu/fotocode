@@ -190,6 +190,9 @@
                     <a v-if="isios" href="#" @click="neuerVorgangAudio()" class="link icon-only">
                         <i class="icon icon-mic"></i>
                     </a>
+                    <a v-if="isios" href="#" @click="neuerVorgangFile()" class="link icon-only">
+                        <i class="icon icon-folder"></i>
+                    </a>
                     <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
                 </div>
               </div>
@@ -237,7 +240,7 @@
                     <div class="col-50">
                         <div class="row" style="text-align: center;">
                             <div class="col-33">
-                                <span class="numnum">{{numfotos}}</span>
+                                <span class="numnum">{{numfotos+numfiles}}</span>
                             </div>
                             <div class="col-33">
                                 <span class="numnum">{{numvideos}}</span>
@@ -265,7 +268,7 @@
                     <div class="col-50">
                         <div class="row" style="text-align: center;">
                             <div class="col-33">
-                                <span class="numtext">Foto<span v-show="numfotos!=1">s</span></span>
+                                <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
                             </div>
                             <div class="col-33">
                                 <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
@@ -292,7 +295,7 @@
                             <div class="item-title">{{ds.code | astext}}</div>
                             <div class="item-after">
                                 <span class="badge badge-media" :class="classbg">
-                                    {{ds.fotos.length}} / {{ds.videos.length}} / {{ds.audios.length}}
+                                    {{ds.fotos.length+ds.files.length}} / {{ds.videos.length}} / {{ds.audios.length}}
                                     <br>
                                     {{ mediasize($index) |b2MB }} MB
                                 </span>
@@ -395,8 +398,30 @@
                                         </div>
                                     </div>
                                 </li>
+
+                                <li v-for="ds in set.files">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                                <img  :src="ds.uri" width="80">
+                                            </a>
+                                        </div>
+                                        <div class="item-inner">
+                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                                <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                            </a>
+                                            <a @click.stop.prevent="removeMedia('file',$index)" class="" >
+                                                <div class="item-after">
+                                                    <i class="icon icon-bin"></i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+
                             </ul>
                         </div>
+
                         <!-- Videos-->
                         <div class="list-group">
                             <ul>

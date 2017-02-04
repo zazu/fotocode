@@ -611,7 +611,6 @@ function onDeviceReady() {
                     success();
                 });
             },
-
             takevideo: function (success) {
                 var me = this;
                 fc.camera.captureVideo(function (result) {
@@ -621,13 +620,16 @@ function onDeviceReady() {
                     success();
                 });
             },
-
             takefile: function(success) {
                 var me = this;
-                alert('takefile start');
                 window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
                         alert(uri);
-                        me.set.files.push(uri);
+                        var result = {
+                            uri: uri,
+                            title: uri.substr(uri.lastIndexOf('/')+1),
+                            size: 1
+                        }
+                        me.set.files.push(result);
                         success();
                     }, function (msg) {
                         alert( msg );
@@ -767,9 +769,10 @@ function onDeviceReady() {
             },
             removeMedia: function(type, idx ) {
                 var me = this;
-                myApp.confirm(
-                    "Bitte bestätigen Sie das endgültige Löschen.",
-                    "Löschen?",
+                var msg =  ( type !== 'file' )
+                                ? "Bitte bestätigen Sie das endgültige Löschen."
+                                : "Bitte bestätigen Sie das Löschen";
+                myApp.confirm(msg,"Löschen?",
                     function () {
                         var media;
                         if ( type === 'foto' ) {
@@ -784,7 +787,13 @@ function onDeviceReady() {
                             media = me.sets[me.selectedSet].audios.splice(idx, 1);
                             me.set.audios.splice(idx,1);
                         }
-                        FileIO.removeDeletedImage(media[0].uri);
+                        else if ( type === 'file' ) {
+                            idx -= me.sets[me.selectedSet].fotos.length;
+                            media = me.sets[me.selectedSet].files.splice(idx, 1);
+                            me.set.files.splice(idx,1);
+                        }
+                        if ( type !== 'file' )
+                            FileIO.removeDeletedImage(media[0].uri);
                         Lockr.set('appg-sets', me.sets);
                     }, function () {
                     }
