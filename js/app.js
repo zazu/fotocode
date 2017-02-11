@@ -601,6 +601,7 @@ function onDeviceReady() {
             },
             takefoto: function (success) {
                 var me = this;
+                var quality = 100;
                 fc.camera.getPicture(function (result) {
                     me.set.fotos.push(result);
                     if (navigator.camera || me.set.fotos.length < 2)
@@ -609,7 +610,8 @@ function onDeviceReady() {
                         success();
                 }, function () {
                     success();
-                });
+                },
+                quality);
             },
             takevideo: function (success) {
                 var me = this;
