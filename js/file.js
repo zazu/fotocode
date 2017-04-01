@@ -18,7 +18,7 @@ var fc = fc || {};
 var FileIO = {
 
     // Medium in das app-data-Verzeichnis verschieben
-    moveMediaFile: function(imageURI, success) {
+    moveMediaFile: function(imageURI, success, fotoconf) {
         var extension = imageURI.substr(-3);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
@@ -32,13 +32,17 @@ var FileIO = {
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
                         fileEntryFrom.moveTo(dirEntry, newName,
                             function(fileEntryTo) {
-                                success(fileEntryTo);
+                                FileIO.resizeFoto(fotoconf, fileEntryTo, success );
                             },
                             FileIO.errorHandler);
                     }, FileIO.errorHandler )
                 },
                 FileIO.errorHandler);
         },
+
+    resizeFoto: function(fotoconf, fileEntryTo, success) {
+        success(fileEntryTo);
+    },
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()

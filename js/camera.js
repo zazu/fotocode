@@ -1,8 +1,7 @@
 // global namespace
 var fc = fc || {};
 fc.camera =  {
-    getPicture: function( success, fail, quality ) {
-        quality = quality || 80;
+    getPicture: function( success, fail, fotoconf ) {
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -19,7 +18,7 @@ fc.camera =  {
                                     bemerkung:""
                                 });
                             });
-                        });
+                        }, fotoconf );
                 },
                 function(error) {
                     console.log('getPicture error');
@@ -27,7 +26,7 @@ fc.camera =  {
                     fail(error);
                 },
                 {
-                    quality: quality,
+                    quality: fotoconf.qual,
                     destinationType: Camera.DestinationType.FILE_URI
     //                ,sourceType:Camera.PictureSourceType.CAMERA
                     ,saveToPhotoAlbum: false

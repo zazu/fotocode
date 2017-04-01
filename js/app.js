@@ -241,7 +241,8 @@ function onDeviceReady() {
             codeformats: [
                 'EAN_13', 'EAN_8', 'UPC_A', 'UPC_E', 'ITF', 'CODE_128', 'CODE_39', 'CODE_93',
                 'CODABAR', 'QR_CODE', 'DATA_MATRIX', 'PDF417'
-            ]
+            ],
+            fotoconf:{}
         },
         computed: {
             classtheme: function() {
@@ -358,10 +359,15 @@ function onDeviceReady() {
                 ) ? me.bereiche.ablage[me.bereich]
                     : '';
             },
-
             hasform: function () {
                 var me = this;
                 return me.bereich > 0 && me.bereiche.hasform[me.bereich] > 0;
+            },
+            fotoqual: function() {
+                return this.fotoconf.qual ? this.fotoconf.qual : 80;
+            },
+            fotojpgsiz: function() {
+                return this.fotoconf.jpgsiz ? this.fotoconf.jpgsiz : 5;
             }
         },
         created: function () {
@@ -376,6 +382,7 @@ function onDeviceReady() {
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
             me.lastsent = Lockr.get('appg-lastsent', '-');
+            me.fotoconf = Lockr.get('appg-fotoconf', { qual:100, jpgsiz:10 });
             me.syncUserInfo();
             me.checkVersion();
         },
@@ -601,7 +608,6 @@ function onDeviceReady() {
             },
             takefoto: function (success) {
                 var me = this;
-                var quality = 100;
                 fc.camera.getPicture(function (result) {
                     me.set.fotos.push(result);
                     if (navigator.camera || me.set.fotos.length < 2)
@@ -611,7 +617,7 @@ function onDeviceReady() {
                 }, function () {
                     success();
                 },
-                quality);
+                me.fotoconf);
             },
             takevideo: function (success) {
                 var me = this;
@@ -947,9 +953,11 @@ function onDeviceReady() {
                             me.user = {name: data.name, token: data.token, role:data.role};
                             me.form = data.form;
                             me.bereiche = data.bereiche;
+                            me.fotoconf = data.fotos;
                             Lockr.set('appg-bereiche', me.bereiche);
                             Lockr.set('appg-form', me.form);
                             Lockr.set('appg-user', me.user);
+                            Lockr.set('appg-fotoconf', me.fotoconf);
                             mainView.router.back();
                             myApp.hidePreloader();
                             me.ensureValidBereich();
@@ -986,9 +994,11 @@ function onDeviceReady() {
                             else {
                                 me.form = data.form;
                                 me.bereiche = data.bereiche;
+                                me.fotoconf = data.fotos;
                                 me.addAuftrag(data.auftrag);
                                 Lockr.set('appg-bereiche', me.bereiche);
                                 Lockr.set('appg-form', me.form);
+                                Lockr.set('appg-fotoconf', me.fotoconf);
                                 // Empfangsbestätigung zum Löschen vom Server
                                 $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
                                 myApp.hidePreloader();
@@ -1096,7 +1106,8 @@ function onDeviceReady() {
                         },
                         function (msg) {
                             myApp.alert(msg);
-                        }
+                        },
+                        me.fotoconf
                     );
                 }
                 else {
