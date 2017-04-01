@@ -10,15 +10,17 @@ fc.camera =  {
                     FileIO.moveMediaFile(
                         decodeURI( imageUri ),
                         function(fileEntry) {
-                            fileEntry.file( function(file){
-                                success({
-                                    uri: fileEntry.nativeURL,
-                                    title: title,
-                                    size: file.size,
-                                    bemerkung:""
+                            fc.camera.resizeFoto(fotoconf,fileEntry, function(fileEntry) {
+                                fileEntry.file(function (file) {
+                                    success({
+                                        uri: fileEntry.nativeURL,
+                                        title: title,
+                                        size: file.size,
+                                        bemerkung: ""
+                                    });
                                 });
                             });
-                        }, fotoconf );
+                        });
                 },
                 function(error) {
                     console.log('getPicture error');
@@ -36,6 +38,55 @@ fc.camera =  {
         else {
             success( { size: 123, uri: 'test.jpg', title: 'title', bemerkung: 'Bild ' + _.now() }  );
         }
+    },
+
+    resizeFoto: function(fotoconf, fileEntryTo, success) {
+        var reader = new FileReader();
+        reader.onload = function (readerEvent) {
+            var image = new Image();
+            image.onload = function (imageEvent) {
+                var canvas = document.createElement('canvas'),
+                    width = image.width,
+                    height = image.height;
+
+                var r = width / height;
+                var wa = Math.sqrt( fotoconf.jpgsiz * 1e6 * r );
+                var ha = Math.sqrt( fotoconf.jpgsiz * 1e6 / r );
+                var max_size = Math.max(wa,ha);
+
+                if (width > height) {
+                    if (width > max_size) {
+                        height *= max_size / width;
+                        width = max_size;
+                    }
+                } else {
+                    if (height > max_size) {
+                        width *= max_size / height;
+                        height = max_size;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+
+                fileEntryTo.createWriter(function(writer){
+                    writer.onwriteend = function(evt) {
+                        success(fileEntryTo);
+                    };
+                    canvas.toBlob( function(blob){
+                        writer.truncate(0);
+                        writer.write(blob);
+                    } );
+
+                }, function(e) {
+                    var msg = '';
+                    msg = e.code;
+                    myApp.alert('CreateWriter-Fehler: ' + msg);
+                });
+            }
+            image.src = readerEvent.target.result;
+        }
+        reader.readAsDataURL(fileEntryTo);
     },
 
     captureBarcode: function( success, fail, format ) {

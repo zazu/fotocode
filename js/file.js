@@ -10,6 +10,21 @@ On iOS, this directory is not synced with iCloud (use .syncedDataDirectory).
 (iOS, Android, BlackBerry 10)
 */
 
+if (!HTMLCanvasElement.prototype.toBlob) {
+    Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+        value: function (callback, type, quality) {
+            var binStr = atob( this.toDataURL(type, quality).split(',')[1] ),
+                len = binStr.length,
+                arr = new Uint8Array(len);
+
+            for (var i = 0; i < len; i++ ) {
+                arr[i] = binStr.charCodeAt(i);
+            }
+            callback( new Blob( [arr], {type: type || 'image/jpg'} ) );
+        }
+    });
+}
+
 // global namespace
 var fc = fc || {};
 
@@ -18,7 +33,7 @@ var fc = fc || {};
 var FileIO = {
 
     // Medium in das app-data-Verzeichnis verschieben
-    moveMediaFile: function(imageURI, success, fotoconf) {
+    moveMediaFile: function(imageURI, success) {
         var extension = imageURI.substr(-3);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
@@ -32,17 +47,13 @@ var FileIO = {
                         var newName = "appg_" + (now.getTime()).toString() + "." + extension;
                         fileEntryFrom.moveTo(dirEntry, newName,
                             function(fileEntryTo) {
-                                FileIO.resizeFoto(fotoconf, fileEntryTo, success );
+                                success(fileEntryTo);
                             },
                             FileIO.errorHandler);
                     }, FileIO.errorHandler )
                 },
                 FileIO.errorHandler);
         },
-
-    resizeFoto: function(fotoconf, fileEntryTo, success) {
-        success(fileEntryTo);
-    },
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
