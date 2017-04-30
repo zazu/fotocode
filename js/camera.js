@@ -11,14 +11,14 @@ fc.camera =  {
                         decodeURI( imageUri ),
                         function(fileEntry) {
                             //fc.camera.resizeFoto(fotoconf,fileEntry, function(fileEntry) {
-                                //fileEntry.file(function (file) {
+                                fileEntry.file(function (file) {
                                     success({
                                         uri: fileEntry.nativeURL,
                                         title: title,
                                         size: file.size,
                                         bemerkung: ""
                                     });
-                                //});
+                                });
                             //});
                         });
                 },
