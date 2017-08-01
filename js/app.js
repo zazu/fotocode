@@ -7,11 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-<<<<<<< HEAD
         version: '2.1.7',
-=======
-        version: '2.1.6',
->>>>>>> 08c070e... immer test.appgeordnet
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
