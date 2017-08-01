@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.6"
+        version="2.1.7"
         android-versionCode="2.1.7"
         ios-CFBundleVersion="2.1.7" >
     <name>appgeordnet</name>
