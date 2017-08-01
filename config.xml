@@ -3,8 +3,13 @@
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
         version="2.1.6"
+<<<<<<< HEAD
         android-versionCode="2.1.7"
         ios-CFBundleVersion="2.1.7" >
+=======
+        android-versionCode="2.1.6"
+        ios-CFBundleVersion="2.1.6" >
+>>>>>>> 08c070e... immer test.appgeordnet
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
