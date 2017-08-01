@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.6',
+        version: '2.1.7',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -482,14 +482,21 @@ function onDeviceReady() {
                 if (me.usecamera) {
                     vm.barcode(function () {
                         Vue.nextTick(function () {
-                            vm.media(vm.usefotos);
+                            // focus funktioniert auf manchen ios Geräten nicht unmittelbat nach Bracode Scan
+                            if ( isAndroid )
+                                vm.media(vm.usefotos);
+                            else
+                                vm.usefotos();
                         });
                     });
                 }
                 else {
                     me.set.format = me.codeformat;
                     me.validateBarcode(function () {
-                        vm.media(vm.usefotos);
+                        if ( isAndroid )
+                            vm.media(vm.usefotos);
+                        else
+                            vm.usefotos();
                     });
                 }
             },
