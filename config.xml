@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.7"
-        android-versionCode="2.1.7"
-        ios-CFBundleVersion="2.1.7" >
+        version="2.1.8"
+        android-versionCode="2.1.8"
+        ios-CFBundleVersion="2.1.8" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -78,12 +78,14 @@
     <platform name="ios" >
         <preference name="phonegap-version" value="cli-6.5.0" />
         <plugin name="cordova-plugin-screen-orientation" source="npm" version="2.0.1" />
-        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.6" />
+        <plugin name="phonegap-plugin-barcodescanner" source="npm" version="6.0.3" />
 
         <!-- <plugin name="phonegap-plugin-portrait-barcodescanner" source="npm" version="1.1.1" /> -->
         <!-- ios und Android; wird aber nur für ios barcode benutzt -->
         <!-- <plugin name="cordova-plugin-cszbar" source="npm" version="1.3.1" /> -->
+<!--
         <plugin name="org.cloudsky.cordovaplugins.zbar" spec="tjwoon/csZBar" source="git" />
+-->
 
         <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
         <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
@@ -139,5 +141,9 @@
     <plugin name="ionic-plugin-keyboard" source="npm" version="2.2.1" />
     <plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <plugin name="cordova-open" source="npm" version="1.0.12" />
+
+    <gap:config-file platform="ios" parent="NSCameraUsageDescription" overwrite="true">
+        <string>Die Kamera wird benötigt um Fotos zu machen und Barcodes zu scannen.</string>
+    </gap:config-file>
 
 </widget>
