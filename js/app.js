@@ -482,21 +482,14 @@ function onDeviceReady() {
                 if (me.usecamera) {
                     vm.barcode(function () {
                         Vue.nextTick(function () {
-                            // focus funktioniert auf manchen ios Geräten nicht unmittelbat nach Bracode Scan
-                            if ( isAndroid )
-                                vm.media(vm.usefotos);
-                            else
-                                vm.usefotos();
+                           vm.media(vm.usefotos);
                         });
                     });
                 }
                 else {
                     me.set.format = me.codeformat;
                     me.validateBarcode(function () {
-                        if ( isAndroid )
-                            vm.media(vm.usefotos);
-                        else
-                            vm.usefotos();
+                        vm.media(vm.usefotos);
                     });
                 }
             },
