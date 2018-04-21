@@ -26,7 +26,7 @@
     <platform name="android" >
 
         <!-- see https://developer.android.com/guide/topics/manifest/uses-sdk-element.html -->
-        <preference name="android-minSdkVersion" value="21" /> <!-- 10 -> android 5 -->
+        <preference name="android-minSdkVersion" value="19" /> <!-- 10 -> android 4.4 -->
         <!-- <preference name="android-targetSdkVersion" value="16" /> -->
 
         <!-- <preference name="phonegap-version" value="cli-6.5.0" /> -->
@@ -58,7 +58,7 @@
         <plugin name="cordova-plugin-webintent2" source="npm" version="1.0.4" value="com.borismus.webintent.WebIntent" />
 
         <plugin name="cordova-plugin-dotneet-mfilechooser" source="npm" version="1.0.7" />
-
+        <plugin spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />
 
         <allow-intent href="http://*/*" />
         <allow-intent href="https://*/*" />
