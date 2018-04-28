@@ -13,7 +13,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = false;
+            isAndroid = true;
             isIos = !isAndroid;
         }
         (function () {
@@ -178,7 +178,7 @@
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner" v-cloak>
-                <div class="">appgeordnet</div>
+                <div class="left" style="padding-left:16px;">appgeordnet</div>
                 <div class="right">
 <!--                    <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a> -->
                     <a v-if="isios" href="#" @click="neuerVorgangFoto()" class="link icon-only">
