@@ -15,7 +15,7 @@ fc.updater =  {
                     data = JSON.parse(data);
                     var alt = fc.updater.version( version);
                     var neu = fc.updater.version(data.version);
-                    if ( neu > alt ) {
+                    if (true ||  neu > alt ) {
                         var msg = 'Ein Update auf die Version ' + data.version +
                             ' ist verfügbar. ' +
                             data.msg;
