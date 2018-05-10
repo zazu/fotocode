@@ -41,17 +41,6 @@
         <preference name="AutoHideSplashScreen" value="true" />
         <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
 
-        <provider
-                android:name="android.support.v4.content.FileProvider"
-                android:authorities="de.cesart.appgeordnet"
-                android:exported="false"
-                android:grantUriPermissions="true">
-            <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths" />
-        </provider>
-
-
         <icon src="icon.png" />
         <icon src="images/iconapp1200.png" platform="android"    density="ldpi" />
         <icon src="images/iconapp1200.png" platform="android"    density="mdpi" />
