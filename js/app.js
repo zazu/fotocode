@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.15',
+        version: '2.1.16',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -1003,6 +1003,7 @@ function onDeviceReady() {
                                 $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
                                 myApp.hidePreloader();
                                 me.ensureValidBereich();
+                                me.checkVersion();
                             }
                         },
                         error: function () {
