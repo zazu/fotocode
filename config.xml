@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.18"
-        android-versionCode="2.1.18"
-        ios-CFBundleVersion="2.1.18" >
+        version="2.1.19"
+        android-versionCode="2.1.19"
+        ios-CFBundleVersion="2.1.19" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -22,6 +22,16 @@
     <preference name="DisallowOverscroll" value="true" />
 
     <splash src="splash.png" />
+
+    <plugin name="cordova-plugin-camera" >
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+    </plugin>
+
+    <plugin name="cordova-plugin-ios-camera-permissions" >
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+    </plugin>
 
     <platform name="android" >
 
@@ -126,6 +136,7 @@
 <!--        <icon platform="ios" src="images/ios/icon-835-2x.png" width="167" height="167" /> -->
 
         <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
+
     </platform>
     <access origin="*" />
 
@@ -146,17 +157,18 @@
     <plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <plugin name="cordova-open" source="npm" version="1.0.12" />
 
-    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Die Kamera wird benötigt um Fotos zu machen und Barcodes zu scannen.</string>
+    <edit-config platform="ios" target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Die Kamera wird benutzt um Fotos zu machen und Barcodes zu scannen.</string>
     </edit-config>
 
-    <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Das Mikrofon wird benötigt um Sounds aufzuzeichnen.</string>
+    <edit-config platform="ios" target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Das Mikrofon wird benutzt um Sounds aufzuzeichnen.</string>
     </edit-config>
 
-    <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Die Foto-Bibliothek wird benötigt um von dort Fotos zu nutzen.</string>
+    <edit-config platform="ios" target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Die Foto-Bibliothek wird benutzt um von dort Fotos zu nutzen.</string>
     </edit-config>
+
 
     <engine name="ios" spec="^4.5.4" />
 
