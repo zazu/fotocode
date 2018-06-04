@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.17"
-        android-versionCode="2.1.17"
-        ios-CFBundleVersion="2.1.17" >
+        version="2.1.18"
+        android-versionCode="2.1.18"
+        ios-CFBundleVersion="2.1.18" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -146,9 +146,17 @@
     <plugin name="cordova-plugin-appversion" source="npm" version="1.0.0" />
     <plugin name="cordova-open" source="npm" version="1.0.12" />
 
-    <gap:config-file platform="ios" parent="NSCameraUsageDescription" overwrite="true">
+    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
         <string>Die Kamera wird benötigt um Fotos zu machen und Barcodes zu scannen.</string>
-    </gap:config-file>
+    </edit-config>
+
+    <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Das Mikrofon wird benötigt um Sounds aufzuzeichnen.</string>
+    </edit-config>
+
+    <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Die Foto-Bibliothek wird benötigt um von dort Fotos zu nutzen.</string>
+    </edit-config>
 
     <engine name="ios" spec="^4.5.4" />
 

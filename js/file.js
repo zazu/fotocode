@@ -86,8 +86,22 @@ var FileIO = {
      */
      errorHandler : function(e) {
            var msg = '';
-           msg = e.code;
-           myApp.alert('FileIO-Fehler: ' + msg);
+          switch (e.code) {
+            case 1: msg = "Datei nicht gefunden!"; break;
+            case 2: msg = "Security!"; break;
+            case 3: msg = "Aborted!"; break;
+            case 4: msg = "Datei nicht lesbar!"; break;
+            case 5: msg = "Ungültiges Encoding!"; break;
+            case 6: msg = "Datei darf nicht verändert werden!"; break;
+            case 7: msg = "Ungültiger Status!"; break;
+            case 8: msg = "Syntax Fehler!"; break;
+            case 9: msg = "Ungültige Veränderung!"; break;
+            case 10: msg = "Quota überschritten!"; break;
+            case 11: msg = "Type mismatch!"; break;
+            case 12: msg = "Der Pfad existiert bereits!"; break;
+            default: msg = e.code;
+          }
+          myApp.alert('FileIO-Fehler: ' + msg);
      }
 };
 
