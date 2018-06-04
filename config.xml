@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.19"
-        android-versionCode="2.1.19"
-        ios-CFBundleVersion="2.1.19" >
+        version="2.1.20"
+        android-versionCode="2.1.20"
+        ios-CFBundleVersion="2.1.20" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -24,13 +24,15 @@
     <splash src="splash.png" />
 
     <plugin name="cordova-plugin-camera" >
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Zur Aufnahme von Fotos" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Zum Laden von Fotos" />
+        <variable name="MICROPHONE_USAGE_DESCRIPTION" value="Zur Aufnahme von Sound" />
     </plugin>
 
     <plugin name="cordova-plugin-ios-camera-permissions" >
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To add pictures in  news, events, groups" />
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Zur Aufnahme von Fotos" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Zum Laden von Fotos" />
+        <variable name="MICROPHONE_USAGE_DESCRIPTION" value="Zur Aufnahme von Sound" />
     </plugin>
 
     <platform name="android" >
