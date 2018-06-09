@@ -1,7 +1,8 @@
 // global namespace
 var fc = fc || {};
 fc.camera =  {
-    getPicture: function( success, fail, fotoconf ) {
+    getPicture: function( success, fail, fotoconf, sourceType ) {
+      sourceType = sourceType ||  Camera.PictureSourceType.CAMERA;
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -30,7 +31,7 @@ fc.camera =  {
                 {
                     quality: fotoconf.qual,
                     destinationType: Camera.DestinationType.FILE_URI
-    //                ,sourceType:Camera.PictureSourceType.CAMERA
+                    ,sourceType:sourceType
                     ,saveToPhotoAlbum: false
                     ,allowEdit: false
                 });

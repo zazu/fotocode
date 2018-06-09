@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.16',
+        version: '2.1.21',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -630,18 +630,28 @@ function onDeviceReady() {
             },
             takefile: function(success) {
                 var me = this;
-                window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
-                        var result = {
-                            uri: uri,
-                            title: uri.substr(uri.lastIndexOf('/')+1),
-                            size: 1
-                        }
-                        me.set.files.push(result);
-                        success();
-                    }, function (msg) {
-                        alert( msg );
-                        success();
-                    });
+                if ( this.isios) {
+                    fc.camera.getPicture(function (result) {
+                          me.set.fotos.push(result);
+                          success();
+                      }, function () {
+                          success();
+                      },
+                      me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
+                }
+                else
+                    window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
+                            var result = {
+                                uri: uri,
+                                title: uri.substr(uri.lastIndexOf('/')+1),
+                                size: 1
+                            }
+                            me.set.files.push(result);
+                            success();
+                        }, function (msg) {
+                            alert( msg );
+                            success();
+                        });
             },
 
             takeaudio: function (success) {
