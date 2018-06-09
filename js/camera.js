@@ -2,7 +2,6 @@
 var fc = fc || {};
 fc.camera =  {
     getPicture: function( success, fail, fotoconf, sourceType ) {
-      sourceType = sourceType ||  Camera.PictureSourceType.CAMERA;
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -29,6 +28,8 @@ fc.camera =  {
                     fail(error);
                 },
                 {
+                    //allowEdit: true,
+                    //correctOrientation: true,
                     quality: fotoconf.qual,
                     destinationType: Camera.DestinationType.FILE_URI
                     ,sourceType:sourceType

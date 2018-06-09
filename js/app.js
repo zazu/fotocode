@@ -617,7 +617,7 @@ function onDeviceReady() {
                 }, function () {
                     success();
                 },
-                me.fotoconf);
+                me.fotoconf,Camera.PictureSourceType.CAMERA);
             },
             takevideo: function (success) {
                 var me = this;
