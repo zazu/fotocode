@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.21',
+        version: '2.1.24',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -410,6 +410,8 @@ function onDeviceReady() {
                             size = size + this.sets[i].videos[j].size;
                         for (j = 0; j < this.sets[i].audios.length; j++)
                             size = size + this.sets[i].audios[j].size;
+                        for (j = 0; j < this.sets[i].files.length; j++)
+                            size = size + this.sets[i].files[j].size;
                     }
                 }
                 catch(e) {}
@@ -1084,7 +1086,8 @@ function onDeviceReady() {
                     idx=0;
                     // ersten set mit fotos finden
                     while (idx < me.sets.length &&
-                    (me.sets[idx].fotos.length + me.sets[idx].videos.length + me.sets[idx].audios.length) == 0
+                    (me.sets[idx].fotos.length + me.sets[idx].videos.length + me.sets[idx].audios.length
+                                               + me.sets[idx].files.length) == 0
                         )
                         idx++;
                 }
