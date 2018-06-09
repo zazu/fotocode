@@ -20,7 +20,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
             for (var i = 0; i < len; i++ ) {
                 arr[i] = binStr.charCodeAt(i);
             }
-            callback( new Blob( [arr], {type: type || 'image/jpg'} ) );
+            callback( new Blob( [arr], {type: type || 'image/jpeg'} ) );
         }
     });
 }
@@ -34,7 +34,7 @@ var FileIO = {
 
     // Medium in das app-data-Verzeichnis verschieben
     moveMediaFile: function(imageURI, success) {
-        var extension = imageURI.substr(-3);
+        var extension = imageURI.substr(imageURI.lastIndexOf('.')+1);
         window.resolveLocalFileSystemURL(imageURI,
                 function(fileEntryFrom) {
                     var directory = (device.platform === "Android")

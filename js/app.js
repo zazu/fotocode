@@ -642,7 +642,7 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else
-                    window.plugins.mfilechooser.open(['.jpg','.JPG'],function (uri) {
+                    window.plugins.mfilechooser.open(['.jpg','.JPG','.jpeg','.JPEG'],function (uri) {
                             var result = {
                                 uri: uri,
                                 title: uri.substr(uri.lastIndexOf('/')+1),
