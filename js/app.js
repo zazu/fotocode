@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.24',
+        version: '2.1.27',
         uritest: mobiledevice ? "http://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -632,7 +632,7 @@ function onDeviceReady() {
             },
             takefile: function(success) {
                 var me = this;
-                if ( this.isios) {
+                if (1 || this.isios) {
                     fc.camera.getPicture(function (result) {
                           me.set.files.push(result);
                           success();
@@ -1165,7 +1165,8 @@ function onDeviceReady() {
                         }
                         while (me.sets[idx].files.length) {
                             medium = me.sets[idx].files.splice(me.sets[idx].files.length - 1, 1);
-                            FileIO.removeDeletedImage(medium[0].uri);
+                            //if ( ! this.isandroid ) // wenn filechooser verwendet wird
+                                FileIO.removeDeletedImage(medium[0].uri);
                         }
                         me.sets.splice(idx, 1);
                         me.lastsent = moment().format('DD.MM.YYYY HH:mm');
