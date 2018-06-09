@@ -632,7 +632,7 @@ function onDeviceReady() {
                 var me = this;
                 if ( this.isios) {
                     fc.camera.getPicture(function (result) {
-                          me.set.fotos.push(result);
+                          me.set.files.push(result);
                           success();
                       }, function () {
                           success();
