@@ -7,8 +7,8 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.27',
-        uritest: mobiledevice ? "http://test.app-geordnet.de/":
+        version: '2.1.28',
+        uritest: mobiledevice ? "https://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
             "https://2018.app-geordnet.de/":
@@ -632,7 +632,7 @@ function onDeviceReady() {
             },
             takefile: function(success) {
                 var me = this;
-                if (1 || this.isios) {
+                if (this.isios) {
                     fc.camera.getPicture(function (result) {
                           me.set.files.push(result);
                           success();
@@ -641,19 +641,22 @@ function onDeviceReady() {
                       },
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
-                else
-                    window.plugins.mfilechooser.open(['.jpg','.JPG','.jpeg','.JPEG'],function (uri) {
+                else {
+                    window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG'], function (uri) {
+                        FileIO.fileSize(uri, function (file) {
                             var result = {
                                 uri: uri,
-                                title: uri.substr(uri.lastIndexOf('/')+1),
-                                size: 1
-                            }
+                                title: uri.substr(uri.lastIndexOf('/') + 1),
+                                size: file.size
+                            };
                             me.set.files.push(result);
                             success();
-                        }, function (msg) {
-                            alert( msg );
-                            success();
                         });
+                    }, function (msg) {
+                        alert(msg);
+                        success();
+                    });
+                }
             },
 
             takeaudio: function (success) {
@@ -1165,7 +1168,7 @@ function onDeviceReady() {
                         }
                         while (me.sets[idx].files.length) {
                             medium = me.sets[idx].files.splice(me.sets[idx].files.length - 1, 1);
-                            //if ( ! this.isandroid ) // wenn filechooser verwendet wird
+                            if ( ! this.isandroid ) // wenn filechooser verwendet wird
                                 FileIO.removeDeletedImage(medium[0].uri);
                         }
                         me.sets.splice(idx, 1);

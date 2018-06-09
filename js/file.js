@@ -55,6 +55,17 @@ var FileIO = {
                 FileIO.errorHandler);
         },
 
+    fileSize: function(imageURI, success) {
+        window.resolveLocalFileSystemURL(imageURI,
+          function(fileEntry) {
+            fileEntry.file(function (file) {
+              success(file);
+            });
+          },
+          FileIO.errorHandler
+        );
+    },
+
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
      removeDeletedImage : function(imageURI){
