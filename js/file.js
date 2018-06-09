@@ -182,7 +182,10 @@ fc.file =  {
             me.uploadFoto( group.videos, 0, function(){
                 me.fotocount = 0;
                 me.uploadFoto( group.audios, 0, function(){
+                  me.fotocount = 0;
+                  me.uploadFoto( group.files, 0, function(){
                     me.sendUploadDone(success);
+                  }, fail, "Sende Datei ..." );
                 }, fail, "Sende Audio ..." );
             }, fail, "Sende Video ..." );
         }, fail, "Sende Foto ..." );

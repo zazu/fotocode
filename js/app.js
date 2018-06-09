@@ -1163,6 +1163,10 @@ function onDeviceReady() {
                                 FileIO.removeDeletedImage(medium[0].uri);
                             }, 200);
                         }
+                        while (me.sets[idx].files.length) {
+                            medium = me.sets[idx].files.splice(me.sets[idx].files.length - 1, 1);
+                            FileIO.removeDeletedImage(medium[0].uri);
+                        }
                         me.sets.splice(idx, 1);
                         me.lastsent = moment().format('DD.MM.YYYY HH:mm');
                         Lockr.set('appg-lastsent', me.lastsent);
