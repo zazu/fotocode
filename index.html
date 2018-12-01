@@ -13,7 +13,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = false;
+            isAndroid = true;
             isIos = !isAndroid;
         }
         (function () {
@@ -174,7 +174,7 @@
 
 
           <!-- Index page -->
-          <div data-page="index" class="page page-index toolbar-fixed navbar-fixed">
+          <div data-page="index" class="page page-index xtoolbar-fixed navbar-fixed">
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner" v-cloak>
@@ -336,7 +336,7 @@
           </div>
 
             <!-- Dashboard page -->
-            <div data-page="dash" class="page page-dash toolbar-fixed navbar-fixed">
+            <div data-page="dash" class="page page-dash xtoolbar-fixed navbar-fixed">
                 <div class="navbar">
                     <div class="navbar-inner" v-cloak>
                         <div class="left" style="padding-left:16px;">appgeordnet</div>
