@@ -382,3 +382,10 @@ and (-webkit-min-device-pixel-ratio: 3) {
 
 }
 
+body.ios .dash-inner i.icon {
+  background-color: #ffffff;
+}
+
+.dash-inner .button i.icon:first-child {
+    margin-right: 0;
+}

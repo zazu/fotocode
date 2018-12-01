@@ -13,7 +13,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = true;
+            isAndroid = false;
             isIos = !isAndroid;
         }
         (function () {
@@ -172,15 +172,18 @@
         <!-- Pages -->
         <div class="pages ">
 
+
           <!-- Index page -->
           <div data-page="index" class="page page-index toolbar-fixed navbar-fixed">
-              
             <!-- Top Navbar-->
             <div class="navbar">
               <div class="navbar-inner" v-cloak>
-                <div class="left" style="padding-left:16px;">appgeordnet</div>
+                <div class="left" style="padding-left:16px;">
+                    <a @click="zeigeDashboard()" href="#" class="link icon-only"> <i class="icon icon-back"></i>
+                        <span></span>
+                    </a>
+                </div>
                 <div class="right">
-<!--                    <a href="#quickscan" class="link icon-only"><i class="icon icon-camera-light"></i></a> -->
                     <a v-if="isios" href="#" @click="neuerVorgangFoto()" class="link icon-only">
                         <i class="icon icon-camera"></i>
                     </a>
@@ -224,102 +227,102 @@
               </div>
             <!-- Scrollable page content-->
             <div class="page-content">
-            <div class="content-block-title infosection" v-cloak>
+                <div class="content-block-title infosection" v-cloak>
 
-                <div class="row">
-                    <div class="col-50">
-                        <div class="row" style="text-align: center;">
-                            <div class="col-50">
-                                <span class="numdate">{{lastsent}}</span>
+                    <div class="row">
+                        <div class="col-50">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-50">
+                                    <span class="numdate">{{lastsent}}</span>
+                                </div>
+                                <div class="col-50">
+                                    <span class="numnum">{{numsets}}</span>
+                                </div>
                             </div>
-                            <div class="col-50">
-                                <span class="numnum">{{numsets}}</span>
+                        </div>
+                        <div class="col-50">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-33">
+                                    <span class="numnum">{{numfotos}}/{{numfiles}} </span>
+                                </div>
+                                <div class="col-33">
+                                    <span class="numnum">{{numvideos}}</span>
+                                </div>
+                                <div class="col-33">
+                                    <span class="numnum">{{numaudios}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-50">
-                        <div class="row" style="text-align: center;">
-                            <div class="col-33">
-                                <span class="numnum">{{numfotos}}/{{numfiles}} </span>
+                    <div class="row">
+                        <div class="col-50">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-50">
+                                    <span class="numtext">letzter Versand</span>
+                                </div>
+                                <div class="col-50">
+                                    <span class="numtext">
+                                        <span v-if="numsets==1">Vorgang</span>
+                                        <span v-else>Vorgänge</span>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="col-33">
-                                <span class="numnum">{{numvideos}}</span>
-                            </div>
-                            <div class="col-33">
-                                <span class="numnum">{{numaudios}}</span>
+                        </div>
+                        <div class="col-50">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-33">
+                                    <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
+                                </div>
+                                <div class="col-33">
+                                    <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
+                                </div>
+                                <div class="col-33">
+                                    <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <div class="row">
-                    <div class="col-50">
-                        <div class="row" style="text-align: center;">
-                            <div class="col-50">
-                                <span class="numtext">letzter Versand</span>
+
+                <div class="list-block media-list">
+                  <ul>
+                      <li class="swipeout" v-for="ds in sets" track-by="$index">
+                        <div class="swipeout-content">
+                          <a @click.stop.prevent="openVorgang($index)" class="item-link item-content">
+                            <div class="item-media">
+                                <img v-if="ds.fotos.length" :src="ds.fotos[0].uri" width="80">
+                                <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].uri" width="80">
                             </div>
-                            <div class="col-50">
-                                <span class="numtext">
-                                    <span v-if="numsets==1">Vorgang</span>
-                                    <span v-else>Vorgänge</span>
-                                </span>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">{{ds.code | astext}}</div>
+                                <div class="item-after">
+                                    <span class="badge badge-media" :class="classbg">
+                                        {{ds.fotos.length+ds.files.length}} / {{ds.videos.length}} / {{ds.audios.length}}
+                                        <br>
+                                        {{ mediasize($index) |b2MB }} MB
+                                    </span>
+                                </div>
+                              </div>
+                              <div class="item-subtitle">{{ds.name}}</div>
                             </div>
+                          </a>
                         </div>
-                    </div>
-                    <div class="col-50">
-                        <div class="row" style="text-align: center;">
-                            <div class="col-33">
-                                <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
-                            </div>
-                            <div class="col-33">
-                                <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
-                            </div>
-                            <div class="col-33">
-                                <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="swipeout-actions-right">
+                            <a @click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
+                                <i class="icon icon-bin-white"></i>
+                             </a>
+                             <a @click.stop.prevent="showForm($index)" class="swipeout-close bg-lightblue" >
+                                 <i class="icon icon-file-text2-white"></i>
+                             </a>
+                             <a @click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
+                                 <i class="icon icon-price-tag-white"></i>
+                             </a>
+                       </div>
+                    </li>
+                  </ul>
                 </div>
-
-            </div>
-
-            <div class="list-block media-list">
-              <ul>
-                  <li class="swipeout" v-for="ds in sets" track-by="$index">
-                    <div class="swipeout-content">
-                      <a @click.stop.prevent="openVorgang($index)" class="item-link item-content">
-                        <div class="item-media">
-                            <img v-if="ds.fotos.length" :src="ds.fotos[0].uri" width="80">
-                            <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].uri" width="80">
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">{{ds.code | astext}}</div>
-                            <div class="item-after">
-                                <span class="badge badge-media" :class="classbg">
-                                    {{ds.fotos.length+ds.files.length}} / {{ds.videos.length}} / {{ds.audios.length}}
-                                    <br>
-                                    {{ mediasize($index) |b2MB }} MB
-                                </span>
-                            </div>
-                          </div>
-                          <div class="item-subtitle">{{ds.name}}</div>
-                        </div>
-                      </a>
-                    </div>
-                    <div class="swipeout-actions-right">
-                        <a @click.stop.prevent="removeset($index)" class="swipeout-close bg-red" >
-                            <i class="icon icon-bin-white"></i>
-                         </a>
-                         <a @click.stop.prevent="showForm($index)" class="swipeout-close bg-lightblue" >
-                             <i class="icon icon-file-text2-white"></i>
-                         </a>
-                         <a @click.prevent="setbarcode($index)" class="swipeout-close bg-lightgreen" >
-                             <i class="icon icon-price-tag-white"></i>
-                         </a>
-                   </div>
-                </li>
-              </ul>
-            </div>
             </div>
 
               <div class="toolbar toolbar-bottom ">
@@ -330,8 +333,134 @@
                       </a>
                   </div>
               </div>
-
           </div>
+
+            <!-- Dashboard page -->
+            <div data-page="dash" class="page page-dash toolbar-fixed navbar-fixed">
+                <div class="navbar">
+                    <div class="navbar-inner" v-cloak>
+                        <div class="left" style="padding-left:16px;">appgeordnet</div>
+                        <div class="right">
+                            <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="content-block-title infosection" v-cloak>
+
+                        <div class="row">
+                            <div class="col-50">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-50">
+                                        <span class="numdate">{{lastsent}}</span>
+                                    </div>
+                                    <div class="col-50">
+                                        <span class="numnum">{{numsets}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-50">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-33">
+                                        <span class="numnum">{{numfotos}}/{{numfiles}} </span>
+                                    </div>
+                                    <div class="col-33">
+                                        <span class="numnum">{{numvideos}}</span>
+                                    </div>
+                                    <div class="col-33">
+                                        <span class="numnum">{{numaudios}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-50">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-50">
+                                        <span class="numtext">letzter Versand</span>
+                                    </div>
+                                    <div class="col-50">
+                                    <span class="numtext">
+                                        <span v-if="numsets==1">Vorgang</span>
+                                        <span v-else>Vorgänge</span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-50">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-33">
+                                        <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
+                                    </div>
+                                    <div class="col-33">
+                                        <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
+                                    </div>
+                                    <div class="col-33">
+                                        <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="dash-wrapper">
+                        <div class="dash-inner">
+                            <div class="button button-fill">
+                                <a href="#" @click="neuerVorgangFoto()">
+                                    <div>
+                                    <i class="icon icon-cameraalt-light"></i>
+                                        <br>Foto
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="button button-fill">
+                                <a href="#" @click="neuerVorgangVideo()">
+                                    <i class="icon icon-videocam-light"></i>
+                                    <br>Video
+                                </a>
+                            </div>
+                            <div class="button button-fill">
+                                <a href="#" @click="neuerVorgangAudio()">
+                                    <i class="icon icon-mic-light"></i>
+                                    <br>Audio
+                                </a>
+                            </div>
+                            <div class="button button-fill">
+                                <a href="#" @click="neuerVorgangFile()">
+                                    <i class="icon icon-folder"></i>
+                                    <br>Datei
+                                </a>
+                            </div>
+
+                            <div class="button button-fill">
+                                <a href="#" @click="zeigeListe()">
+                                    <i class="icon icon-list2"></i>
+                                    <br>Liste
+                                </a>
+                            </div>
+
+                            <div class="button button-fill button-red">
+                                <a href="#" @click="senden()">
+                                    <i class="icon icon-cloud-upload-white"></i>
+                                    <br>Senden
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="toolbar toolbar-bottom ">
+                    <div class="toolbar-inner" v-cloak>
+                        <span>&nbsp;&nbsp;{{user.name}} ({{ mediasize(-1) |b2MB }} MB)</span>
+                        <a v-if="isios && loggedin" class="link" @click="logout">
+                            <i class="icon icon-cross"></i>&nbsp;Logout&nbsp;&nbsp;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
 
           <!-- Medien Liste -->
           <div id="page-medien" class="page cached navbar-fixed toolbar-fixed medien" data-page="medien" >

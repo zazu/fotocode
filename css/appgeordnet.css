@@ -86,3 +86,58 @@ svg {
     font-size:1.5em;
     line-height: 1em;
 }
+
+.mb-16 {
+ margin-bottom: 4em;
+}
+
+.mr-8 {
+  margin-right: 2em;
+}
+
+.ml-8 {
+    margin-left: 2em;
+}
+
+
+.dash-inner i.icon.icon-cameraalt-light,
+.dash-inner i.icon.icon-videocam-light,
+.dash-inner i.icon.icon-mic-light,
+.dash-inner i.icon.icon-folder,
+.dash-inner i.icon.icon-cloud-upload-white,
+.dash-inner i.icon.icon-list2{
+    width:48px;
+    height:48px;
+    color:white;
+}
+
+
+.dash-wrapper {
+}
+
+.dash-inner {
+    margin:0;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    width:90%;
+    margin:0 auto;
+}
+.dash-inner >div {
+    width:35%;
+    padding-bottom:35%;
+    margin:2%;
+    float:left;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 3px;
+    background-color: teal;
+}
+
+.dash-inner > div a {
+    position: absolute;
+    margin-top:50%;
+    color:white;
+}

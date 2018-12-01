@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.28',
+        version: '2.1.29',
         uritest: mobiledevice ? "https://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -1261,6 +1261,12 @@ function onDeviceReady() {
             neuerVorgangFile: function() {
                 this.nextmedia = 'file';
                 mainView.router.load({pageName: 'quickscan'});
+            },
+            zeigeListe: function() {
+                mainView.router.load({pageName: 'index'});
+            },
+            zeigeDashboard: function() {
+                mainView.router.load({pageName: 'dash'});
             }
         }
     });
