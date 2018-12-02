@@ -266,6 +266,14 @@ function onDeviceReady() {
                     'color-teal': this.colortheme == 'teal'
                 }
             },
+            bigbuttoncolor: function(){
+                return {
+                    'button': true,
+                    'button-fill': true,
+                    'color-gray': this.numsets==0,
+                    'color-orange':this.numsets>0
+                }
+            },
             colortheme: function() {
                 return this.useserver==='test'?"red": (this.isios?"blue":"teal");
             },
@@ -619,7 +627,7 @@ function onDeviceReady() {
                 }, function () {
                     success();
                 },
-                me.fotoconf,Camera.PictureSourceType.CAMERA);
+                me.fotoconf,navigator.camera?Camera.PictureSourceType.CAMERA:0);
             },
             takevideo: function (success) {
                 var me = this;

@@ -13,7 +13,7 @@
         var isAndroid = (Framework7.prototype.device.android === true);
         var isIos = (Framework7.prototype.device.ios === true);
         if (! isAndroid && ! isIos ) {
-            isAndroid = true;
+            isAndroid = false;
             isIos = !isAndroid;
         }
         (function () {
@@ -346,63 +346,43 @@
                     </div>
                 </div>
                 <div class="page-content">
+                    <!--
                     <div class="content-block-title infosection" v-cloak>
 
-                        <div class="row">
-                            <div class="col-50">
-                                <div class="row" style="text-align: center;">
-                                    <div class="col-50">
-                                        <span class="numdate">{{lastsent}}</span>
-                                    </div>
-                                    <div class="col-50">
-                                        <span class="numnum">{{numsets}}</span>
-                                    </div>
-                                </div>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-25">
+                                <span class="numnum">{{numsets}} </span>
                             </div>
-                            <div class="col-50">
-                                <div class="row" style="text-align: center;">
-                                    <div class="col-33">
-                                        <span class="numnum">{{numfotos}}/{{numfiles}} </span>
-                                    </div>
-                                    <div class="col-33">
-                                        <span class="numnum">{{numvideos}}</span>
-                                    </div>
-                                    <div class="col-33">
-                                        <span class="numnum">{{numaudios}}</span>
-                                    </div>
-                                </div>
+                            <div class="col-25">
+                                <span class="numnum">{{numfotos}}/{{numfiles}} </span>
+                            </div>
+                            <div class="col-25">
+                                <span class="numnum">{{numvideos}}</span>
+                            </div>
+                            <div class="col-25">
+                                <span class="numnum">{{numaudios}}</span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-50">
-                                <div class="row" style="text-align: center;">
-                                    <div class="col-50">
-                                        <span class="numtext">letzter Versand</span>
-                                    </div>
-                                    <div class="col-50">
-                                    <span class="numtext">
-                                        <span v-if="numsets==1">Vorgang</span>
-                                        <span v-else>Vorgänge</span>
-                                    </span>
-                                    </div>
-                                </div>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-25">
+                            <span class="numtext">
+                                <span v-if="numsets==1">Vorgang</span>
+                                <span v-else>Vorgänge</span>
+                            </span>
                             </div>
-                            <div class="col-50">
-                                <div class="row" style="text-align: center;">
-                                    <div class="col-33">
-                                        <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
-                                    </div>
-                                    <div class="col-33">
-                                        <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
-                                    </div>
-                                    <div class="col-33">
-                                        <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                            <div class="col-25">
+                                <span class="numtext">Foto<span v-show="(numfotos+numfiles)!=1">s</span></span>
+                            </div>
+                            <div class="col-25">
+                                <span class="numtext">Video<span v-show="numvideos!=1">s</span></span>
+                            </div>
+                            <div class="col-25">
+                                <span class="numtext">Sound<span v-show="numaudios!=1">s</span></span>
+                            </div>
+                        </div>
                     </div>
+                    -->
                     <div class="dash-wrapper">
                         <div class="dash-inner">
                             <div class="button button-fill">
@@ -433,14 +413,14 @@
                                 </a>
                             </div>
 
-                            <div class="button button-fill">
+                            <div :class="bigbuttoncolor">
                                 <a href="#" @click="zeigeListe()">
                                     <i class="icon icon-list2"></i>
                                     <br>Liste
                                 </a>
                             </div>
 
-                            <div class="button button-fill button-red">
+                            <div :class="bigbuttoncolor">
                                 <a href="#" @click="senden()">
                                     <i class="icon icon-cloud-upload-white"></i>
                                     <br>Senden
