@@ -128,6 +128,7 @@ svg {
     width:100%;
     height: 100%;
     margin:0 auto;
+    max-width: 50vh;
 }
 .dash-inner >div {
     width:40%;

@@ -390,7 +390,7 @@ function onDeviceReady() {
             me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
             me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
             me.lastsent = Lockr.get('appg-lastsent', '-');
-            me.fotoconf = Lockr.get('appg-fotoconf', { qual:100, jpgsiz:10 });
+            me.fotoconf = Lockr.get('appg-fotoconf', { qual:100, jpgsiz:10, vqual:0, dpi:96 });
             me.syncUserInfo();
             me.checkVersion();
         },
@@ -636,7 +636,8 @@ function onDeviceReady() {
                     success();
                 }, function () {
                     success();
-                });
+                },
+                me.fotoconf);
             },
             takefile: function(success) {
                 var me = this;

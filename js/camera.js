@@ -172,7 +172,7 @@ fc.camera =  {
         });
     },
 
-    captureVideo: function(success, fail ) {
+    captureVideo: function(success, fail, options ) {
         var me=this;
         if (navigator.camera) {
             navigator.device.capture.captureVideo(
@@ -197,7 +197,7 @@ fc.camera =  {
                 },
                 {
                     limit: 1,
-                    quality: 0
+                    quality: _.isUndefined(options.vqual)?0:options.vqual
                 });
         }
         else {
