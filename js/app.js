@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.29',
+        version: '2.1.32',
         uritest: mobiledevice ? "https://test.app-geordnet.de/":
                                 'http://localhost:8080/app-geordnet/',
         uriproduction: mobiledevice ?
@@ -166,7 +166,7 @@ function onDeviceReady() {
     $$(document).on('pageReinit', function (e) {
         var page = e.detail.page;
         if (page.name === 'quickscan') {
-            if (page.fromPage.name === 'index') {
+            if (page.fromPage.name === 'index' || page.fromPage.name === 'dash') {
                 vm.cleanset();
                 vm.updateQuickscanCodeformat();
                 myApp.params.swipePanel = false;
