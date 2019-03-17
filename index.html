@@ -525,13 +525,13 @@
                                 </li>
                                 <li v-for="ds in set.files">
                                     <div class="item-content">
-                                        <div class="item-media">
+                                        <div class="item-media" v-if="ds.uri.match(/\.(JPEG|JPG|jpeg|jpg|gif|png)$/) != null">
                                             <a @click.stop.prevent="openFotos($index)" class="item-link">
                                                 <img  :src="ds.uri" width="80">
                                             </a>
                                         </div>
                                         <div class="item-inner">
-                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
+                                            <a @click.stop.prevent="if(ds.uri.match(/\.(JPEG|JPG|jpeg|jpg|gif|png)$/) != null)openFotos($index)" class="item-link">
                                                 <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
                                             </a>
                                             <a @click.stop.prevent="removeMedia('file',$index)" class="" >
