@@ -651,17 +651,17 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else {
-                    fileChooser.open(function (uri) {
+                    //fileChooser.open(function (uri) {
                     //window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG','.mp4'], function (uri) {
-                    //window.plugins.mfilechooser.open([], function (uri) {
+                    window.plugins.mfilechooser.open([], function (uri) {
                         FileIO.fileSize(uri, function (file) {
                             var result = {
                                 uri: uri,
                                 title: uri.substr(uri.lastIndexOf('/') + 1),
                                 size: file.size
                             };
-                            alert(uri);
-                            alert(JSON.stringify(file));
+alert(uri);
+alert(JSON.stringify(file));
                             me.set.files.push(result);
                             success();
                         });
