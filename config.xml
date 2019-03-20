@@ -94,6 +94,7 @@
             <allow-intent href="geo:*" />
         -->
         <uses-permission name="android.permission.CAMERA" />
+        <uses-permission name="android.permission.READ_EXTERNAL_STORAGE"/>
         <uses-feature name="android.hardware.camera" />
     </platform>
 
