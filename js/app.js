@@ -660,6 +660,7 @@ function onDeviceReady() {
                                 title: uri.substr(uri.lastIndexOf('/') + 1),
                                 size: file.size
                             };
+                            alert(uri);
                             me.set.files.push(result);
                             success();
                         });
