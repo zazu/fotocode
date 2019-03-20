@@ -661,6 +661,7 @@ function onDeviceReady() {
                                 size: file.size
                             };
                             alert(uri);
+                            alert(JSON.stringify(file));
                             me.set.files.push(result);
                             success();
                         });
