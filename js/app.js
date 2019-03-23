@@ -687,15 +687,19 @@ function onDeviceReady() {
                         'maxSelectCount': 1 //default 40 (Optional)
                     };
 
-                    MediaPicker.getMedias(args, function(medias) {
+                    MediaPicker.getMedias(args,
+                      function(medias) {
                         //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg', uri:"android retrun uri,ios retrun URL" size: 21993}]
+
+                        alert(JSON.stringify(medias));
+
                         var result = {
                             uri: medias[0].uri,
-                            title: medias[0].path.substr(uri.lastIndexOf('/') + 1),
+                            title: medias[0].path.substr(medias[0].path.lastIndexOf('/') + 1),
                             size: medias[0].size
                         };
                         alert(result.uri);
-                        alert(JSON.stringify(medias));
+
                         me.set.files.push(result);
                         success();
                     }, function(e) {
