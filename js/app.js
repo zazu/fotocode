@@ -85,7 +85,7 @@ function onDeviceReady() {
             var permissions = cordova.plugins.permissions;
 
             var list = [
-                permissions.CAMERA,
+//                permissions.CAMERA,
                 permissions.READ_EXTERNAL_STORAGE,
                 permissions.READ_MEDIA_AUDIO,
                 permissions.READ_MEDIA_IMAGES,
