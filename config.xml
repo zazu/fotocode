@@ -74,9 +74,6 @@
 <!--        <plugin name="cordova-plugin-filechooser" source="npm" version="1.2.0" /> -->
        <plugin name="cordova-plugin-file-chooser" source="npm" version="1.0.1" />
 
-        <plugin name="cordova-plugin-permission" source="npm" version="0.1.0" />
-
-
         <plugin spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />
 
         <allow-intent href="http://*/*" />
@@ -95,6 +92,12 @@
         <uses-permission name="android.permission.CAMERA" />
         <uses-permission name="android.permission.READ_EXTERNAL_STORAGE"/>
         <uses-feature name="android.hardware.camera" />
+
+        <preference name="permissions" value="none"/>
+
+        <feature name="http://api.phonegap.com/1.0/camera"/>
+        <feature name="http://api.phonegap.com/1.0/file"/>
+
     </platform>
 
     <platform name="ios" >

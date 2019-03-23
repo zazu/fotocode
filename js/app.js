@@ -82,17 +82,6 @@ function onDeviceReady() {
                 */
             });
 
-            var Permission = window.plugins.Permission
-            var permission = 'android.permission.READ_EXTERNAL_STORAGE'
-            Permission.has(permission, function(results) {
-                if (!results[permission]) {
-                    Permission.request(permission, function(results) {
-                        if (result[permission]) {
-                            // permission is granted
-                        }
-                    }, alert)
-                }
-            }, alert)
         }
         // android update bleibt hängen
         //if ( cordova.InAppBrowser )window.open = cordova.InAppBrowser.open;
