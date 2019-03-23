@@ -671,7 +671,7 @@ function onDeviceReady() {
             },
             takefile: function(success) {
                 var me = this;
-                if (this.isios) {
+                if (false && this.isios) {
                     fc.camera.getPicture(function (result) {
                           me.set.files.push(result);
                           success();
