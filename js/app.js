@@ -681,10 +681,10 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else {
-                    filechooser.open({},function (uri) {
+                    //filechooser.open({},function (uri) {
                     //fileChooser.open(function (uri) {
                     //window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG','.mp4'], function (uri) {
-                    //window.plugins.mfilechooser.open([], function (uri) {
+                    window.plugins.mfilechooser.open([], function (uri) {
                         FileIO.fileSize(uri, function (file) {
                             var result = {
                                 uri: uri,
