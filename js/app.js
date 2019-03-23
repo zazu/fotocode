@@ -81,6 +81,18 @@ function onDeviceReady() {
                 $$('.kbscrollhlp').remove();
                 */
             });
+
+            var Permission = window.plugins.Permission
+            var permission = 'android.permission.READ_EXTERNAL_STORAGE'
+            Permission.has(permission, function(results) {
+                if (!results[permission]) {
+                    Permission.request(permission, function(results) {
+                        if (result[permission]) {
+                            // permission is granted
+                        }
+                    }, alert)
+                }
+            }, alert)
         }
         // android update bleibt hängen
         //if ( cordova.InAppBrowser )window.open = cordova.InAppBrowser.open;
@@ -651,18 +663,18 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else {
-                    //filechooser.open({},function (uri) {
+                    filechooser.open({},function (uri) {
                     //fileChooser.open(function (uri) {
                     //window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG','.mp4'], function (uri) {
-                    window.plugins.mfilechooser.open([], function (uri) {
+                    //window.plugins.mfilechooser.open([], function (uri) {
                         FileIO.fileSize(uri, function (file) {
                             var result = {
                                 uri: uri,
                                 title: uri.substr(uri.lastIndexOf('/') + 1),
                                 size: file.size
                             };
-//alert(uri);
-//alert(JSON.stringify(file));
+alert(uri);
+alert(JSON.stringify(file));
                             me.set.files.push(result);
                             success();
                         });

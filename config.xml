@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.37"
-        android-versionCode="2.1.37"
-        ios-CFBundleVersion="2.1.37" >
+        version="2.1.38"
+        android-versionCode="2.1.38"
+        ios-CFBundleVersion="2.1.38" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden
@@ -70,12 +70,11 @@
 <!--        <plugin name="cordova-plugin-webintent2" source="npm" version="1.0.4" value="com.borismus.webintent.WebIntent" /> -->
         <plugin name="cordova-plugin-webintent2" spec="1.0.4" />
 
-        <plugin name="cordova-plugin-dotneet-mfilechooser" source="npm" version="1.0.7" />
+<!--        <plugin name="cordova-plugin-dotneet-mfilechooser" source="npm" version="1.0.7" /> -->
 <!--        <plugin name="cordova-plugin-filechooser" source="npm" version="1.2.0" /> -->
-<!--        <plugin name="cordova-plugin-file-chooser" source="npm" version="1.0.1" /> -->
+       <plugin name="cordova-plugin-file-chooser" source="npm" version="1.0.1" />
 
-
-
+        <plugin name="cordova-plugin-permission" source="npm" version="0.1.0" />
 
 
         <plugin spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />
