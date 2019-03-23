@@ -86,7 +86,7 @@ function onDeviceReady() {
 
             var list = [
 //                permissions.CAMERA,
-                permissions.READ_EXTERNAL_STORAGE,
+//                permissions.READ_EXTERNAL_STORAGE,
                 permissions.READ_MEDIA_AUDIO,
                 permissions.READ_MEDIA_IMAGES,
                 permissions.READ_MEDIA_VIDEO
