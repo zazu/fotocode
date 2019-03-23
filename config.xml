@@ -74,9 +74,12 @@
 <!--        <plugin name="cordova-plugin-filechooser" source="npm" version="1.2.0" /> -->
 <!--        <plugin name="cordova-plugin-file-chooser" source="npm" version="1.0.1" /> -->
 
-        <plugin name="cordova-filechooser" source="npm" version="1.0.3" />
+<!--        <plugin name="cordova-filechooser" source="npm" version="1.0.3" /> -->
 
-        <plugin name="cordova-plugin-android-permissions" source="npm" version="1.0.0" />
+        <plugin name="cordova-plugin-mediapicker-dmcsdk" source="npm" version="2.4.4" />
+
+
+<!--        <plugin name="cordova-plugin-android-permissions" source="npm" version="1.0.0" /> -->
 
 
 

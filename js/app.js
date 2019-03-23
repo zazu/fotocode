@@ -81,9 +81,8 @@ function onDeviceReady() {
                 $$('.kbscrollhlp').remove();
                 */
             });
-
+/*
             var permissions = cordova.plugins.permissions;
-
             var list = [
 //                permissions.CAMERA,
                 permissions.READ_EXTERNAL_STORAGE,
@@ -111,6 +110,7 @@ function onDeviceReady() {
 
               }
             );
+*/
         }
         // android update bleibt hängen
         //if ( cordova.InAppBrowser )window.open = cordova.InAppBrowser.open;
@@ -681,6 +681,31 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else {
+
+                    var args = {
+                        'selectMode': 101, //101=picker image and video , 100=image , 102=video
+                        'maxSelectCount': 1 //default 40 (Optional)
+                    };
+
+                    MediaPicker.getMedias(args, function(medias) {
+                        //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg', uri:"android retrun uri,ios retrun URL" size: 21993}]
+                        var result = {
+                            uri: medias[0].uri,
+                            title: medias[0].path.substr(uri.lastIndexOf('/') + 1),
+                            size: medias[0].size
+                        };
+                        alert(result.uri);
+                        alert(JSON.stringify(medias));
+                        me.set.files.push(result);
+                        success();
+                    }, function(e) {
+                        alert(JSON.stringify(e));
+                        success();
+                    });
+
+
+/*
+
                     //filechooser.open({},function (uri) {
                     fileChooser.open(function (uri) {
                     //window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG','.mp4'], function (uri) {
@@ -700,6 +725,7 @@ alert(JSON.stringify(file));
                         alert(msg);
                         success();
                     });
+*/
 
                 }
             },
