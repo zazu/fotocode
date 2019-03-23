@@ -82,6 +82,35 @@ function onDeviceReady() {
                 */
             });
 
+            var permissions = cordova.plugins.permissions;
+
+            var list = [
+                permissions.CAMERA,
+                permissions.READ_EXTERNAL_STORAGE,
+                permissions.READ_MEDIA_AUDIO,
+                permissions.READ_MEDIA_IMAGES,
+                permissions.READ_MEDIA_VIDEO
+            ];
+
+            function error() {
+                alert('Berechtigung nicht gesetzt');
+            }
+            permissions.hasPermission(list,
+              function( status ) {
+                  if( !status.hasPermission ) {
+                      permissions.requestPermissions(
+                        list,
+                        function(status) {
+                            if( !status.hasPermission )
+                                error();
+                        },
+                        error);
+                  }
+              },
+              function() {
+
+              }
+            );
         }
         // android update bleibt hängen
         //if ( cordova.InAppBrowser )window.open = cordova.InAppBrowser.open;
