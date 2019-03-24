@@ -2,9 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:gap="http://phonegap.com/ns/1.0"
         id="de.cesart.appgeordnet"
-        version="2.1.40"
-        android-versionCode="2.1.40"
-        ios-CFBundleVersion="2.1.40" >
+        version="2.1.41"
+        android-versionCode="2.1.41"
+        ios-CFBundleVersion="2.1.41" >
     <name>appgeordnet</name>
     <description>
         Barcode lesen, Fotos zuordnen und an appgeordnet.de zur weiteren Verarbeitung senden

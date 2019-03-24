@@ -689,10 +689,11 @@ function onDeviceReady() {
 
                     MediaPicker.getMedias(args,
                       function(medias) {
-                        //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg', uri:"android retrun uri,ios retrun URL" size: 21993}]
+                        //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg',
+                          // uri:"android return uri,ios return URL" size: 21993}]
                         _.forEach(medias, function(media){
                             var result = {
-                                uri: media.uri,
+                                uri: this.isios?media.URL:media.uri,
                                 title: media.path.substr(media.path.lastIndexOf('/') + 1),
                                 size: media.size
                             };
@@ -704,7 +705,6 @@ function onDeviceReady() {
                         success();
                     });
 /*
-
                     //filechooser.open({},function (uri) {
                     fileChooser.open(function (uri) {
                     //window.plugins.mfilechooser.open(['.jpg', '.JPG', '.jpeg', '.JPEG','.mp4'], function (uri) {
