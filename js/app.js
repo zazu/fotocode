@@ -671,7 +671,7 @@ function onDeviceReady() {
             },
             takefile: function(success) {
                 var me = this;
-                if (false && this.isios) {
+                if (this.isios) {
                     fc.camera.getPicture(function (result) {
                           me.set.files.push(result);
                           success();
@@ -691,7 +691,7 @@ function onDeviceReady() {
                       function(medias) {
                         //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg',
                           // uri:"android return uri,ios return URL" size: 21993}]
-                       alert(JSON.stringify(medias));
+                       //alert(JSON.stringify(medias));
                         _.forEach(medias, function(media){
                             var result = {
                                 uri: this.isios?media.URL:media.uri,
