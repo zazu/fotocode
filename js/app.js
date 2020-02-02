@@ -7,12 +7,12 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.33',
-        uritest: mobiledevice ? "https://test.app-geordnet.de/":
-                                'http://localhost:8080/app-geordnet/',
+        version: '2.1.44',
+        uritest: mobiledevice ? "http://www.app-warten.de/":
+                                'http://www.app-warten.de/',
         uriproduction: mobiledevice ?
             "https://2018.app-geordnet.de/":
-            'http://localhost:8080/app-geordnet/',
+            'http://www.app-warten.de/',
         device: {
             model: '',
             platform: '',
