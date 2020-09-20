@@ -1,6 +1,6 @@
 {
   "name": "fotocode",
-  "version": "2.1.45",
+  "version": "2.2.0",
   "description": "app-geordnet foro app",
   "main": "index.js",
   "scripts": {
