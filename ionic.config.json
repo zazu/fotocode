@@ -1,0 +1,7 @@
+{
+    "name": "fotocode",
+    "type": "custom",
+    "integrations": {
+      "cordova": {}
+    }
+  }

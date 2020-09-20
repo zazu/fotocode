@@ -1,0 +1,19 @@
+{
+  "name": "fotocode",
+  "version": "2.1.45",
+  "description": "app-geordnet foro app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zazu/fotocode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zazu/fotocode/issues"
+  },
+  "homepage": "https://github.com/zazu/fotocode#readme"
+}
