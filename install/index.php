@@ -26,7 +26,7 @@
 				
 			<div class="w-1/2 pl-2 md:pl-0">
 				<a class="text-gray-900 text-base xl:text-xl no-underline hover:no-underline font-bold"  href="#"> 
-					<i class="fas fa-sun text-orange-600 pr-3"></i>app-geordnet App Installation
+					app-geordnet App Installation
 				</a>
             </div>
 			<div class="w-1/2 pr-0">
@@ -66,11 +66,11 @@
                     <div class="bg-white border rounded shadow p-2 cursor-pointer">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-green-600"><i class="fa fa-wallet fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-green-600"><i class="fab fa-apple fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">iOS (PhoneGap)</h5>
-                                <h3 class="font-bold text-3xl">Developer 2 <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                <h5 class="font-bold text-gray-500">iOS</h5>
+                                <h3 class="font-bold text-3xl">2.2.0 (I) <span class="text-green-500"><i class="fas fa-cloud-download-alt"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -83,11 +83,11 @@
                     <div class="bg-white border rounded shadow p-2 cursor-pointer">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-orange-600"><i class="fas fa-users fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-orange-600"><i class="fab fa-apple fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">iOS (Monaca)</h5>
-                                <h3 class="font-bold text-3xl">Developer 2 <span class="text-orange-500"><i class="fas fa-exchange-alt"></i></span></h3>
+                                <h5 class="font-bold text-gray-500">iOS</h5>
+                                <h3 class="font-bold text-3xl">2.2.0 (II) <span class="text-orange-500"><i class="fas fa-cloud-download-alt"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -100,11 +100,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-yellow-600"><i class="fas fa-user-plus fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-yellow-600"><i class="fab fa-android fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
                                 <h5 class="font-bold uppercase text-gray-500">Android</h5>
-                                <h3 class="font-bold text-3xl">2.2.0<span class="text-yellow-600"><i class="fas fa-caret-up"></i></span></h3>
+                                <h3 class="font-bold text-3xl">2.2.0 <span class="text-yellow-600"><i class="fas fa-cloud-download-alt"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
 
 	</div> 
 	<!--/container-->
-	
+<!--	
 	<footer class="bg-white border-t border-gray-400 shadow">	
 		<div class="container max-w-md mx-auto flex py-8">
 
@@ -148,7 +148,7 @@
 		
 		</div>
 	</footer>
-
+-->
 
 </body>
 </html>
