@@ -13,14 +13,16 @@ On iOS, this directory is not synced with iCloud (use .syncedDataDirectory).
 if (!HTMLCanvasElement.prototype.toBlob) {
     Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
         value: function (callback, type, quality) {
-            var binStr = atob( this.toDataURL(type, quality).split(',')[1] ),
+            var binStr = atob(this.toDataURL(type, quality).split(',')[1]),
                 len = binStr.length,
                 arr = new Uint8Array(len);
 
-            for (var i = 0; i < len; i++ ) {
+            for (var i = 0; i < len; i++) {
                 arr[i] = binStr.charCodeAt(i);
             }
-            callback( new Blob( [arr], {type: type || 'image/jpeg'} ) );
+            callback(new Blob([arr], {
+                type: type || 'image/jpeg'
+            }));
         }
     });
 }
@@ -33,52 +35,51 @@ var fc = fc || {};
 var FileIO = {
 
     // Medium in das app-data-Verzeichnis verschieben
-    moveMediaFile: function(imageURI, success) {
-        var extension = imageURI.substr(imageURI.lastIndexOf('.')+1);
+    moveMediaFile: function (imageURI, success) {
+        var extension = imageURI.substr(imageURI.lastIndexOf('.') + 1);
         window.resolveLocalFileSystemURL(imageURI,
-                function(fileEntryFrom) {
-                    var directory = (device.platform === "Android")
-                        ? cordova.file.externalDataDirectory :
-                        cordova.file.dataDirectory
-                        //cordova.file.documentsDirectory
-                        ;
-                    window.resolveLocalFileSystemURL( directory, function(dirEntry){
-                        var now = new Date();
-                        var newName = "appg_" + (now.getTime()).toString() + "." + extension;
-                        fileEntryFrom.moveTo(dirEntry, newName,
-                            function(fileEntryTo) {
-                                success(fileEntryTo);
-                            },
-                            FileIO.errorHandler);
-                    }, FileIO.errorHandler )
-                },
-                FileIO.errorHandler);
-        },
+            function (fileEntryFrom) {
+                var directory = (device.platform === "Android") ?
+                    cordova.file.externalDataDirectory :
+                    cordova.file.dataDirectory
+                //cordova.file.documentsDirectory
+                ;
+                window.resolveLocalFileSystemURL(directory, function (dirEntry) {
+                    var now = new Date();
+                    var newName = "appg_" + (now.getTime()).toString() + "." + extension;
+                    fileEntryFrom.moveTo(dirEntry, newName,
+                        function (fileEntryTo) {
+                            success(fileEntryTo);
+                        },
+                        FileIO.errorHandler);
+                }, FileIO.errorHandler)
+            },
+            FileIO.errorHandler);
+    },
 
-    fileSize: function(imageURI, success) {
+    fileSize: function (imageURI, success) {
         window.resolveLocalFileSystemURL(imageURI,
-          function(fileEntry) {
-            fileEntry.file(function (file) {
-              success(file);
-            });
-          },
-          FileIO.errorHandler
+            function (fileEntry) {
+                fileEntry.file(function (file) {
+                    success(file);
+                });
+            },
+            FileIO.errorHandler
         );
     },
 
     // get a new file entry for the moved image when the user hits the delete button
     // pass the file entry to removeFile()
-     removeDeletedImage : function(imageURI){
-         if ( navigator.camera ) {
+    removeDeletedImage: function (imageURI) {
+        if (navigator.camera) {
             window.resolveLocalFileSystemURL(imageURI, FileIO.removeFile, FileIO.errorHandler);
-         }
-     },
+        }
+    },
 
     // delete the file
-     removeFile : function(fileEntry){
-         fileEntry.remove(function(){
-         }, FileIO.errorHandler);
-     },
+    removeFile: function (fileEntry) {
+        fileEntry.remove(function () {}, FileIO.errorHandler);
+    },
 
     // simple error handler
     /**
@@ -95,74 +96,103 @@ var FileIO = {
      11	TYPE_MISMATCH_ERR
      12	PATH_EXISTS_ERR
      */
-     errorHandler : function(e) {
-           var msg = '';
-          switch (e.code) {
-            case 1: msg = "Datei nicht gefunden!"; break;
-            case 2: msg = "Security!"; break;
-            case 3: msg = "Aborted!"; break;
-            case 4: msg = "Datei nicht lesbar!"; break;
-            case 5: msg = "Ungültiges Encoding!"; break;
-            case 6: msg = "Datei darf nicht verändert werden!"; break;
-            case 7: msg = "Ungültiger Status!"; break;
-            case 8: msg = "Syntax Fehler!"; break;
-            case 9: msg = "Ungültige Veränderung!"; break;
-            case 10: msg = "Quota überschritten!"; break;
-            case 11: msg = "Type mismatch!"; break;
-            case 12: msg = "Der Pfad existiert bereits!"; break;
-            default: msg = e.code;
-          }
-          myApp.alert('FileIO-Fehler: ' + msg);
-     }
+    errorHandler: function (e) {
+        var msg = '';
+        switch (e.code) {
+            case 1:
+                msg = "Datei nicht gefunden!";
+                break;
+            case 2:
+                msg = "Security!";
+                break;
+            case 3:
+                msg = "Aborted!";
+                break;
+            case 4:
+                msg = "Datei nicht lesbar!";
+                break;
+            case 5:
+                msg = "Ungültiges Encoding!";
+                break;
+            case 6:
+                msg = "Datei darf nicht verändert werden!";
+                break;
+            case 7:
+                msg = "Ungültiger Status!";
+                break;
+            case 8:
+                msg = "Syntax Fehler!";
+                break;
+            case 9:
+                msg = "Ungültige Veränderung!";
+                break;
+            case 10:
+                msg = "Quota überschritten!";
+                break;
+            case 11:
+                msg = "Type mismatch!";
+                break;
+            case 12:
+                msg = "Der Pfad existiert bereits!";
+                break;
+            default:
+                msg = e.code;
+        }
+        myApp.alert('FileIO-Fehler: ' + msg);
+    }
 };
 
-fc.file =  {
-   options:{},
+fc.file = {
+    options: {},
     fotocount: 0,
     fotototal: 0,
-    group:null,
+    group: null,
 
-    init: function() {
+    init: function () {
         this.options = {};
-        this.fotocount= 0;
+        this.fotocount = 0;
         this.fotototal = 0;
-        this.group=null;
+        this.group = null;
     },
 
-    setOptions: function( options  ){
+    setOptions: function (options) {
         this.options = options;
         this.fotototal = 0;
     },
 
-    getguid: function() {
-    	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    	    return v.toString(16);
-    	});
+    getguid: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     },
 
-    uploadGroup: function( group, success, fail ) {
+    uploadGroup: function (group, success, fail) {
         var me = this;
         var options = me.options;
-		var groups = [];
-		var barcodes = [];
+        var groups = [];
+        var barcodes = [];
 
         var d = new Date();
 
         var grp = {
-            idx:group.idx,
+            idx: group.idx,
             gid: this.getguid(),
             dateCreated: group.dateCreated,
             title: group.name,
             prefix: group.bereich,
             formdata: JSON.stringify(group.formdata),
             code: group.code,
-            format:group.format,
-            numf:group.fotos.length
+            format: group.format,
+            numf: group.fotos.length
         }
         me.group = grp;
-        groups.push( grp );
-        barcodes.push( { code: group.code, format: group.format } );
+        groups.push(grp);
+        barcodes.push({
+            code: group.code,
+            format: group.format
+        });
 
         var params = {
             authautologin: vm.user.token,
@@ -170,123 +200,151 @@ fc.file =  {
             barcodes: JSON.stringify(barcodes)
         };
 
-        $$.post(vm.baseuri +'app/uploaddata', params, function (data) {
+        $$.post(vm.baseuri + 'app/uploaddata', params, function (data) {
             var result = JSON.parse(data);
-		    if ( result.message.length ) {
-                myApp.alert('', result.message );
-		    }
-		    if ( result.success ) {
-                me.uploadMedia( group, success, fail );
-		    }
-            else {
+            if (result.message.length) {
+                myApp.alert('', result.message);
+            }
+            if (result.success) {
+                me.uploadMedia(group, success, fail);
+            } else {
                 fail('Die Daten konnten nicht gesendet werden.');
             }
         });
     },
 
     // bilder inkl. name und kommentar hochladen
-    uploadMedia: function( group, success, fail ) {
-    	var me = this;
+    uploadMedia: function (group, success, fail) {
+        var me = this;
         me.fotocount = 0;
-        me.uploadFoto( group.fotos, 0, function(){
+        me.uploadFoto(group.fotos, 0, function () {
             me.fotocount = 0;
-            me.uploadFoto( group.videos, 0, function(){
+            me.uploadFoto(group.videos, 0, function () {
                 me.fotocount = 0;
-                me.uploadFoto( group.audios, 0, function(){
-                  me.fotocount = 0;
-                  me.uploadFoto( group.files, 0, function(){
-                    me.sendUploadDone(success);
-                  }, fail, "Sende Datei ..." );
-                }, fail, "Sende Audio ..." );
-            }, fail, "Sende Video ..." );
-        }, fail, "Sende Foto ..." );
+                me.uploadFoto(group.audios, 0, function () {
+                    me.fotocount = 0;
+                    me.uploadFoto(group.files, 0, function () {
+                        me.sendUploadDone(success);
+                    }, fail, "Sende Datei ...");
+                }, fail, "Sende Audio ...");
+            }, fail, "Sende Video ...");
+        }, fail, "Sende Foto ...");
     },
 
     // bilder inkl. name und kommentar hochladen
-    uploadFoto: function( fotos, idx, success, fail, msg ) {
-    	var me = this;
-    	var fotostore = fotos;
-    	if ( idx < fotostore.length ) {
-	    	var foto = fotostore[idx];
-	    	me.fotocount++;
+    uploadFoto: function (fotos, idx, success, fail, msg) {
+        var me = this;
+        var fotostore = fotos;
+        if (idx < fotostore.length) {
+            var foto = fotostore[idx];
+            me.fotocount++;
             me.fotototal++;
-            myApp.showPreloader(msg + "<br>Gesendete Medien:" +  me.fotototal);
-		    var fileURI = foto.uri;
-		    var serverURI = vm.baseuri + 'app/upload' ;
-            if ( navigator.camera ) {
+            myApp.showPreloader(msg + "<br>Gesendete Medien:" + me.fotototal);
+            var fileURI = foto.uri;
+            var serverURI = vm.baseuri + 'app/upload';
+            if (navigator.camera) {
                 try {
                     var options = new FileUploadOptions();
-                    options.fileKey="file";
-                    options.fileName=fileURI.substr(fileURI.lastIndexOf('/')+1);
-                    options.mimeType="text/plain";
+                    options.fileKey = "file";
+                    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+                    options.mimeType = "text/plain";
                     options.chunkedMode = false;
                     options.params = {
                         guid: me.group.gid,
                         index: idx,
                         title: foto.title,
-                        bemerkung: _.isUndefined(foto.bemerkung)?"":foto.bemerkung,
+                        bemerkung: _.isUndefined(foto.bemerkung) ? "" : foto.bemerkung,
                         authautologin: vm.user.token
                     };
                     var ft = new FileTransfer();
                     ft.upload(fileURI, encodeURI(serverURI),
-                        function(r) {
+                        function (r) {
                             myApp.hidePreloader();
                             //alert("Code = " + r.responseCode);
                             //alert("Response = " + r.response);
                             //alert("Sent = " + r.bytesSent);
-                            var res = JSON.parse( r.response );
+                            var res = JSON.parse(r.response);
                             try {
-                                if ( res.success ) {
-                                    vm.sets[ me.group.idx ].sended = true;
-                                    me.uploadFoto( fotos, idx + 1, success, fail, msg );
-                                }
-                                else {
-                                    if ( res.message && res.message.length )
-                                        fail( res.message );
+                                if (res.success) {
+                                    vm.sets[me.group.idx].sended = true;
+                                    me.uploadFoto(fotos, idx + 1, success, fail, msg);
+                                } else {
+                                    if (res.message && res.message.length)
+                                        fail(res.message);
                                     else
                                         fail('Upload failed');
                                 }
-                            }
-                            catch(e) {
+                            } catch (e) {
                                 //appgeordnet.app.log( "Upload: " + e.message );
-                                fail( "Upload: " + e.message );
+                                fail("Upload: " + e.message);
                             }
                         },
-                        function(error) {
+                        function (error) {
                             myApp.hidePreloader();
-                            var msg= "Code = " + error.code ;
-                            if ( error.code == FileTransferError.FILE_NOT_FOUND_ERR)
-                                msg='Die Datei wurde nicht gefunden! - ' + options.fileName;
-                            else if ( error.code == FileTransferError.INVALID_URL_ERR)
-                                msg='Ungültige URL!';
-                            else if ( error.code == FileTransferError.CONNECTION_ERR)
-                                msg='Verbindungsfehler!';
-                            else if ( error.code == FileTransferError.ABORT_ERR)
-                                msg='Der Transfer wurde abgebrochen!';
+                            var msg = "Code = " + error.code;
+                            if (error.code == FileTransferError.FILE_NOT_FOUND_ERR)
+                                msg = 'Die Datei wurde nicht gefunden! - ' + options.fileName;
+                            else if (error.code == FileTransferError.INVALID_URL_ERR)
+                                msg = 'Ungültige URL!';
+                            else if (error.code == FileTransferError.CONNECTION_ERR)
+                                msg = 'Verbindungsfehler!';
+                            else if (error.code == FileTransferError.ABORT_ERR)
+                                msg = 'Der Transfer wurde abgebrochen!';
                             //alert("upload error source " + error.source);
                             //alert("upload error target " + error.target);
                             //appgeordnet.app.log( "Upload Failed: " + msg );
-                            fail( "Fehler beim Upload: " + msg );
+                            fail("Fehler beim Upload: " + msg);
                         },
                         options);
-                }
-                catch(e) {
+                } catch (e) {
                     myApp.hidePreloader();
                     //appgeordnet.app.log( "Upload Fehler: " + e.message );
-                    fail( e.message );
+                    fail(e.message);
                 }
-            }
-            else {
+            } else {
                 myApp.hidePreloader();
-                me.uploadFoto( fotos, idx + 1, success, fail, msg );
+                me.uploadFoto(fotos, idx + 1, success, fail, msg);
             }
-	    }
-		else {
+        } else {
             success();
-		}
+        }
     },
 
-    sendUploadDone: function(success) {
+    uploadFileToServer: function (localFilePath, url, doneCallback, options) {
+        console.log("uploadFileToServer: locating file Uri " + localFilePath);
+        window.resolveLocalFileSystemURL(localFilePath, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    console.log("uploadFileToServer: uploading file " + file.name);
+                    // Create a blob based on the FileReader "result", which we asked to be retrieved as an ArrayBuffer
+                    var blob = new Blob([this.result], {
+                        type: "image/png"
+                    });
+                    var fd = new FormData();
+                    fd.append("uploadfile", blob, file.name);
+                    var oReq = new XMLHttpRequest();
+                    oReq.open("POST", url, true);
+                    oReq.onload = function (oEvent) {
+                        // all done!
+                        console.log("uploadFileToServer: response " + this.responseText);
+                        if (doneCallback) {
+                            doneCallback(oReq.responseText);
+                        }
+                    };
+                    oReq.send(fd);
+                };
+                // Read the file as an ArrayBuffer
+                reader.readAsArrayBuffer(file);
+            }, function (err) {
+                console.error('error getting fileentry file!' + err);
+            });
+        }, function (err) {
+            console.error('error getting file! ' + err);
+        });
+    },
+
+    sendUploadDone: function (success) {
         var me = this;
         var serverURI = vm.baseuri + 'app/uploaddone';
         var groups = [];
@@ -298,45 +356,48 @@ fc.file =  {
             devversion: window.cfg.device.version,
             numfotos: -1
         };
-        groups.push( me.group.gid );
-        $$.post( serverURI, {
+        groups.push(me.group.gid);
+        $$.post(serverURI, {
                 authautologin: vm.user.token,
-                groups:JSON.stringify(groups),
+                groups: JSON.stringify(groups),
                 stats: JSON.stringify(stats)
             },
-            function(response, opts ) {
-                vm.sets[ me.group.idx ].sended = true;
+            function (response, opts) {
+                vm.sets[me.group.idx].sended = true;
                 success();
             }
         );
     },
 
-    removeFotoFromFileSystem: function( fileuri ) {
-        if ( navigator.camera ) {
-            if ( fileuri.length ) {
+    removeFotoFromFileSystem: function (fileuri) {
+        if (navigator.camera) {
+            if (fileuri.length) {
                 FileIO.removeDeletedImage(fileuri);
             }
         }
     },
 
-	faillocal: function(evt) {
-		//appgeordnet.app.log( "Fehler beim Anfordern des Filesystems: " + Ext.encode(evt) );
-  	},
+    faillocal: function (evt) {
+        //appgeordnet.app.log( "Fehler beim Anfordern des Filesystems: " + Ext.encode(evt) );
+    },
 
     // Foto in (neues) Verzeichnis appgeordnet verschieben
-    moveTo: function( uri, success ) {
+    moveTo: function (uri, success) {
         var me = this;
-        var fileName = uri.substr(uri.lastIndexOf('/')+1);
-        window.resolveLocalFileSystemURI( uri,
-            function(entry){
+        var fileName = uri.substr(uri.lastIndexOf('/') + 1);
+        window.resolveLocalFileSystemURI(uri,
+            function (entry) {
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-                    function(fileSys) {
-                        fileSys.root.getDirectory("appgeordnet", {create: true, exclusive: false},
-                            function(directory) {
-                                entry.moveTo(directory, fileName, success, me.faillocal );
-                            }, me.faillocal );
-                    }, me.faillocal );
+                    function (fileSys) {
+                        fileSys.root.getDirectory("appgeordnet", {
+                                create: true,
+                                exclusive: false
+                            },
+                            function (directory) {
+                                entry.moveTo(directory, fileName, success, me.faillocal);
+                            }, me.faillocal);
+                    }, me.faillocal);
             },
-            me.faillocal );
+            me.faillocal);
     }
 };
