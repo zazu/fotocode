@@ -6,7 +6,36 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: cdvfile: filesystem: 'unsafe-eval' 'unsafe-inline' blob: https://*;">
     <title>appgeordnet</title>
+    <script>
+            window.onerror = function (msg, url, line) {
+               dump("Message : " + msg);
+               dump("url : " + url);
+               dump("Line number : " + line);
+            }
+
+            function dump(t) {
+              var paragraph = document.getElementById("dump");
+              paragraph.textContent += " - " + t;
+            }
+(function(global) {
+  'use strict';
+  if (!global.console) {
+    global.console = {};
+  }
+  var con = global.console;
+  var prop, method;
+  var dummy = function(s) {dump(s);};
+  var properties = ['memory'];
+  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+     'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+     'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn,timeLog,trace').split(',');
+  while (prop = properties.pop()) if (!con[prop]) con[prop] = {};
+  while (method = methods.pop()) if (!con[method]) con[method] = dummy;
+  // Using `this` for web workers & supports Browserify / Webpack.
+})(typeof window === 'undefined' ? this : window);
+      </script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <script>
@@ -37,6 +66,7 @@
     </script>
   </head>
   <body class="layout-white" :class="classtheme" id="app" v-cloak>
+  <!--  <p id="dump" style="bottom:0;position:absolute;z-index:99999;background-color:white;max-height:100px;overflow-y:scroll;"></p> -->
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -291,8 +321,10 @@
                         <div class="swipeout-content">
                           <a @click.stop.prevent="openVorgang($index)" class="item-link item-content">
                             <div class="item-media">
-                                <img v-if="ds.fotos.length" :src="ds.fotos[0].uri" width="80">
+                                <img v-if="ds.fotos.length" :src="ds.fotos[0].imageuri" width="80">
                                 <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].uri" width="80">
+                                {{ds.fotos[0].imageuri}}
+
                             </div>
                             <div class="item-inner">
                               <div class="item-title-row">
@@ -346,6 +378,8 @@
                     </div>
                 </div>
                 <div class="page-content">
+                  <p id="dump" style="z-index:99999;background-color:white;max-height:100px;overflow-y:scroll;"></p>
+
                     <!--
                     <div class="content-block-title infosection" v-cloak>
 
@@ -927,7 +961,8 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="js/lockr.min.js"></script>
+    <script type="text/javascript" src="js/localforage.min.js"></script>
+    <!-- <script type="text/javascript" src="js/lockr.min.js"></script> -->
     <script type="text/javascript" src="js/lodash.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>

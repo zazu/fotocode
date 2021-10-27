@@ -7,7 +7,7 @@ Template7.global = {
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
-        version: '2.1.44',
+        version: '2.2.2',
         uritest: mobiledevice ? "http://www.app-warten.de/":
                                 'http://www.app-warten.de/',
         uriproduction: mobiledevice ?
@@ -27,13 +27,12 @@ window.onload = function () {
 };
 
 function onDeviceReady() {
-
     // Export selectors engine
     window.$$ = Dom7;
 
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
         window.cfg.device = device;
-        window.cfg.version = AppVersion.version;
+       // window.cfg.version = AppVersion.version;
 
 //        window.addEventListener('native.keyboardshow', function(e){StatusBar.hide();});
 //        window.addEventListener('native.keyboardhide', function(e){StatusBar.hide();});
@@ -179,6 +178,7 @@ function onDeviceReady() {
 
     $$(document).on('pageInit', function (e) {
         var page = e.detail.page;
+
         if (page.name !== 'index')
             myApp.params.swipePanel = false;
         else
@@ -410,17 +410,49 @@ function onDeviceReady() {
         },
         created: function () {
             var me = this;
-            _.forEach(Lockr.get('appg-sets', []), function(set){me.sets.push(set);});
-            me.user = Lockr.get('appg-user', {});
-            me.form = Lockr.get('appg-form', []);
-            me.bereiche = Lockr.get('appg-bereiche', {});
-            me.codeformat = Lockr.get('appg-codeformat', '');
-            me.useserver = Lockr.get('appg-useserver', 'production');
-            me.bereich = Lockr.get('appg-bereich', 0);
-            me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
-            me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
-            me.lastsent = Lockr.get('appg-lastsent', '-');
-            me.fotoconf = Lockr.get('appg-fotoconf', { qual:100, jpgsiz:10, vqual:0, dpi:96 });
+           // dump('created');
+            //localforage.setItem('appg-test','localforage test');
+           // setTimeout(function(){ localforage.getItem('appg-test',function(err, value) { dump(value) }); },1000);
+
+
+            //_.forEach(Lockr.get('appg-sets', []), function(set){me.sets.push(set);});
+            localforage.getItem('appg-sets',function(err, value) { 
+                  _.forEach(value, function(set){me.sets.push(set);});
+             });
+
+            //me.user = Lockr.get('appg-user', {});
+            localforage.getItem('appg-user',function(err, value) { 
+              me.user = value?value:{}; 
+              //dump(JSON.stringify(me.user));
+              });
+
+            //me.form = Lockr.get('appg-form', []);
+            localforage.getItem('appg-form',function(err, value) { me.form = value?value:[]; });
+
+            //me.bereiche = Lockr.get('appg-bereiche', {});
+            localforage.getItem('appg-bereiche',function(err, value) { me.bereiche = value?value:{}; });
+ 
+            //me.codeformat = Lockr.get('appg-codeformat', '');
+            localforage.getItem('appg-codeformat',function(err, value) { me.codeformat = value?value:''; });
+
+            //me.useserver = Lockr.get('appg-useserver', 'production');
+            localforage.getItem('appg-useserver',function(err, value) { me.useserver = value?value:'production'; });
+
+            //me.bereich = Lockr.get('appg-bereich', 0);
+            localforage.getItem('appg-bereich',function(err, value) { me.bereich = value?value:0; });
+
+            //me.usecamera = (Lockr.get('appg-usecamera', 'true') !== 'false');
+            localforage.getItem('appg-usecamera',function(err, value) { me.usecamera = value?value:'true'; });
+
+            //me.showform = (Lockr.get('appg-showform', 'true') !== 'false');
+            localforage.getItem('appg-showform',function(err, value) { me.showform = value?value:'true'; });
+
+            //me.lastsent = Lockr.get('appg-lastsent', '-');
+            localforage.getItem('appg-lastsent',function(err, value) { me.lastsent = value?value:'-'; });
+
+            //me.fotoconf = Lockr.get('appg-fotoconf', { qual:100, jpgsiz:10, vqual:0, dpi:96 });
+            localforage.getItem('appg-fotoconf',function(err, value) { me.fotoconf = value?value:{ qual:100, jpgsiz:10, vqual:0, dpi:96 }; });
+
             me.syncUserInfo();
             me.checkVersion();
         },
@@ -428,6 +460,7 @@ function onDeviceReady() {
             deviceReady: function () {
                 var me = this;
                 document.addEventListener("backbutton", me.backButton, false);
+                //try{ StatusBar.overlaysWebView(false); }catch(e){}
             },
             ensureValidBereich: function() {
                 var me = this;
@@ -517,7 +550,7 @@ function onDeviceReady() {
                 var me = this;
                 me.set.dateCreated = moment().format('YYYY-MM-DD HH:mm:ss');
                 me.set.bereich = me.bereich;
-                Lockr.set('appg-set', me.set);
+                localforage.setItem('appg-set', me.set);
                 if (me.usecamera) {
                     vm.barcode(function () {
                         Vue.nextTick(function () {
@@ -540,7 +573,7 @@ function onDeviceReady() {
                         me.sets[me.selectedSet].code = me.set.code+'';
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
-                        Lockr.set('appg-sets', me.sets);
+                        localforage.setItem('appg-sets', me.sets);
                         mainView.router.back();
                     });
                 }
@@ -550,7 +583,7 @@ function onDeviceReady() {
                         me.sets[me.selectedSet].code = me.set.code+'';
                         me.sets[me.selectedSet].format = me.set.format;
                         me.sets[me.selectedSet].name = me.set.name;
-                        Lockr.set('appg-sets', me.sets);
+                        localforage.setItem('appg-sets', me.sets);
                         mainView.router.back();
                     });
                 }
@@ -764,7 +797,7 @@ alert(JSON.stringify(file));
                     function () {
                         if (me.set.fotos.length) {
                             me.sets[me.selectedSet].fotos.push.apply(me.sets[me.selectedSet].fotos, me.set.fotos);
-                            Lockr.set('appg-sets', me.sets);
+                            localforage.setItem('appg-sets', me.sets);
                         }
                         if (idx >= 0)
                             me.cleanset();
@@ -784,7 +817,7 @@ alert(JSON.stringify(file));
                     function () {
                         if (me.set.files.length) {
                             me.sets[me.selectedSet].files.push.apply(me.sets[me.selectedSet].files, me.set.files);
-                            Lockr.set('appg-sets', me.sets);
+                            localforage.setItem('appg-sets', me.sets);
                         }
                         if (idx >= 0)
                             me.cleanset();
@@ -804,7 +837,7 @@ alert(JSON.stringify(file));
                     function () {
                         if (me.set.videos.length) {
                             me.sets[me.selectedSet].videos.push.apply(me.sets[me.selectedSet].videos, me.set.videos);
-                            Lockr.set('appg-sets', me.sets);
+                            localforage.setItem('appg-sets', me.sets);
                         }
                         if (idx >= 0)
                             me.cleanset();
@@ -824,7 +857,7 @@ alert(JSON.stringify(file));
                     function () {
                         if (me.set.audios.length) {
                             me.sets[me.selectedSet].audios.push.apply(me.sets[me.selectedSet].audios, me.set.audios);
-                            Lockr.set('appg-sets', me.sets);
+                            localforage.setItem('appg-sets', me.sets);
                         }
                         if (idx >= 0)
                             me.cleanset();
@@ -876,7 +909,7 @@ alert(JSON.stringify(file));
                         var foto = me.sets[me.selectedSet].fotos.splice(idx, 1);
                         FileIO.removeDeletedImage(foto[0].uri);
                         me.myPhotoBrowser.close();
-                        Lockr.set('appg-sets', me.sets);
+                        localforage.setItem('appg-sets', me.sets);
                     }, function () {
                     }
                 );
@@ -907,7 +940,7 @@ alert(JSON.stringify(file));
                         }
                         if ( type !== 'file' )
                             FileIO.removeDeletedImage(media[0].uri);
-                        Lockr.set('appg-sets', me.sets);
+                        localforage.setItem('appg-sets', me.sets);
                     }, function () {
                     }
                 );
@@ -936,7 +969,7 @@ alert(JSON.stringify(file));
                 myApp.popup(popupHTML)
                 $$('.popup-comment').once('close', function () {
                     foto.bemerkung = $$('.popup-comment textarea').val();
-                    Lockr.set('appg-sets', me.sets);
+                    localforage.setItem('appg-sets', me.sets);
                     me.showFotos(me.selectedSet, sliderIndex);
                 });
                 me.myPhotoBrowser.close();
@@ -1040,10 +1073,10 @@ alert(JSON.stringify(file));
                             me.form = data.form;
                             me.bereiche = data.bereiche;
                             me.fotoconf = data.fotos;
-                            Lockr.set('appg-bereiche', me.bereiche);
-                            Lockr.set('appg-form', me.form);
-                            Lockr.set('appg-user', me.user);
-                            Lockr.set('appg-fotoconf', me.fotoconf);
+                            localforage.setItem('appg-bereiche', me.bereiche);
+                            localforage.setItem('appg-form', me.form);
+                            localforage.setItem('appg-user', me.user);
+                            localforage.setItem('appg-fotoconf', me.fotoconf);
                             mainView.router.back();
                             myApp.hidePreloader();
                             me.ensureValidBereich();
@@ -1082,9 +1115,9 @@ alert(JSON.stringify(file));
                                 me.bereiche = data.bereiche;
                                 me.fotoconf = data.fotos;
                                 me.addAuftrag(data.auftrag);
-                                Lockr.set('appg-bereiche', me.bereiche);
-                                Lockr.set('appg-form', me.form);
-                                Lockr.set('appg-fotoconf', me.fotoconf);
+                                localforage.setItem('appg-bereiche', me.bereiche);
+                                localforage.setItem('appg-form', me.form);
+                                localforage.setItem('appg-fotoconf', me.fotoconf);
                                 // Empfangsbestätigung zum Löschen vom Server
                                 $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
                                 myApp.hidePreloader();
@@ -1124,7 +1157,7 @@ alert(JSON.stringify(file));
             logout: function () {
                 var me = this;
                 me.user = {};
-                Lockr.set('appg-user', me.user);
+                localforage.setItem('appg-user', me.user);
             },
             senden: function (idx) {
                 var me = this;
@@ -1244,10 +1277,10 @@ alert(JSON.stringify(file));
                         }
                         me.sets.splice(idx, 1);
                         me.lastsent = moment().format('DD.MM.YYYY HH:mm');
-                        Lockr.set('appg-lastsent', me.lastsent);
+                        localforage.setItem('appg-lastsent', me.lastsent);
                     }
                 }
-                //Lockr.set('appg-sets',me.sets);
+                //localforage.setItem('appg-sets',me.sets);
             },
             showForm: function (idx) {
                 var me = this;
@@ -1296,7 +1329,7 @@ alert(JSON.stringify(file));
                 var idx = me.selectedSet;
                 var formData = myApp.formToJSON('#bereichform');
                 me.sets[idx].formdata = formData;
-                Lockr.set('appg-sets', me.sets);
+                localforage.setItem('appg-sets', me.sets);
                 mainView.router.back({force: true, pageName: 'index'});
             },
             // codeformat auf basis des gewählten bereichs einstellen
@@ -1345,28 +1378,28 @@ alert(JSON.stringify(file));
     vm.deviceReady();
 
     vm.$watch('sets', function (newVal, oldVal) {
-        Lockr.set('appg-sets', newVal);
+        localforage.setItem('appg-sets', newVal);
     });
 
     vm.$watch('bereich', function (newVal, oldVal) {
-        Lockr.set('appg-bereich', newVal);
+        localforage.setItem('appg-bereich', newVal);
         this.updateQuickscanCodeformat();
     });
 
     vm.$watch('usecamera', function (newVal, oldVal) {
-        Lockr.set('appg-usecamera', newVal ? 'true' : 'false');
+        localforage.setItem('appg-usecamera', newVal ? 'true' : 'false');
     });
 
     vm.$watch('showform', function (newVal, oldVal) {
-        Lockr.set('appg-showform', newVal ? 'true' : 'false');
+        localforage.setItem('appg-showform', newVal ? 'true' : 'false');
     });
 
     vm.$watch('codeformat', function (newVal, oldVal) {
-        Lockr.set('appg-codeformat', newVal);
+        localforage.setItem('appg-codeformat', newVal);
     });
 
     vm.$watch('useserver', function (newVal, oldVal) {
-        Lockr.set('appg-useserver', newVal);
+        localforage.setItem('appg-useserver', newVal);
         if ( newVal != oldVal )
             this.logout();
     });

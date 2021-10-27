@@ -1,7 +1,21 @@
 // global namespace
 var fc = fc || {};
 fc.camera =  {
-    getPicture: function( success, fail, fotoconf, sourceType ) {
+  getPicture: function(success, fail, fotoconf, sourceType) {
+
+        this.getPicture2(function(f){
+dump(JSON.stringify(f));
+            FileIO.toInternalURL(f.imageuri, function(imageuri){
+                f.imageuri = imageuri;
+dump(JSON.stringify(f));
+                success(f);
+            });
+
+        }, fail, fotoconf, sourceType);
+
+    },
+
+    getPicture2: function( success, fail, fotoconf, sourceType ) {
     	var cam = navigator.camera;
     	if ( cam ) {
             navigator.camera.getPicture(
@@ -13,6 +27,7 @@ fc.camera =  {
                             //fc.camera.resizeFoto(fotoconf,fileEntry, function(fileEntry) {
                                 fileEntry.file(function (file) {
                                     success({
+                                        imageuri: fileEntry.nativeURL,
                                         uri: fileEntry.nativeURL,
                                         title: title,
                                         size: file.size,

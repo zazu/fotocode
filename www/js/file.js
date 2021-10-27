@@ -27,12 +27,39 @@ if (!HTMLCanvasElement.prototype.toBlob) {
     });
 }
 
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+}
+
+function blobToDataURL(blob, callback) {
+    var a = new FileReader();
+    a.onload = function(e) {callback(e.target.result);}
+    a.readAsDataURL(blob);
+}
+
 // global namespace
 var fc = fc || {};
 
 //
 
 var FileIO = {
+
+    toInternalURL: function(imageURI, success) {
+        window.resolveLocalFileSystemURL(imageURI, function(entry) {
+            success( entry.toInternalURL() );
+        });
+    },
+
+     toURL: function(imageURI, success) {
+        window.resolveLocalFileSystemURL(imageURI, function(entry) {
+            success( entry.toURL() );
+        });
+    },
 
     // Medium in das app-data-Verzeichnis verschieben
     moveMediaFile: function (imageURI, success) {
@@ -242,106 +269,95 @@ fc.file = {
             myApp.showPreloader(msg + "<br>Gesendete Medien:" + me.fotototal);
             var fileURI = foto.uri;
             var serverURI = vm.baseuri + 'app/upload';
-            if (navigator.camera) {
-                try {
-                    var options = new FileUploadOptions();
-                    options.fileKey = "file";
-                    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
-                    options.mimeType = "text/plain";
-                    options.chunkedMode = false;
-                    options.params = {
-                        guid: me.group.gid,
-                        index: idx,
-                        title: foto.title,
-                        bemerkung: _.isUndefined(foto.bemerkung) ? "" : foto.bemerkung,
-                        authautologin: vm.user.token
-                    };
-                    var ft = new FileTransfer();
-                    ft.upload(fileURI, encodeURI(serverURI),
-                        function (r) {
-                            myApp.hidePreloader();
-                            //alert("Code = " + r.responseCode);
-                            //alert("Response = " + r.response);
-                            //alert("Sent = " + r.bytesSent);
-                            var res = JSON.parse(r.response);
-                            try {
-                                if (res.success) {
-                                    vm.sets[me.group.idx].sended = true;
-                                    me.uploadFoto(fotos, idx + 1, success, fail, msg);
-                                } else {
-                                    if (res.message && res.message.length)
-                                        fail(res.message);
-                                    else
-                                        fail('Upload failed');
-                                }
-                            } catch (e) {
-                                //appgeordnet.app.log( "Upload: " + e.message );
-                                fail("Upload: " + e.message);
-                            }
-                        },
-                        function (error) {
-                            myApp.hidePreloader();
-                            var msg = "Code = " + error.code;
-                            if (error.code == FileTransferError.FILE_NOT_FOUND_ERR)
-                                msg = 'Die Datei wurde nicht gefunden! - ' + options.fileName;
-                            else if (error.code == FileTransferError.INVALID_URL_ERR)
-                                msg = 'Ungültige URL!';
-                            else if (error.code == FileTransferError.CONNECTION_ERR)
-                                msg = 'Verbindungsfehler!';
-                            else if (error.code == FileTransferError.ABORT_ERR)
-                                msg = 'Der Transfer wurde abgebrochen!';
-                            //alert("upload error source " + error.source);
-                            //alert("upload error target " + error.target);
-                            //appgeordnet.app.log( "Upload Failed: " + msg );
-                            fail("Fehler beim Upload: " + msg);
-                        },
-                        options);
-                } catch (e) {
-                    myApp.hidePreloader();
-                    //appgeordnet.app.log( "Upload Fehler: " + e.message );
-                    fail(e.message);
-                }
+            var params = {
+                guid: me.group.gid,
+                index: idx,
+                title: foto.title,
+                bemerkung: _.isUndefined(foto.bemerkung) ? "" : foto.bemerkung,
+                authautologin: vm.user.token
+            };
+            var filename = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            if (false && navigator.camera) {
+             
             } else {
-                myApp.hidePreloader();
-                me.uploadFoto(fotos, idx + 1, success, fail, msg);
+                me.uploadFileToServer(fileURI, serverURI, params, function(r){
+                    myApp.hidePreloader();
+                    var res = JSON.parse(r.response);
+                    try {
+                        if (res.success) {
+                            vm.sets[me.group.idx].sended = true;
+                            me.uploadFoto(fotos, idx + 1, success, fail, msg);
+                        } else {
+                            if (res.message && res.message.length)
+                                fail(res.message);
+                            else
+                                fail('Upload failed');
+                        }
+                    } catch (e) {
+                        //appgeordnet.app.log( "Upload: " + e.message );
+                        fail("Upload: " + e.message);
+                    }
+                },function(err){
+                    myApp.hidePreloader();
+                    fail("Fehler beim Upload: " + err);
+                });
             }
         } else {
             success();
         }
     },
 
-    uploadFileToServer: function (localFilePath, url, doneCallback, options) {
-        console.log("uploadFileToServer: locating file Uri " + localFilePath);
-        window.resolveLocalFileSystemURL(localFilePath, function (fileEntry) {
-            fileEntry.file(function (file) {
-                var reader = new FileReader();
-                reader.onloadend = function () {
-                    console.log("uploadFileToServer: uploading file " + file.name);
-                    // Create a blob based on the FileReader "result", which we asked to be retrieved as an ArrayBuffer
-                    var blob = new Blob([this.result], {
-                        type: "image/png"
-                    });
-                    var fd = new FormData();
-                    fd.append("uploadfile", blob, file.name);
-                    var oReq = new XMLHttpRequest();
-                    oReq.open("POST", url, true);
-                    oReq.onload = function (oEvent) {
-                        // all done!
-                        console.log("uploadFileToServer: response " + this.responseText);
-                        if (doneCallback) {
-                            doneCallback(oReq.responseText);
+    uploadFileToServer: function (localFilePath, url, options, success, fail) {
+        //console.log("uploadFileToServer: locating file Uri " + localFilePath, url, options);
+        if (navigator.camera) {
+            window.resolveLocalFileSystemURL(localFilePath, function (fileEntry) {
+                fileEntry.file(function (file) {
+                    var reader = new FileReader();
+                    reader.onloadend = function () {
+                        //console.log("uploadFileToServer: uploading file " + file.name);
+                        // Create a blob based on the FileReader "result", which we asked to be retrieved as an ArrayBuffer
+                        var blob = new Blob([this.result], {
+                            type: "image/jpeg"
+                        });
+                        var fd = new FormData();
+                        for (var option in options){
+                            fd.append(option, options[option]);
                         }
+                        fd.append("file", blob, file.name);
+                        var oReq = new XMLHttpRequest();
+                        oReq.open("POST", url, true);
+                        oReq.onload = function (oEvent) {
+                            //console.log("uploadFileToServer: response " + this.responseText, this.response);
+                            success(this);
+                        };
+                        oReq.send(fd);
                     };
-                    oReq.send(fd);
-                };
-                // Read the file as an ArrayBuffer
-                reader.readAsArrayBuffer(file);
+                    // Read the file as an ArrayBuffer
+                    reader.readAsArrayBuffer(file);
+                }, function (err) {
+                    fail(err);
+                    //console.error('error getting fileentry file!' + err);
+                });
             }, function (err) {
-                console.error('error getting fileentry file!' + err);
+                fail(err);
+                //console.error('error getting file! ' + err);
             });
-        }, function (err) {
-            console.error('error getting file! ' + err);
-        });
+        }
+        else {
+            var fd = new FormData();
+            for (var option in options){
+                fd.append(option, options[option]);
+            }
+            var blob = dataURLtoBlob('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
+            fd.append("file", blob, localFilePath);
+            var oReq = new XMLHttpRequest();
+            oReq.open("POST", url, true);
+            oReq.onload = function (oEvent) {
+                console.log("uploadFileToServer: response " + this.responseText, this.response);
+                success(this);
+            };
+            oReq.send(fd);
+        }
     },
 
     sendUploadDone: function (success) {
