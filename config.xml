@@ -94,7 +94,7 @@
     <!--
         <plugin name="org.cloudsky.cordovaplugins.zbar" spec="tjwoon/csZBar" source="git" />
 -->
-    <preference name="webviewbounce" value="true"/>
+    <preference name="webviewbounce" value="false"/>
     <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="prerendered-icon" value="true"/>
     <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->

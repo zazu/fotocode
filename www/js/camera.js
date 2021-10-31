@@ -1,18 +1,19 @@
 // global namespace
+// https://github.com/apache/cordova-plugin-statusbar/issues/156
 var fc = fc || {};
 fc.camera =  {
   getPicture: function(success, fail, fotoconf, sourceType) {
-
         this.getPicture2(function(f){
-dump(JSON.stringify(f));
+          // https://github.com/oracle/cordova-plugin-wkwebview-file-xhr/issues/4
+          f.imageuri = window.WkWebView.convertFilePath(f.imageuri);
+          success(f);
+/*
             FileIO.toInternalURL(f.imageuri, function(imageuri){
                 f.imageuri = imageuri;
-dump(JSON.stringify(f));
+                dump(JSON.stringify(f));
                 success(f);
-            });
-
+            });*/
         }, fail, fotoconf, sourceType);
-
     },
 
     getPicture2: function( success, fail, fotoconf, sourceType ) {
@@ -36,8 +37,16 @@ dump(JSON.stringify(f));
                                 });
                             //});
                         });
+                        try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                 },
                 function(error) {
+                  try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                     console.log('getPicture error');
                     console.log(error);
                     fail(error);
@@ -123,6 +132,10 @@ dump(JSON.stringify(f));
             cordova.plugins.barcodeScanner.scan(
                 function(result) {
                     if (lockori)window.screen.unlockOrientation();
+                     try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                     if ( result.format.length && result.text.length) {
                         success( result );
                     }
@@ -135,6 +148,10 @@ dump(JSON.stringify(f));
                 },
                 function(error) {
                     if (lockori)window.screen.unlockOrientation();
+                     try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                     fail( error );
                 },{
                     "preferFrontCamera" : false, // iOS and Android
@@ -158,6 +175,10 @@ dump(JSON.stringify(f));
                 text_title: 'Scan QR Code', // Android only
                 text_instructions: "Barcode im Bereich platzieren." // Android only
             }, function(result) {
+               try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                 if ( result.length ) {
                     success( { 'text': result,'format': format } );
                 }
@@ -168,6 +189,10 @@ dump(JSON.stringify(f));
                     fail( 'Kein Ergebnis: ' + JSON.stringify(result) );
                 }
             }, function(error) {
+               try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                 fail( error );
             });
         }
@@ -175,8 +200,6 @@ dump(JSON.stringify(f));
             success( { 'text':'1234567890123','format':'EAN_13' } );
         }
     },
-
-
     moveMediaFile: function(vid,success) {
         FileIO.moveMediaFile(
             vid.uri,
@@ -206,8 +229,16 @@ dump(JSON.stringify(f));
                         };
                         me.moveMediaFile(vid,success);
                     }
+                     try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                      } catch(e){};
                 },
                 function (error) {
+                        try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                     fail(error);
                 },
                 {
@@ -240,8 +271,16 @@ dump(JSON.stringify(f));
                         me.moveMediaFile(vid,success);
 
                     }
+                     try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                 },
                 function (error) {
+                   try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
                     fail(error);
                 },
                 {limit: 1});

@@ -49,6 +49,10 @@ var fc = fc || {};
 
 var FileIO = {
 
+    toWkWebViewURL: function(imageURI, success) {
+      window.WkWebView.convertFilePath(imageURI);
+    },
+
     toInternalURL: function(imageURI, success) {
         window.resolveLocalFileSystemURL(imageURI, function(entry) {
             success( entry.toInternalURL() );

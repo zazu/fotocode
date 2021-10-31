@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: cdvfile: filesystem: 'unsafe-eval' 'unsafe-inline' blob: https://*;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: cdvfile: filesystem: 'unsafe-eval' 'unsafe-inline' blob: monaca-app: https://*;">
     <title>appgeordnet</title>
     <script>
             window.onerror = function (msg, url, line) {
@@ -14,7 +14,6 @@
                dump("url : " + url);
                dump("Line number : " + line);
             }
-
             function dump(t) {
               var paragraph = document.getElementById("dump");
               paragraph.textContent += " - " + t;
@@ -312,9 +311,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="list-block media-list">
                   <ul>
                       <li class="swipeout" v-for="ds in sets" track-by="$index">
@@ -322,9 +319,7 @@
                           <a @click.stop.prevent="openVorgang($index)" class="item-link item-content">
                             <div class="item-media">
                                 <img v-if="ds.fotos.length" :src="ds.fotos[0].imageuri" width="80">
-                                <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].uri" width="80">
-                                {{ds.fotos[0].imageuri}}
-
+                                <img v-if="!ds.fotos.length && ds.files.length" :src="ds.files[0].imageuri" width="80">
                             </div>
                             <div class="item-inner">
                               <div class="item-title-row">
@@ -527,12 +522,12 @@
                                     <div class="item-content">
                                         <div class="item-media">
                                             <a @click.stop.prevent="openFotos($index)" class="item-link">
-                                                <img  :src="ds.uri" width="80">
+                                                <img  :src="ds.imageuri" width="80">
                                             </a>
                                         </div>
                                         <div class="item-inner">
                                             <a @click.stop.prevent="openFotos($index,'fotos')" class="item-link">
-                                                <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                                <div class="item-title">{{ds.title|shorten}} ({{ds.size|b2MB}} MB)</div>
                                             </a>
                                             <a @click.stop.prevent="removeMedia('foto',$index)" class="" >
                                                 <div class="item-after">
@@ -559,14 +554,14 @@
                                 </li>
                                 <li v-for="ds in set.files">
                                     <div class="item-content">
-                                        <div class="item-media" v-if="ds.uri.match(/\.(JPEG|JPG|jpeg|jpg|gif|png)$/) != null">
-                                            <a @click.stop.prevent="openFotos($index)" class="item-link">
-                                                <img  :src="ds.uri" width="80">
+                                        <div class="item-media">
+                                            <a @click.stop.prevent="openFotos($index,'files')" class="item-link">
+                                                <img :src="ds.imageuri" width="80">
                                             </a>
                                         </div>
                                         <div class="item-inner">
-                                            <a @click.stop.prevent="if(ds.uri.match(/\.(JPEG|JPG|jpeg|jpg|gif|png)$/) != null)openFotos($index)" class="item-link">
-                                                <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                            <a @click.stop.prevent="openFotos($index,'files')" class="item-link">
+                                                <div class="item-title">{{ds.title|shorten}} ({{ds.size|b2MB}} MB)</div>
                                             </a>
                                             <a @click.stop.prevent="removeMedia('file',$index)" class="" >
                                                 <div class="item-after">
@@ -578,7 +573,6 @@
                                 </li>
                             </ul>
                         </div>
-
                         <!-- Videos-->
                         <div class="list-group">
                             <ul>
@@ -596,7 +590,7 @@
                                     <div class="item-content">
                                         <div class="item-inner">
                                             <a @click.stop.prevent="openVideo($index)" class="item-link">
-                                                <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                                <div class="item-title">{{ds.title|shorten}} ({{ds.size|b2MB}} MB)</div>
                                             </a>
                                             <a @click.stop.prevent="removeMedia('video',$index)" class="" >
                                                 <div class="item-after">
@@ -624,7 +618,7 @@
                                 <li class="item-content" v-for="ds in set.audios">
                                     <div class="item-inner">
                                         <a @click.stop.prevent="openAudio($index)" class="item-link">
-                                            <div class="item-title">{{ds.title}} ({{ds.size|b2MB}} MB)</div>
+                                            <div class="item-title">{{ds.title|shorten}} ({{ds.size|b2MB}} MB)</div>
                                         </a>
                                         <a @click.stop.prevent="removeMedia('audio',$index)" class="" >
                                             <div class="item-after">

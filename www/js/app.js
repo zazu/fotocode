@@ -4,6 +4,10 @@ Template7.global = {
     ios: isIos
 };
 
+function proxyurl(url) {
+  return window.WebviewProxy.convertProxyUrl(url);
+}
+
 window.onload = function () {
     var mobiledevice = (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/));
     window.cfg = {
@@ -230,9 +234,14 @@ function onDeviceReady() {
         return value+'';
     });
 
-
     Vue.filter('b2MB', function (value) {
         return (value / 1024 / 1024).toFixed(2);
+    });
+
+    Vue.filter('shorten', function (str) {
+        let n=16;
+        let ext = str.substring(str.indexOf('.') );
+        return (str.length > n) ? str.substr(0, n-5) + '...'+ext : str;
     });
 
     window.vm = new Vue({
@@ -696,6 +705,7 @@ function onDeviceReady() {
                 var me = this;
                 fc.camera.captureVideo(function (result) {
                     me.set.videos.push(result);
+                    //dump(JSON.stringify(result));
                     success();
                 }, function () {
                     success();
@@ -714,12 +724,10 @@ function onDeviceReady() {
                       me.fotoconf, Camera.PictureSourceType.PHOTOLIBRARY);
                 }
                 else {
-
                     var args = {
                         'selectMode': 101, //101=picker image and video , 100=image , 102=video
                         'maxSelectCount': 10 //default 40 (Optional)
                     };
-
                     MediaPicker.getMedias(args,
                       function(medias) {
                         //medias [{mediaType: "image", path:'/storage/emulated/0/DCIM/Camera/2017.jpg',
@@ -974,14 +982,16 @@ alert(JSON.stringify(file));
                 });
                 me.myPhotoBrowser.close();
             },
-            showFotos: function (idx, initialSlide) {
+            showFotos: function (idx, initialSlide, media) {
                 initialSlide = initialSlide || 0;
+                media = media || 'fotos';
                 var me = this;
                 var photos = [];
                 if (!me.myPhotoBrowser) {
                     me.selectedSet = idx;
-                    photos = me.sets[idx].fotos.map(function (f) {
-                        return {url: f.uri, caption: f.bemerkung};
+                    var medialist = media === 'fotos' ? me.sets[idx].fotos : me.sets[idx].files;
+                    photos = medialist.map(function (f) {
+                        return {url: f.imageuri, caption: f.bemerkung};
                     });
                     if ( photos.length ) {
                         me.myPhotoBrowser = myApp.photoBrowser({
@@ -1021,23 +1031,66 @@ alert(JSON.stringify(file));
                 me.showMedia(idx);
             },
             // aus medienliste heraus öffnen
-            openFotos: function(idx) {
+            openFotos: function(idx, media) {
                 var me = this;
-                me.showFotos(me.selectedSet);
+                var initialSlide = 0;
+                media = media || 'fotos';
+                me.showFotos(me.selectedSet,0,media);
             },
             openVideo: function(idx) {
                 var me = this;
                 var uri = me.sets[me.selectedSet].videos[idx].uri;
-                if (navigator.camera)
-                    cordova.plugins.disusered.open( uri );
+                var mime = me.sets[me.selectedSet].videos[idx].type;
+                if (navigator.camera) {
+                    cordova.plugins.fileOpener2.open(
+                        uri,
+                        mime,
+                        {
+                            error : function(e){ 
+                              dump(JSON.stringify(e));
+                                 try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
+                            },
+                            success : function(){
+                              try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
+                             }
+                        }
+                    );
+                }
                 else
                     alert(uri);
             },
             openAudio: function(idx) {
                 var me = this;
                 var uri = me.sets[me.selectedSet].audios[idx].uri;
-                if (navigator.camera)
-                    cordova.plugins.disusered.open( uri );
+                var mime = me.sets[me.selectedSet].audios[idx].type;
+                if (navigator.camera){
+                    //cordova.plugins.disusered.open( uri );
+                  cordova.plugins.fileOpener2.open(
+                        uri,
+                        mime,
+                        {
+                           error : function(e){ 
+                              //dump(JSON.stringify(e));
+                     try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
+                            },
+                            success : function(){
+                              try{
+                        StatusBar.hide();
+                        StatusBar.show();
+                        } catch(e){};
+                             }
+                        }
+                    );  
+                }
                 else
                     alert(uri);
             },
@@ -1058,7 +1111,7 @@ alert(JSON.stringify(file));
                 };
                 myApp.showPreloader('Anmelden');
                 $$.ajax({
-                    url: me.baseuri + 'user/login?'+ _.now(),
+                    url: proxyurl(me.baseuri + 'user/login?'+ _.now()),
                     method:'POST',
                     data: params,
                     success: function (data) {
@@ -1100,7 +1153,7 @@ alert(JSON.stringify(file));
                     };
                     myApp.showPreloader('Synchronisation');
                     $$.ajax({
-                        url: me.baseuri + 'user/syncinfo?' + _.now(),
+                        url: proxyurl(me.baseuri + 'user/syncinfo?' + _.now()),
                         method: 'POST',
                         data: params,
                         success: function (data) {
@@ -1119,7 +1172,7 @@ alert(JSON.stringify(file));
                                 localforage.setItem('appg-form', me.form);
                                 localforage.setItem('appg-fotoconf', me.fotoconf);
                                 // Empfangsbestätigung zum Löschen vom Server
-                                $$.ajax({url: me.baseuri + 'user/gotauftrag?' + _.now(),method: 'GET'});
+                                $$.ajax({url: proxyurl(me.baseuri + 'user/gotauftrag?' + _.now()),method: 'GET'});
                                 myApp.hidePreloader();
                                 me.ensureValidBereich();
                                 me.checkVersion();
@@ -1152,7 +1205,7 @@ alert(JSON.stringify(file));
                 });
             },
             checkVersion: function() {
-                fc.updater.checkVersion( this.baseuri, this.appversion );
+                fc.updater.checkVersion( proxyurl(this.baseuri), this.appversion );
             },
             logout: function () {
                 var me = this;
@@ -1167,21 +1220,21 @@ alert(JSON.stringify(file));
                 me.vorgangSenden(idx);
             },
             roadmap: function() {
-                mainView.router.load({url:this.baseuri + 'app/roadmap/', ignoreCache:true});
+                mainView.router.load({url:proxyurl(this.baseuri + 'app/roadmap/'), ignoreCache:true});
             },
             einstellungen: function() {
-                mainView.router.load({url:this.baseuri + 'app/settings/', ignoreCache:true});
+                mainView.router.load({url:proxyurl(this.baseuri + 'app/settings/'), ignoreCache:true});
             },
             appinfo: function() {
-                mainView.router.load({url:this.baseuri + 'app/info/', ignoreCache:true});
+                mainView.router.load({url:proxyurl(this.baseuri + 'app/info/'), ignoreCache:true});
             },
             applogs: function() {
-                mainView.router.load({url:this.baseuri + 'app/logs/'+this.user.name, ignoreCache:true});
+                mainView.router.load({url:proxyurl(this.baseuri + 'app/logs/'+this.user.name), ignoreCache:true});
             },
             applogsfilter: function() {
                 var f = "?filter=" + $$('#logsfilter').val();
                 mainView.router.load({
-                    url: this.baseuri + 'app/logs/' + this.user.name + f,
+                    url: proxyurl(this.baseuri + 'app/logs/' + this.user.name + f),
                     ignoreCache: true,
                     reload: true
                 });
