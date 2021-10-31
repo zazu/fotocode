@@ -1229,12 +1229,15 @@ alert(JSON.stringify(file));
                 mainView.router.load({url:proxyurl(this.baseuri + 'app/info/'), ignoreCache:true});
             },
             applogs: function() {
-                mainView.router.load({url:proxyurl(this.baseuri + 'app/logs/'+this.user.name), ignoreCache:true});
+              var usrname=this.user.name.replace(' ','_blank_');
+                //dump(proxyurl(this.baseuri + 'app/logs/'+this.user.name));
+                mainView.router.load({url:proxyurl(this.baseuri + 'app/logs?user='+usrname), ignoreCache:true});
             },
             applogsfilter: function() {
-                var f = "?filter=" + $$('#logsfilter').val();
+                var usrname=this.user.name.replace(' ','_blank_');
+                var f = "&filter=" + $$('#logsfilter').val();
                 mainView.router.load({
-                    url: proxyurl(this.baseuri + 'app/logs/' + this.user.name + f),
+                    url: proxyurl(this.baseuri + 'app/logs?user=' + usrname + f),
                     ignoreCache: true,
                     reload: true
                 });
